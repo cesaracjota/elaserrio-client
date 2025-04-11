@@ -82,7 +82,7 @@ function Sidebar({ isOpen }) {
       icon: FaUsers,
       label: 'ESTUDIANTES',
       path: `/${sedeSeleccionada?._id}/estudiantes`,
-      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_ROLE', 'DOCENTE_TITULAR_ROLE'],
+      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_TITULAR_ROLE'],
     },
     {
       icon: FaSchool,
@@ -106,7 +106,7 @@ function Sidebar({ isOpen }) {
       icon: FaSchool,
       label: 'GRADOS',
       path: `/${sedeSeleccionada?._id}/grados`,
-      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_ROLE'],
+      allowedRoles: ['ADMIN_ROLE'],
     },
     {
       icon: FaSchool,

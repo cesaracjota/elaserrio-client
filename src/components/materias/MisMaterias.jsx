@@ -20,13 +20,14 @@ import { FiSearch, FiUsers } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMateriasByTeacher, reset } from '../../features/materiaSlice';
+import { Loading } from '../../helpers/Loading';
 
 const MisMaterias = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user } = useSelector(state => state.auth);
-  const { materiasByTeacher } = useSelector(state => state.materias);
+  const { materiasByTeacher, isLoading } = useSelector(state => state.materias);
 
   useEffect(() => {
 
@@ -42,6 +43,8 @@ const MisMaterias = () => {
     transition: 'all 0.5s ease',
     boxShadow: 'base',
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <Box>
