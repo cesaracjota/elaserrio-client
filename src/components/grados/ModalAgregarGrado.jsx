@@ -24,7 +24,7 @@ import { VscAdd } from 'react-icons/vsc';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGrado } from '../../features/gradoSlice';
 
-const ModalAgregarGrado = ({ academic_year }) => {
+const ModalAgregarGrado = ({ academic_year, docentes }) => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,6 +34,7 @@ const ModalAgregarGrado = ({ academic_year }) => {
   const initialValues = {
     nombre: '',
     nivel: '',
+    docente_titular: null,
     academic_year: '',
     sede: sedeSeleccionada?._id,
   };
@@ -133,6 +134,21 @@ const ModalAgregarGrado = ({ academic_year }) => {
                     <option value="SECUNDARIA">SECUNDARIA</option>
                     <option value="OTRO">OTRO</option>
                   </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel fontWeight="semibold">DOCENTE TITULAR</FormLabel>
+                  <Select
+                    placeholder="SELECCIONE UN TITULAR"
+                    onChange={e =>
+                      setIndice({ ...indice, docente_titular: e.target.value })
+                    }
+                  >
+                    {docentes.map(docente => (
+                      <option key={docente._id} value={docente._id}>
+                        {docente.nombre}
+                      </option>
+                    ))}
+                  </Select>  
                 </FormControl>
               </Stack>
               <Stack direction="row" justifyContent="space-between" w="full">

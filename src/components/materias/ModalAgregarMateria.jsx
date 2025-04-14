@@ -14,7 +14,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Switch,
   Select,
   Textarea,
 } from '@chakra-ui/react';
@@ -33,9 +32,8 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
     descripcion: '',
     grado: null,
     docente: null,
-    docente_titular: null,
     sede: sede,
-    horario: [],
+    intensidadHorariaSemanal: 0,
     esPublico: false,
     estado: '',
   };
@@ -70,7 +68,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
         variant="solid"
         rounded={'xl'}
       >
-        REGISTRAR NUEVA MATERIA
+        REGISTRAR NUEVA ASIGNATURA
       </Button>
       <Modal
         isOpen={isModalOpen}
@@ -84,7 +82,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
           backdropBlur="2px"
         />
         <ModalContent _dark={{ bg: 'primary.1000' }} borderRadius="2xl">
-          <ModalHeader textAlign="center">REGISTRAR NUEVA MATERIA</ModalHeader>
+          <ModalHeader textAlign="center">REGISTRAR NUEVA MATERIA ASIGNATURA</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack
@@ -109,7 +107,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                   />
                 </FormControl>
                 <FormControl isRequired>
-                  <FormLabel fontWeight="semibold">CODIGO DE CURSO</FormLabel>
+                  <FormLabel fontWeight="semibold">CODIGO DE ASIGNATURA</FormLabel>
                   <Input
                     placeholder="Codigo del Curso"
                     type="text"
@@ -158,6 +156,16 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                     ))}
                   </Select>
                 </FormControl>
+                <FormControl>
+                  <FormLabel fontWeight="semibold">INTENSIDAD HORARIA SEMANAL</FormLabel>
+                  <Input
+                    placeholder="Intensidad horaria semanal"
+                    type="number"
+                    onChange={e =>
+                      setIndice({ ...indice, intensidadHorariaSemanal: e.target.value })
+                    }
+                  />
+                </FormControl>
               </Stack>
 
               <Stack spacing={4} direction="row" justifyContent="space-between">
@@ -170,22 +178,6 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                       setIndice({ ...indice, docente: e.target.value })
                     }
                     defaultValue={indice ? indice.docente : ''}
-                  >
-                    {docentes.map(docente => (
-                      <option key={docente._id} value={docente._id}>
-                        {docente.nombre}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontWeight="semibold">TITULAR</FormLabel>
-                  <Select
-                    placeholder="Seleccione el titular"
-                    onChange={e =>
-                      setIndice({ ...indice, docente_titular: e.target.value })
-                    }
-                    defaultValue={indice ? indice.docente_titular : ''}
                   >
                     {docentes.map(docente => (
                       <option key={docente._id} value={docente._id}>
@@ -210,17 +202,6 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                       <Radio value="inactivo">Inactivo</Radio>
                     </Stack>
                   </RadioGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontWeight="semibold">PUBLICADO</FormLabel>
-                  <Switch
-                    isChecked={indice ? indice.esPublico : false}
-                    onChange={e =>
-                      setIndice({ ...indice, esPublico: e.target.checked })
-                    }
-                    colorScheme="primary"
-                    size="lg"
-                  />
                 </FormControl>
               </Stack>
             </Stack>

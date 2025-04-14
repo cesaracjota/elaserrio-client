@@ -88,13 +88,19 @@ function Sidebar({ isOpen }) {
       icon: FaSchool,
       label: 'MATRICULAS',
       path: `/matriculas`,
-      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_TITULAR_ROLE'],
+      allowedRoles: ['ADMIN_ROLE'],
     },    
     {
       icon: FaSchool,
       label: 'MIS MATERIAS',
       path: '/mis-materias',
       allowedRoles: ['DOCENTE_ROLE', 'DOCENTE_TITULAR_ROLE'],
+    },
+    {
+      icon: FaSchool,
+      label: 'MIS GRADOS',
+      path: '/mis-grados',
+      allowedRoles: ['DOCENTE_TITULAR_ROLE'],
     },
     {
       icon: FaSchool,

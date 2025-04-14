@@ -20,6 +20,17 @@ const getGradosBySede = async (id) => {
     return response.data;
 }
 
+const getGradosByDocente = async (id, token) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    }
+    const response = await axios.get(`${API_URL}/grados/docente/${id}`, config);
+    return response.data;
+}
+
 // Create grado
 
 const createGrado = async (data, token) => {
@@ -72,6 +83,7 @@ const gradoService = {
     getAllGrados,
     getGrado,
     getGradosBySede,
+    getGradosByDocente,
     createGrado,
     updateGrado,
     deleteGrado,

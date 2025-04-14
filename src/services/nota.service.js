@@ -59,8 +59,22 @@ const create = async (data, token) => {
     }
 }
 
-// Update grado
+// actualizar el ranking estudiantes de una materia
+const actualizarRankingPorMateria = async (idMateria, token) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    }
+    const response = await axios.put(`${API_URL}/notas/ranking/${idMateria}`, config);
+    if (response.status === 200 || response.status === 201) {
+        CustomToast({ title: `RANKING ACTUALIZADO`, message: `El ranking de estudiantes ha sido actualizada correctamente`, type: 'success', duration: 1500, position: 'bottom' });
+        return response.data;
+    }
+}
 
+// Update nota
 const update = async (data, token) => {
     const config = {
         headers: {
@@ -98,6 +112,7 @@ const calificacionService = {
     getAllNotasByStudent,
     obtenerNotasPorMatriculaAndMateria,
     create,
+    actualizarRankingPorMateria,
     update,
     deleteNota
 }

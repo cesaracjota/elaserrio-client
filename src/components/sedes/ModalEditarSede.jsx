@@ -29,6 +29,7 @@ const ModalEditarSede = ({ row }) => {
   const initialValues = {
     _id: null,
     nombre: '',
+    codigoDane: '',
     direccion: '',
     telefono: '',
     estado: null,
@@ -92,6 +93,17 @@ const ModalEditarSede = ({ row }) => {
                   defaultValue={indice ? indice.nombre : ''}
                   onChange={e =>
                     setIndice({ ...indice, nombre: e.target.value })
+                  }
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontWeight="semibold">CODIGO DANE</FormLabel>
+                <Input
+                  placeholder="Escribe el codigo dane"
+                  type="text"
+                  defaultValue={indice ? indice.codigoDane : ''}
+                  onChange={e =>
+                    setIndice({ ...indice, codigoDane: e.target.value })
                   }
                 />
               </FormControl>

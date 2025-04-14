@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import {
+  Avatar,
+  AvatarBadge,
   Badge,
   Box,
   Heading,
@@ -30,6 +32,7 @@ import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
 import { getAllAcademicYear } from '../../features/academicYearSlice';
 import { TiGroup } from "react-icons/ti";
+import { getAllDocentesTitulares } from '../../features/usuarioSlice';
 
 const Grados = () => {
   const navigate = useNavigate();
@@ -44,9 +47,10 @@ const Grados = () => {
   );
 
   const { academic_year } = useSelector(state => state.academic_year);
+  const { docentes_titulares } = useSelector(state => state.usuarios);
 
   useEffect(() => {
-
+    dispatch(getAllDocentesTitulares(sedeSeleccionada?._id));
     dispatch(getGradosBySede(sedeSeleccionada?._id));
     dispatch(getAllAcademicYear());
 
@@ -75,6 +79,33 @@ const Grados = () => {
       sortable: true,
       cellExport: row => row.nivel,
       resizable: true,
+    },
+    {
+      name: 'DOCENTE TITULAR',
+      selector: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
+      sortable: true,
+      cellExport: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
+      cell: row => (
+        <Stack direction="row" alignItems="center" alignSelf={'center'}>
+          <Avatar
+            name={row?.docente_titular?.nombre || 'SIN ASIGNAR'}
+            src={row?.docente_titular?.foto}
+            size="sm"
+            color={'white'}
+          >
+            <AvatarBadge boxSize="1.25em" bg="green.500" />
+          </Avatar>
+          <Box alignSelf={'center'}>
+            <Text fontSize="sm" fontWeight="bold">
+              {row?.docente_titular?.nombre || 'SIN ASIGNAR'}
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+              {row?.docente_titular?.correo}
+            </Text>
+          </Box>
+        </Stack>
+      ),
+      width: '250px',
     },
     {
       name: 'ESTADO',
@@ -123,7 +154,7 @@ const Grados = () => {
               rounded="xl"
             />
           </Link>
-          <ModalEditarGrado row={row} academic_year={academic_year} />
+          <ModalEditarGrado row={row} academic_year={academic_year} docentes={docentes_titulares} />
           <AlertEliminar row={row} />
         </div>
       ),
@@ -144,7 +175,7 @@ const Grados = () => {
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
         <Heading size={'lg'}>GRADOS</Heading>
-        <ModalAgregarGrado academic_year={academic_year} />
+        <ModalAgregarGrado academic_year={academic_year} docentes={docentes_titulares} />
       </Stack>
       <Box
         borderRadius="2xl"

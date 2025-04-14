@@ -15,6 +15,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
   Switch,
@@ -38,6 +40,7 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
     nombre: '',
     correo: '',
     password: '',
+    sexo: '',
     rol: '',
     sedes: [],
     estado: null,
@@ -98,22 +101,22 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
               justifyContent="space-between"
               p={4}
             >
-              <FormControl>
-                <FormLabel fontWeight="semibold">NOMBRES</FormLabel>
-                <Input
-                  defaultValue={indice ? indice.nombre : ''}
-                  placeholder="Escribe los nombres"
-                  type="text"
-                  onChange={e =>
-                    setIndice({ ...indice, nombre: e.target.value })
-                  }
-                />
-              </FormControl>
               <Stack
                 spacing={4}
                 direction={{ base: 'column', md: 'row', lg: 'row' }}
                 mt={4}
               >
+                <FormControl>
+                  <FormLabel fontWeight="semibold">NOMBRES</FormLabel>
+                  <Input
+                    defaultValue={indice ? indice.nombre : ''}
+                    placeholder="Escribe los nombres"
+                    type="text"
+                    onChange={e =>
+                      setIndice({ ...indice, nombre: e.target.value })
+                    }
+                  />
+                </FormControl>
                 <FormControl>
                   <FormLabel fontWeight="semibold">CORREO</FormLabel>
                   <Input
@@ -125,6 +128,13 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
                     }
                   />
                 </FormControl>
+              </Stack>
+              <Stack
+                spacing={4}
+                direction={{ base: 'column', md: 'row', lg: 'row' }}
+                mt={4}
+              >
+                
                 <FormControl>
                   <FormLabel fontWeight="semibold">CONTRASEÑA</FormLabel>
                   <InputGroup>
@@ -158,6 +168,20 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
                     </InputRightElement>
                   </InputGroup>
                 </FormControl>
+                <FormControl alignSelf={'center'} isRequired>
+                  <FormLabel fontWeight="semibold">SEXO</FormLabel>
+                  <RadioGroup
+                    onChange={value => setIndice({ ...indice, sexo: value })}
+                    value={indice?.sexo}
+                    colorScheme="primary"
+                    size={'lg'}
+                  >
+                    <Stack direction="row">
+                      <Radio value="M">Masculino</Radio>
+                      <Radio value="F">Femenino</Radio>
+                    </Stack>
+                  </RadioGroup>
+                </FormControl>
               </Stack>
               {user?.usuario?.rol === 'ADMIN_ROLE' ? (
                 <Stack
@@ -178,7 +202,9 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
                       {/* <option value="SUPER_ADMIN_ROLE">SUPER ADMINISTRADOR</option> */}
                       <option value="ADMIN_ROLE">ADMINISTRADOR</option>
                       <option value="DOCENTE_ROLE">DOCENTE</option>
-                      <option value="DOCENTE_TITULAR_ROLE">DOCENTE TITULAR</option>
+                      <option value="DOCENTE_TITULAR_ROLE">
+                        DOCENTE TITULAR
+                      </option>
                       {/*<option value="ESTUDIANTE_ROLE">ESTUDIANTE</option>
                       <option value="SECRETARIA_ROLE">SECRETARIA</option> */}
                     </Select>

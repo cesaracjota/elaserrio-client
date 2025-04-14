@@ -21,21 +21,22 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { VscEdit } from 'react-icons/vsc';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateGrado } from '../../features/gradoSlice';
 
-const ModalEditarGrado = ({ row, academic_year }) => {
+const ModalEditarGrado = ({ row, academic_year, docentes }) => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { sedeSeleccionada } = useSelector(state => state.auth);
 
   const initialValues = {
     _id: null,
     nombre: '',
-    horario: '',
-    descripcion: '',
     nivel: '',
-    estado: null,
+    docente_titular: null,
+    academic_year: '',
+    sede: sedeSeleccionada?._id,
   };
 
   const [indice, setIndice] = useState(initialValues);
@@ -136,6 +137,22 @@ const ModalEditarGrado = ({ row, academic_year }) => {
                     <option value="OTRO">OTRO</option>
                   </Select>
                 </FormControl>
+                <FormControl>
+                  <FormLabel fontWeight="semibold">DOCENTE TITULAR</FormLabel>
+                  <Select
+                    placeholder="SELECCIONE UN TITULAR"
+                    onChange={e =>
+                      setIndice({ ...indice, docente_titular: e.target.value })
+                    }
+                    defaultValue={indice ? indice.docente_titular?._id : ''}
+                  >
+                    {docentes.map(docente => (
+                      <option key={docente._id} value={docente._id}>
+                        {docente.nombre}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>  
               </Stack>
               <Stack direction="row" justifyContent="space-between" w="full">
                 <Text fontWeight="semibold">ESTADO</Text>
@@ -155,12 +172,6 @@ const ModalEditarGrado = ({ row, academic_year }) => {
           </ModalBody>
           <ModalFooter>
             <Button
-              colorScheme="red"
-              _dark={{
-                bg: 'red.500',
-                color: 'white',
-                _hover: { bg: 'red.600' },
-              }}
               size="lg"
               mr={3}
               onClick={handleModalClose}

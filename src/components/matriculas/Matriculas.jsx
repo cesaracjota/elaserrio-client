@@ -44,6 +44,7 @@ import { MdRefresh } from 'react-icons/md';
 import { getAllAcademicYear } from '../../features/academicYearSlice';
 import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
 import ModalRegistrarObservaciones from './ModalRegistrarObservaciones';
+import { Loading } from '../../helpers/Loading';
 
 const Matriculas = () => {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const Matriculas = () => {
 
   const { sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { matriculas, currentPage, totalRows } = useSelector(
+  const { matriculas, currentPage, totalRows, isLoading } = useSelector(
     state => state.matriculas
   );
 
@@ -289,7 +290,7 @@ const Matriculas = () => {
           <DataTable
             defaultSortField="nombre"
             defaultSortAsc={false}
-            defaultSortOrder="desc"
+            defaultSortOrder="asc"
             pagination
             paginationIconFirstPage={
               <Icon

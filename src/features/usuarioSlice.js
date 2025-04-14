@@ -4,6 +4,7 @@ import usuarioService from "../services/usuario.service";
 const initialState = {
     usuarios: [],
     docentes: [],
+    docentes_titulares: [],
     usuario: [],
     isError: false,
     isSuccess: false,
@@ -39,6 +40,24 @@ export const getAllDocentes = createAsyncThunk(
         try {
             const token = thunkAPI.getState().auth.user.token;
             return await usuarioService.getAllDocentes(token, id);
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.msg) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+export const getAllDocentesTitulares = createAsyncThunk(
+    "usuarios/getAllDocentesTitulares",
+    async (id, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await usuarioService.getAllDocenteTitular(token, id);
         } catch (error) {
             const message =
                 (error.response &&
@@ -152,6 +171,19 @@ export const usuarioSlice = createSlice({
             state.docentes = action.payload;
         });
         builder.addCase(getAllDocentes.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        });
+        builder.addCase(getAllDocentesTitulares.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getAllDocentesTitulares.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.docentes_titulares = action.payload;
+        });
+        builder.addCase(getAllDocentesTitulares.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload;

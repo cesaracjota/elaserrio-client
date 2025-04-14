@@ -28,7 +28,7 @@ const ModalAgregarApertura = () => {
     startDate: '',
     endDate: '',
     numBimestres: '',
-    periodo: 'I',
+    periodo: 1,
     isActive: true,
   };
 
@@ -126,17 +126,18 @@ const ModalAgregarApertura = () => {
 
               <Stack spacing={4} direction="row" justifyContent="space-between">
                 <FormControl>
-                  <FormLabel fontWeight="semibold">
-                    Numero de Bimestres
-                  </FormLabel>
-                  <Input
-                    placeholder="0"
-                    defaultValue={0}
-                    type="number"
-                    onChange={e =>
-                      setIndice({ ...indice, numBimestres: e.target.value })
-                    }
-                  />
+                  <FormLabel fontWeight="semibold">Periodo</FormLabel>
+                  <RadioGroup
+                    onChange={e => setIndice({ ...indice, periodo: e })}
+                    value={indice?.periodo || ''}
+                  >
+                    <Stack direction="row">
+                      <Radio value={1}>I</Radio>
+                      <Radio value={2}>II</Radio>
+                      <Radio value={3}>III</Radio>
+                      <Radio value={4}>IV</Radio>
+                    </Stack>
+                  </RadioGroup>
                 </FormControl>
                 <FormControl isRequired alignSelf={'center'}>
                   <FormLabel fontWeight={'semibold'}>Estado</FormLabel>
@@ -147,24 +148,6 @@ const ModalAgregarApertura = () => {
                     <Stack direction="row">
                       <Radio value="true">Activo</Radio>
                       <Radio value="false">Inactivo</Radio>
-                    </Stack>
-                  </RadioGroup>
-                </FormControl>
-              </Stack>
-              <Stack spacing={4} direction="row" justifyContent="space-between">
-                <FormControl>
-                  <FormLabel fontWeight="semibold">Periodo</FormLabel>
-                  <RadioGroup
-                    onChange={e =>
-                      setIndice({ ...indice, periodo: e })
-                    }
-                    value={indice.periodo}
-                  >
-                    <Stack direction="row">
-                      <Radio value="I">I</Radio>
-                      <Radio value="II">II</Radio>
-                      <Radio value="III">III</Radio>
-                      <Radio value="IV">IV</Radio>
                     </Stack>
                   </RadioGroup>
                 </FormControl>

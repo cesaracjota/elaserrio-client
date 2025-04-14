@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react';
 import {
+  Avatar,
+  AvatarBadge,
   Badge,
   Box,
-  HStack,
+  Heading,
   Icon,
+  IconButton,
   Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import Moment from 'moment';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CustomToast } from '../../helpers/toast';
+import { AlertEliminar } from './AlertEliminar';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -22,92 +25,98 @@ import {
   FiChevronsRight,
 } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
+import { getGradosByDocente, reset } from '../../features/gradoSlice';
+import ModalAgregarGrado from './ModalAgregarGrado';
+import ModalEditarGrado from './ModalEditarGrado';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import { getAllAcademicYear, reset } from '../../features/academicYearSlice';
-import ModalAgregarApertura from './ModalAgregarApertura';
-import { AlertEliminar } from './AlertEliminar';
-import ModalEditarApertura from './ModalEditarApertura';
+import { TiGroup } from "react-icons/ti";
 
-const PeriodoEscolar = () => {
+const MisGrados = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { user } = useSelector(state => state.auth);
+  const { user, sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { academic_year, isLoading, isError, message } = useSelector(
-    state => state.academic_year
+  const { mis_grados, isLoading, isError, message } = useSelector(
+    state => state.grados
   );
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    } else if (!user.token) {
-      navigate('/login');
-    }
-
-    dispatch(getAllAcademicYear());
+    dispatch(getGradosByDocente(user?.usuario?.id));
 
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch]);
+  }, [user, navigate, dispatch, sedeSeleccionada?._id]);
 
   if (isError) {
     CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
     console.log(message);
   }
 
+
   const columns = [
     {
-      name: 'AÑO ACADÉMICO',
-      selector: row => row.year,
+      name: 'NOMBRE',
+      selector: row => row.nombre,
       sortable: true,
-      cellExport: row => row.year,
+      cellExport: row => row.nombre,
       resizable: true,
     },
     {
-      name: 'PERIODO ACTUAL',
-      selector: row => row.periodo,
+      name: 'NIVEL',
+      selector: row => row.nivel,
       sortable: true,
-      cellExport: row => row.periodo,
+      cellExport: row => row.nivel,
       resizable: true,
     },
     {
-      name: 'FECHA INICIO',
-      selector: row => Moment(row.startDate).format('DD-MM-YYYY'),
+      name: 'DOCENTE TITULAR',
+      selector: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
       sortable: true,
-      cellExport: row => Moment(row.startDate).format('DD-MM-YYYY'),
-      resizable: true,
-    },
-    {
-      name: 'FECHA FIN',
-      selector: row => Moment(row.endDate).format('DD-MM-YYYY'),
-      sortable: true,
-      cellExport: row => Moment(row.endDate).format('DD-MM-YYYY'),
-      resizable: true,
+      cellExport: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
+      cell: row => (
+        <Stack direction="row" alignItems="center" alignSelf={'center'}>
+          <Avatar
+            name={row?.docente_titular?.nombre || 'SIN ASIGNAR'}
+            src={row?.docente_titular?.foto}
+            size="sm"
+            color={'white'}
+          >
+            <AvatarBadge boxSize="1.25em" bg="green.500" />
+          </Avatar>
+          <Box alignSelf={'center'}>
+            <Text fontSize="sm" fontWeight="bold">
+              {row?.docente_titular?.nombre || 'SIN ASIGNAR'}
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+              {row?.docente_titular?.correo}
+            </Text>
+          </Box>
+        </Stack>
+      ),
+      width: '250px',
     },
     {
       name: 'ESTADO',
-      selector: row => {
-        return row.isActive === true ? 'ACTIVO' : 'INACTIVO';
-      },
+      selector: row => row.estado,
       sortable: true,
-      cellExport: row => (row.isActive === true ? 'ACTIVO' : 'INACTIVO'),
+      cellExport: row => (row.estado === true ? 'ACTIVO' : 'INACTIVO'),
       center: true,
       cell: row => (
         <div>
           <Badge
-            colorScheme={row.isActive === true ? 'green' : 'red'}
+            colorScheme={row.estado === 'activo' ? 'green' : 'red'}
             variant="solid"
             w={24}
             textAlign="center"
             py={2}
             rounded="full"
           >
-            {row.isActive === true ? 'ACTIVO' : 'INACTIVO'}
+            {row.estado}
           </Badge>
         </div>
       ),
@@ -119,8 +128,25 @@ const PeriodoEscolar = () => {
       center: true,
       cell: row => (
         <div>
-          <ModalEditarApertura row={row} />
-          <AlertEliminar row={row} />
+          <Link
+            to={{
+                pathname: `/${sedeSeleccionada?._id}/grados/${row._id}`,
+                state: { grado: row?.nombre },
+            }}
+          >
+            <IconButton
+              colorScheme="primary"
+              _dark={{
+                bg: 'primary.100',
+                color: 'white',
+                _hover: { bg: 'primary.300' },
+              }}
+              aria-label="Ver Estudiantes"
+              icon={<Icon as={TiGroup} fontSize="2xl" />}
+              variant="solid"
+              rounded="xl"
+            />
+          </Link>
         </div>
       ),
       width: '180px',
@@ -129,7 +155,7 @@ const PeriodoEscolar = () => {
 
   const tableData = {
     columns: columns,
-    data: academic_year,
+    data: mis_grados,
   };
 
   if (isLoading) {
@@ -139,14 +165,7 @@ const PeriodoEscolar = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <HStack spacing={4} direction="row">
-          <ModalAgregarApertura />
-        </HStack>
-        <HStack spacing={4} direction="row">
-          <Text fontSize="lg" fontWeight={'bold'}>
-            Gestión de Periodos Escolares
-          </Text>
-        </HStack>
+        <Heading size={'lg'}>MIS GRADOS ASIGNADAS</Heading>
       </Stack>
       <Box
         borderRadius="2xl"
@@ -165,7 +184,7 @@ const PeriodoEscolar = () => {
           exportHeaders={true}
           filterPlaceholder="BUSCAR"
           numberOfColumns={7}
-          fileName={'CATEGORIAS_EQUIPOS'}
+          fileName={'GRADOS'}
         >
           <DataTable
             defaultSortField="createdAt"
@@ -225,4 +244,4 @@ const PeriodoEscolar = () => {
   );
 };
 
-export default PeriodoEscolar;
+export default MisGrados;

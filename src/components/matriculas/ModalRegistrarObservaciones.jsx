@@ -38,9 +38,6 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  TableCaption,
-  Tag,
-  TagLabel,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMatricula, getMatricula } from '../../features/matriculaSlice';
@@ -63,7 +60,7 @@ const ModalRegistrarObservaciones = ({ row }) => {
     periodo3Academica: '',
     periodo3Comportamental: '',
     periodo4Academica: '',
-    periodo4Comportamental: ''
+    periodo4Comportamental: '',
   });
 
   // Handle modal open
@@ -85,7 +82,7 @@ const ModalRegistrarObservaciones = ({ row }) => {
       periodo3Academica: '',
       periodo3Comportamental: '',
       periodo4Academica: '',
-      periodo4Comportamental: ''
+      periodo4Comportamental: '',
     });
     setCurrentTab(0);
     dispatch(reset()); // Cleanup
@@ -94,27 +91,31 @@ const ModalRegistrarObservaciones = ({ row }) => {
   // Load existing data when matricula data is available
   useEffect(() => {
     if (isModalOpen && matricula && matricula._id === row._id) {
-      if (matricula.observacionesPeriodo && matricula.observacionesPeriodo.length > 0) {
+      if (
+        matricula.observacionesPeriodo &&
+        matricula.observacionesPeriodo.length > 0
+      ) {
         // Map the array structure to our flattened form structure
         const newFormData = { ...formData };
-        
+
         matricula.observacionesPeriodo.forEach(obs => {
           const periodoNum = obs.periodo;
           newFormData[`periodo${periodoNum}Academica`] = obs.academica || '';
-          newFormData[`periodo${periodoNum}Comportamental`] = obs.comportamental || '';
+          newFormData[`periodo${periodoNum}Comportamental`] =
+            obs.comportamental || '';
         });
-        
+
         setFormData(newFormData);
       }
     }
   }, [isModalOpen, matricula, row._id, formData]);
 
   // Simple handler for form inputs
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -124,29 +125,29 @@ const ModalRegistrarObservaciones = ({ row }) => {
       {
         periodo: 1,
         academica: formData.periodo1Academica,
-        comportamental: formData.periodo1Comportamental
+        comportamental: formData.periodo1Comportamental,
       },
       {
         periodo: 2,
         academica: formData.periodo2Academica,
-        comportamental: formData.periodo2Comportamental
+        comportamental: formData.periodo2Comportamental,
       },
       {
         periodo: 3,
         academica: formData.periodo3Academica,
-        comportamental: formData.periodo3Comportamental
+        comportamental: formData.periodo3Comportamental,
       },
       {
         periodo: 4,
         academica: formData.periodo4Academica,
-        comportamental: formData.periodo4Comportamental
-      }
+        comportamental: formData.periodo4Comportamental,
+      },
     ];
 
     // Prepare data to update
     const dataToUpdate = {
       _id: row._id,
-      observacionesPeriodo
+      observacionesPeriodo,
     };
 
     dispatch(updateMatricula(dataToUpdate));
@@ -204,7 +205,11 @@ const ModalRegistrarObservaciones = ({ row }) => {
               <Card mt={4} borderRadius="xl" variant="outline" size="sm">
                 <CardHeader>
                   <HStack spacing={4}>
-                    <Icon as={MdOutlineAddTask} boxSize={6} color="primary.500" />
+                    <Icon
+                      as={MdOutlineAddTask}
+                      boxSize={6}
+                      color="primary.500"
+                    />
                     <Text fontSize="lg" fontWeight="bold">
                       Materias y Notas
                     </Text>
@@ -215,7 +220,7 @@ const ModalRegistrarObservaciones = ({ row }) => {
                     <Thead>
                       <Tr>
                         <Th>Materia</Th>
-                        <Th>Observaciones</Th>
+                        <Th>Indicadores</Th>
                         <Th isNumeric>Promedio</Th>
                       </Tr>
                     </Thead>
@@ -224,11 +229,15 @@ const ModalRegistrarObservaciones = ({ row }) => {
                         <Tr key={nota._id}>
                           <Td>{nota.materia.nombre}</Td>
                           <Td>
-                            {nota.observacionesPeriodo &&
-                              nota.observacionesPeriodo.map(observacion => (
-                                <div key={observacion._id}>
-                                  <p>A*:{observacion.academica}</p>
-                                  <p>C*:{observacion.comportamental}</p>
+                            {nota.indicadores &&
+                              nota.indicadores.map(item => (
+                                <div key={item._id}>
+                                  {item.indicador &&
+                                  item.indicador.length > 0 ? (
+                                    item.indicador.map((subItem, index) => (
+                                      <p key={index}> - {subItem.indicador}</p> // Muestra cada indicador
+                                    ))
+                                  ) : null }
                                 </div>
                               ))}
                           </Td>
@@ -236,27 +245,23 @@ const ModalRegistrarObservaciones = ({ row }) => {
                         </Tr>
                       ))}
                     </Tbody>
-                    <TableCaption py={0}>
-                      <Stack spacing={2} direction="row">
-                        <Tag size="sm" variant="subtle" colorScheme="green">
-                          <TagLabel>A*: Observaciones Académicas</TagLabel>
-                        </Tag>
-                        <Tag size="sm" variant="subtle" colorScheme="yellow">
-                          <TagLabel>C*: Observaciones Comportamentales</TagLabel>
-                        </Tag>
-                      </Stack>
-                    </TableCaption>
                   </Table>
                 </CardBody>
               </Card>
             ) : (
-              <Alert status="warning" variant={'top-accent'} borderRadius={'md'} mt={4}>
+              <Alert
+                status="warning"
+                variant={'top-accent'}
+                borderRadius={'md'}
+                mt={4}
+              >
                 <AlertIcon />
                 <AlertTitle mr={2}>
                   No hay registro de observaciones indicadas por el docente.
                 </AlertTitle>
                 <AlertDescription>
-                  Puede Registrar observaciones generales segun corresponda a su criterio.
+                  Puede Registrar observaciones generales segun corresponda a su
+                  criterio.
                 </AlertDescription>
               </Alert>
             )}
@@ -303,7 +308,7 @@ const ModalRegistrarObservaciones = ({ row }) => {
                     </FormControl>
                   </Stack>
                 </TabPanel>
-                
+
                 {/* Período 2 */}
                 <TabPanel>
                   <Stack spacing={6}>
@@ -333,7 +338,7 @@ const ModalRegistrarObservaciones = ({ row }) => {
                     </FormControl>
                   </Stack>
                 </TabPanel>
-                
+
                 {/* Período 3 */}
                 <TabPanel>
                   <Stack spacing={6}>
@@ -363,7 +368,7 @@ const ModalRegistrarObservaciones = ({ row }) => {
                     </FormControl>
                   </Stack>
                 </TabPanel>
-                
+
                 {/* Período 4 */}
                 <TabPanel>
                   <Stack spacing={6}>

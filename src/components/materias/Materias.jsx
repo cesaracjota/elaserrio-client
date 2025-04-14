@@ -76,21 +76,24 @@ const Materias = () => {
       cellExport: row => row.nombre,
       resizable: true,
       cell: row => (
-        <Stack direction="row" alignItems="center">
-          <Text fontSize="sm">{row.nombre}</Text>
+        <Stack direction="row" alignItems="start">
+          <Text fontSize="sm" alignSelf={'center'}>{row.nombre}</Text>
           <Badge
-            colorScheme="primary"
-            variant="subtle"
-            fontSize="8px"
+            bg='darkgreen'    
             color={'white'}
+            variant={'subtle'}
+            fontSize="8px"
             fontWeight={'normal'}
-            textAlign="center"
+            textAlign="left"
             py={1.5}
             px={2}
-            rounded="full"
+            rounded="lg"
             ml={2}
           >
             {row.grado.nombre}
+            <Text fontSize="7px" color="gray.400">
+              {row.grado.nivel}
+            </Text>
           </Badge>
         </Stack>
       ),
@@ -142,34 +145,7 @@ const Materias = () => {
         </Stack>
       ),
       width: '250px',
-    },
-    {
-      name: 'DOCENTE TITULAR',
-      selector: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
-      sortable: true,
-      cellExport: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
-      cell: row => (
-        <Stack direction="row" alignItems="center" alignSelf={'center'}>
-          <Avatar
-            name={row?.docente_titular?.nombre || 'SIN ASIGNAR'}
-            src={row?.docente_titular?.foto}
-            size="sm"
-            color={'white'}
-          >
-            <AvatarBadge boxSize="1.25em" bg="green.500" />
-          </Avatar>
-          <Box alignSelf={'center'}>
-            <Text fontSize="sm" fontWeight="bold">
-              {row?.docente_titular?.nombre || 'SIN ASIGNAR'}
-            </Text>
-            <Text fontSize="xs" color="gray.500">
-              {row?.docente_titular?.correo}
-            </Text>
-          </Box>
-        </Stack>
-      ),
-      width: '250px',
-    },
+    },    
     {
       name: 'ACCIONES',
       sortable: true,
@@ -199,7 +175,7 @@ const Materias = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Heading size="lg">MATERIAS</Heading>
+        <Heading size="lg">ASIGNATURAS</Heading>
         <ModalAgregarCurso grados={grados} docentes={docentes} sede={sedeSeleccionada?._id} />
       </Stack>
       <Box
@@ -219,7 +195,7 @@ const Materias = () => {
           exportHeaders={true}
           filterPlaceholder="BUSCAR"
           numberOfColumns={7}
-          fileName={'MATERIAS'}
+          fileName={'ASIGNATURAS'}
         >
           <DataTable
             defaultSortField="createdAt"
@@ -228,7 +204,6 @@ const Materias = () => {
             pagination={true}
             sortServer={true}
             fixedHeader={true}
-            highlightOnHover={true}
             sortPosition="left"
             sortable={true}
             paginationIconFirstPage={

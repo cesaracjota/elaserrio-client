@@ -27,6 +27,7 @@ const ModalAgregarSede = () => {
   const initialValues = {
     nombre: '',
     direccion: '',
+    codigoDane: '',
     telefono: '',
     estado: '',
   };
@@ -95,6 +96,17 @@ const ModalAgregarSede = () => {
                     setIndice({ ...indice, nombre: e.target.value })
                   }
                   textTransform="uppercase"
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel fontWeight="semibold">CODIGO DANE</FormLabel>
+                <Input
+                  placeholder="Escribe el codigo dane"
+                  type="text"
+                  onChange={e =>
+                    setIndice({ ...indice, codigoDane: e.target.value })
+                  }
                 />
               </FormControl>
 

@@ -32,6 +32,7 @@ export const AlertEliminar = ({ row }) => {
 
     const handleDelete = (id) => {
         dispatch(deleteMatricula(id));
+        handleCloseAlert();
     }
 
     return (
@@ -70,9 +71,7 @@ export const AlertEliminar = ({ row }) => {
                     <AlertDialogFooter justifyContent="center" fontWeight="normal">
                         <Button
                             onClick={handleCloseAlert}
-                            colorScheme="red"
                             size="lg"
-                            _dark={{ bg: "red.600", color: "white", _hover: { bg: "red.800" } }}
                             borderRadius={'xl'}
                         >
                             CANCELAR

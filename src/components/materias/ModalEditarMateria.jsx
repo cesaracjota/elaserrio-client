@@ -20,14 +20,12 @@ import {
   Text,
   Textarea,
   Tooltip,
-  Switch,
 } from '@chakra-ui/react';
 import { VscEdit } from 'react-icons/vsc';
 import { useDispatch } from 'react-redux';
 import { updateMateria } from '../../features/materiaSlice';
 
 const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
-  
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,7 +39,7 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
     sede: sede,
     grado: null,
     docente: null,
-    docente_titular: null,
+    intensidadHorariaSemanal: 0,
     esPublico: false,
     estado: '',
   };
@@ -88,7 +86,7 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
           backdropBlur="2px"
         />
         <ModalContent _dark={{ bg: 'primary.1000' }} borderRadius="2xl">
-          <ModalHeader textAlign="center">ACTUALIZAR MATERIA</ModalHeader>
+          <ModalHeader textAlign="center">ACTUALIZAR ASIGNATURA</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack
@@ -161,10 +159,25 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
                     ))}
                   </Select>
                 </FormControl>
+                <FormControl>
+                  <FormLabel fontWeight="semibold">
+                    INTENSIDAD HORARIA SEMANAL
+                  </FormLabel>
+                  <Input
+                    placeholder="Intensidad horaria semanal"
+                    defaultValue={indice ? indice.intensidadHorariaSemanal : ''}
+                    type="number"
+                    onChange={e =>
+                      setIndice({
+                        ...indice,
+                        intensidadHorariaSemanal: e.target.value,
+                      })
+                    }
+                  />
+                </FormControl>
               </Stack>
               <Stack direction="row" justifyContent="space-between">
-                
-              <FormControl>
+                <FormControl>
                   <FormLabel fontWeight="semibold">ASIGNAR DOCENTE</FormLabel>
                   <Select
                     placeholder="SELECCIONE EL DOCENTE"
@@ -180,25 +193,7 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
                         {docente.nombre}
                       </option>
                     ))}
-                  </Select> 
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontWeight="semibold">TITULAR</FormLabel>
-                  <Select
-                    placeholder="SELECCIONE EL TITULAR"
-                    onChange={e =>
-                      setIndice({ ...indice, docente_titular: e.target.value })
-                    }
-                    defaultValue={indice ? indice?.docente_titular?._id : ''}
-                    colorScheme="primary"
-                    size="lg"
-                  >
-                    {docentes.map(docente => (
-                      <option key={docente._id} value={docente._id}>
-                        {docente.nombre}
-                      </option>
-                    ))}
-                  </Select> 
+                  </Select>
                 </FormControl>
               </Stack>
               <Stack direction="row" justifyContent="space-between" w="full">
@@ -214,15 +209,6 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
                     <Radio value="inactivo">Inactivo</Radio>
                   </Stack>
                 </RadioGroup>
-              </Stack>
-              <Stack direction="row" justifyContent="space-between" w="full">
-                <Text fontWeight="semibold">PUBLICADO</Text>
-                <Switch
-                  isChecked={indice ? indice.esPublico : false}
-                  onChange={e => setIndice({ ...indice, esPublico: e.target.checked })}
-                  colorScheme="primary"
-                  size="lg"
-                />
               </Stack>
             </Stack>
           </ModalBody>

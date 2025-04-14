@@ -9,18 +9,18 @@ const theme = extendTheme({
   },
   colors: {
     primary: {
-      50: '#e0e7ff',    // tono más claro, ideal para fondos o elementos secundarios
-      100: '#4f5d94',   // tono principal, elegante y sofisticado
-      200: '#4a5586',   // tono similar, pero un poco más oscuro
-      300: '#434f7f',   // similar pero más oscuro
-      400: '#3e4a79',   // más oscuro, manteniendo la armonía
-      500: '#4f5d94',   // igual que primary.100 para consistencia
-      600: '#384471',   // más oscuro, elegante
-      700: '#ffffff33',   // más profundo, serio
-      800: '#ffffff33',
-      900: '#242424',
-      1000: '#151822',
-      1100: '#0b0f19',
+      50: '#e6f9ec',    // muy claro, ideal para fondos suaves
+      100: '#2fa33a',   // tono base (verde tipo logo)
+      200: '#299533',
+      300: '#24852e',
+      400: '#1f7528',
+      500: '#2fa33a',   // igual que 100
+      600: '#1a5d20',   // más oscuro, con carácter
+      700: '#ffffff33', // transparente/blanco suave
+      800: '#ffffff33',   // para bg modo oscuro
+      900: '#121512',   // más profundo, tipo overlay
+      1000: '#0a0d0a',  // casi negro
+      1100: '#060806',  // muy profundo, para alto contraste
     },
   },
 });

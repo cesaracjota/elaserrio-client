@@ -3,6 +3,7 @@ import {
     Avatar,
     Badge,
     Box,
+    Button,
     Heading,
     HStack,
     Icon,
@@ -25,7 +26,6 @@ import { AlertEliminar } from './AlertEliminar';
 import { getEstudiantes, reset } from '../../features/estudianteSlice';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import ModalAgregarEstudiante from './ModalAgregarEstudiante';
 import { VscEdit } from 'react-icons/vsc';
 
 const Estudiantes = () => {
@@ -199,7 +199,14 @@ const Estudiantes = () => {
             <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
                 <HStack spacing={4} direction="row" w={'full'} justifyContent={'space-between'}>
                     <Heading size="md">Lista de Estudiantes</Heading>
-                    <ModalAgregarEstudiante idSede={sedeSeleccionada?._id} />
+                    <Link to={{
+                        pathname: `/${sedeSeleccionada?._id}/estudiantes/nuevo`,
+                        state: { idSede: sedeSeleccionada?._id }
+                    }}>
+                        <Button colorScheme="primary" color={'white'} variant="solid" size="md" rounded="lg">
+                            AGREGAR ESTUDIANTE
+                        </Button>
+                    </Link>
                 </HStack>
             </Stack>
             <Box

@@ -1,5 +1,5 @@
 import React from 'react';
-import AgregarEstudiante from '../../components/estudiantes/ModalAgregarEstudiante';
+import RegistrarEstudiante from '../../components/estudiantes/RegistrarEstudiante';
 import DetallesEstudiante from '../../components/estudiantes/DetallesEstudiante';
 import EditarEstudiante from '../../components/estudiantes/EditarEstudiante';
 import HisotorialPagoEstudiantes from '../../components/estudiantes/HistorialPagosEstudiante';
@@ -11,7 +11,7 @@ export const EstudiantesPage = () => {
 }
 
 export const EstudiantesPageAgregar = () => {
-    return ( <Layout children={<AgregarEstudiante />} /> )
+    return ( <Layout children={<RegistrarEstudiante />} /> )
 }
 
 export const EstudiantesPageDetalles = () => {

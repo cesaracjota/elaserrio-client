@@ -11,7 +11,7 @@ import {
 import { Tooltip, IconButton } from '@chakra-ui/react';
 import { FiFileText } from 'react-icons/fi';
 import LogoColegio from '../../assets/img/logoColegio.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllNotasByStudent } from '../../features/notaSlice';
 import globalInformation from '../../helpers/globalInformation';
 import { CustomToast } from '../../helpers/toast';
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   tableCell: {
     padding: 6,
-    fontSize: 6,
+    fontSize: 7,
     textAlign: 'center',
     color: '#2C3E50',
     borderRightWidth: 1,
@@ -135,8 +135,9 @@ const styles = StyleSheet.create({
   },
   tableCellLeft: {
     padding: 6,
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'left',
+    justifyContent: 'center',
     color: '#2C3E50',
     borderRightWidth: 1,
     borderRightColor: '#EAECEE',
@@ -145,9 +146,10 @@ const styles = StyleSheet.create({
   // Celdas de notas
   gradeCell: {
     padding: 6,
-    fontSize: 9,
+    fontSize: 7,
     fontWeight: 600,
     textAlign: 'center',
+    justifyContent: 'center',
     borderRightWidth: 1,
     borderRightColor: '#EAECEE',
   },
@@ -155,15 +157,15 @@ const styles = StyleSheet.create({
   // Observaciones en tabla
   observationRow: {
     backgroundColor: '#F8F9FA',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EAECEE',
+    paddingHorizontal: 6,
+    fontSize: 6,
+    paddingVertical: 2,
   },
   observationText: {
-    fontSize: 7,
-    lineHeight: 1.3,
-    color: '#34495E',
+    fontSize: 6,
+    paddingHorizontal: 6,
+    fontWeight: 600,
+    color: '#2C3E50',
   },
   observationLabel: {
     fontWeight: 700,
@@ -183,11 +185,8 @@ const styles = StyleSheet.create({
   cellObservation: {
     width: '28%',
   },
-  cellRecovery: {
-    width: '7%',
-  },
   cellResult: {
-    width: '9%',
+    width: '12%',
   },
   cellDocente: {
     width: '25%',
@@ -315,16 +314,16 @@ const styles = StyleSheet.create({
     fontSize: 7,
     color: '#7F8C8D',
   },
-  
+
   // Badge para desempeño
   performanceBadge: {
-    fontSize: 7,
+    fontSize: 6,
     fontWeight: 700,
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 2,
     color: 'white',
-  }
+  },
 });
 
 // Función para determinar el desempeño según la calificación
@@ -344,26 +343,15 @@ const getGradeColor = grade => {
 };
 
 // Componente principal del reporte
-const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
+const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
   // Extraer información del estudiante
   const student = studentData?.estudiante || {};
   const academicYear = studentData?.academic_year || '2025';
   const grade = studentData?.grado || {};
 
-  // Calcular promedio general
-  const overallAverage =
-    subjectData?.length > 0
-      ? (
-          subjectData.reduce(
-            (sum, subject) => sum + (parseFloat(subject?.promedio) || 0),
-            0
-          ) / subjectData.length
-        ).toFixed(2)
-      : '0.00';
-
   // Determinar posición ranking
-  const position = studentData?.ranking?.position || '0';
-  const totalStudents = studentData?.ranking?.total || '0';
+  const position = studentData?.ranking || '0';
+  const totalStudents = grade?.totalEstudiantes || '0';
 
   return (
     <Document>
@@ -383,8 +371,10 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
                 {decreto?.tipo} N° {decreto.numero} del {decreto.fecha}
               </Text>
             ))}
+            {/* SEDE */}
+            <Text style={styles.schoolCode}>SEDE: {sede?.nombre}</Text>
             <Text style={styles.schoolCode}>
-              CÓDIGO DANE: {globalInformation?.codigo_dane}
+              CÓDIGO DANE: {sede?.codigoDane}
             </Text>
           </View>
         </View>
@@ -410,8 +400,10 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
           <View style={styles.studentInfoColumn}>
             <Text style={styles.studentInfoLabel}>PERIODO:</Text>
             <Text style={styles.studentInfoValue}>{academicYear?.periodo}</Text>
-            <Text style={styles.studentInfoLabel}>PUESTO / RANKING:</Text>
-            <Text style={styles.studentInfoValue}>{position} de {totalStudents}</Text>
+            <Text style={styles.studentInfoLabel}>PUESTO:</Text>
+            <Text style={styles.studentInfoValue}>
+              {position} de {totalStudents}
+            </Text>
           </View>
         </View>
 
@@ -424,22 +416,28 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
                 <Text>ASIGNATURAS</Text>
               </View>
               <View style={[styles.tableHeaderCell, styles.cellPeriod]}>
-                <Text>PER. 1</Text>
+                <Text>P. 1</Text>
               </View>
               <View style={[styles.tableHeaderCell, styles.cellPeriod]}>
-                <Text>PER. 2</Text>
+                <Text>P. 2</Text>
               </View>
               <View style={[styles.tableHeaderCell, styles.cellPeriod]}>
-                <Text>PER. 3</Text>
+                <Text>P. 3</Text>
               </View>
               <View style={[styles.tableHeaderCell, styles.cellPeriod]}>
-                <Text>PER. 4</Text>
+                <Text>P. 4</Text>
               </View>
               <View style={[styles.tableHeaderCell, styles.cellFinal]}>
                 <Text>PROM.</Text>
               </View>
-              <View style={[styles.tableHeaderCell, styles.cellRecovery]}>
-                <Text>REC.</Text>
+              <View style={[styles.tableHeaderCell, styles.cellFinal]}>
+                <Text>NC</Text>
+              </View>
+              <View style={[styles.tableHeaderCell, styles.cellFinal]}>
+                <Text>IH</Text>
+              </View>
+              <View style={[styles.tableHeaderCell, styles.cellFinal]}>
+                <Text>FAL.</Text>
               </View>
               <View style={[styles.tableHeaderCell, styles.cellResult]}>
                 <Text>VAL.</Text>
@@ -456,20 +454,32 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
               const bimestre3 = parseFloat(subject?.bimestre3) || 0;
               const bimestre4 = parseFloat(subject?.bimestre4) || 0;
               const promedio = parseFloat(subject?.promedio) || 0;
-              const recovery = parseFloat(subject?.recuperacion) || 0;
+              const ncMinimo = 12.0;
+              // el nc es la nota que necesita para aprobar el curso por ejemplo de los 4 periodos si un estudiante aprueba con 3.0 suman 12 entonces 12 es el rango que deberian pasar por lo tanto el nc es el restante de 12 - la sumatoria de notas por los 4 periodos
+              const nc =
+                ncMinimo - (bimestre1 + bimestre2 + bimestre3 + bimestre4);
+              const ih = subject?.materia?.intensidadHorariaSemanal || 0;
+              const fallas = subject?.fallas || 0;
               const performanceLevel = getPerformanceLevel(promedio);
               const gradeColor = getGradeColor(promedio);
               const isEvenRow = index % 2 === 0;
+              const indicadoresPeriodo =
+                subject?.indicadores?.find(i => i.periodo === academicYear?.periodo)
+                  ?.indicador || [];
 
               return (
                 <React.Fragment key={index}>
                   {/* Fila principal con notas */}
-                  <View style={[
-                    styles.tableRow, 
-                    isEvenRow && styles.tableRowAlternate
-                  ]}>
+                  <View
+                    style={[
+                      styles.tableRow,
+                      isEvenRow && styles.tableRowAlternate,
+                    ]}
+                  >
                     <View style={[styles.tableCellLeft, styles.cellSubject]}>
-                      <Text style={{ fontWeight: 600 }}>{subject?.materia?.nombre || 'MATERIA'}</Text>
+                      <Text style={{ fontWeight: 600 }}>
+                        {subject?.materia?.nombre || 'MATERIA'}
+                      </Text>
                     </View>
                     <View style={[styles.tableCell, styles.cellPeriod]}>
                       <Text>{bimestre1 > 0 ? bimestre1.toFixed(1) : '—'}</Text>
@@ -485,17 +495,25 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
                     </View>
                     <View style={[styles.gradeCell, styles.cellFinal]}>
                       <Text style={{ color: gradeColor }}>
-                        {promedio.toFixed(1)}
+                        {promedio.toFixed(2)}
                       </Text>
                     </View>
-                    <View style={[styles.tableCell, styles.cellRecovery]}>
-                      <Text>{recovery > 0 ? recovery.toFixed(1) : '—'}</Text>
+                    <View style={[styles.tableCell, styles.cellFinal]}>
+                      <Text>{nc > 0 ? nc.toFixed(2) : '—'}</Text>
+                    </View>
+                    <View style={[styles.tableCell, styles.cellFinal]}>
+                      <Text>{ih > 0 ? ih : '—'}</Text>
+                    </View>
+                    <View style={[styles.tableCell, styles.cellFinal]}>
+                      <Text>{fallas > 0 ? fallas : '—'}</Text>
                     </View>
                     <View style={[styles.tableCell, styles.cellResult]}>
-                      <View style={[
-                        styles.performanceBadge, 
-                        { backgroundColor: gradeColor }
-                      ]}>
+                      <View
+                        style={[
+                          styles.performanceBadge,
+                          { backgroundColor: gradeColor },
+                        ]}
+                      >
                         <Text>{performanceLevel}</Text>
                       </View>
                     </View>
@@ -505,18 +523,17 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
                   </View>
 
                   {/* Si hay observaciones, mostrarlas */}
-                  {(subject?.observacionesPeriodo || []).length > 0 && (
-                    <View style={styles.observationRow}>
+
+                  {indicadoresPeriodo.map((item, index) => (
+                    <View style={styles.observationRow} key={index}>
                       <Text style={styles.observationText}>
-                        <Text style={styles.observationLabel}>A*: </Text>
-                        {subject.observacionesPeriodo[0]?.academica || '—'}
-                      </Text>
-                      <Text style={styles.observationText}>
-                        <Text style={styles.observationLabel}>C*: </Text>
-                        {subject.observacionesPeriodo[0]?.comportamental || '—'}
+                        <Text style={styles.observationLabel}>
+                          {"- "}
+                        </Text>
+                        {item?.indicador || '—'}
                       </Text>
                     </View>
-                  )}
+                  ))}
                 </React.Fragment>
               );
             })}
@@ -529,18 +546,18 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
             <Text style={styles.summaryTitle}>RESUMEN ACADÉMICO</Text>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryLabel}>Materias evaluadas:</Text>
-              <Text style={styles.summaryValue}>{subjectData?.length || 0}</Text>
+              <Text style={styles.summaryValue}>
+                {subjectData?.length || 0}
+              </Text>
             </View>
             <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Puesto en el curso:</Text>
-              <Text style={styles.summaryValue}>{position} de {totalStudents}</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryLabel}>Periodo evaluado:</Text>
-              <Text style={styles.summaryValue}>{academicYear?.periodo}</Text>
+              <Text style={styles.summaryLabel}>Puesto del grado:</Text>
+              <Text style={styles.summaryValue}>
+                {position} de {totalStudents}
+              </Text>
             </View>
             <Text style={styles.averageValue}>
-              Promedio: {overallAverage}
+              PROMEDIO GENERAL: {studentData?.promedioGeneral.toFixed(3) || 0} 
             </Text>
           </View>
           <View style={styles.summaryBox}>
@@ -577,22 +594,28 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
           </View>
           <View style={styles.signature}>
             <View style={styles.signatureLine}></View>
-            <Text style={styles.signatureText}>Acudiente</Text>
+            <Text style={styles.signatureText}>Docente Titular</Text>
+            <Text style={[styles.signatureText, { fontWeight: 700 }]}>
+              {grade?.docente_titular?.nombre ||
+                'NOMBRE DEL DOCENTE TITULAR'}
+            </Text>
           </View>
         </View>
 
         {/* Pie de página */}
         <View style={styles.footer}>
           <Text>
-            {globalInformation?.direccionColegio || 'Dirección de la Institución'}
+            {globalInformation?.direccionColegio ||
+              'Dirección de la Institución'}
           </Text>
           <Text>
-            Generado: {new Date().toLocaleDateString('es-ES', {
+            Generado:{' '}
+            {new Date().toLocaleDateString('es-ES', {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
               hour: '2-digit',
-              minute: '2-digit'
+              minute: '2-digit',
             })}
           </Text>
         </View>
@@ -605,6 +628,8 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo }) => {
 const ReportButton = ({ data }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const dispatch = useDispatch();
+
+  const { sedeSeleccionada } = useSelector(state => state.auth);
 
   const defaultSchoolInfo = {
     name: globalInformation.colegioNombre || 'INSTITUCION EDUCATIVA EL ASERRÍO',
@@ -643,6 +668,7 @@ const ReportButton = ({ data }) => {
       const pdfDoc = (
         <AcademicReportPDF
           studentData={data}
+          sede={sedeSeleccionada}
           subjectData={notas}
           schoolInfo={defaultSchoolInfo}
         />
@@ -675,7 +701,9 @@ const ReportButton = ({ data }) => {
       console.error('Error al generar PDF:', error);
       CustomToast({
         title: 'Error',
-        message: error.message || 'Error al generar el boletín académico',
+        message:
+          error.msg ||
+          'Error al generar el boletín académico revise si tiene notas',
         type: 'error',
         duration: 3000,
         position: 'top',

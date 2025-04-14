@@ -17,6 +17,7 @@ import {
   RadioGroup,
   Stack,
   Tooltip,
+  Select
 } from '@chakra-ui/react';
 import { VscEdit } from 'react-icons/vsc';
 import { useDispatch } from 'react-redux';
@@ -129,19 +130,19 @@ const ModalEditarApertura = ({ row }) => {
               </Stack>
 
               <Stack spacing={4} direction="row" justifyContent="space-between">
-                <FormControl>
-                  <FormLabel fontWeight="semibold">
-                    Numero de Bimestres
-                  </FormLabel>
-                  <Input
-                    defaultValue={indice ? indice.numBimestres : 0}
-                    placeholder="0"
-                    type="number"
-                    onChange={e =>
-                      setIndice({ ...indice, numBimestres: e.target.value })
-                    }
-                  />
+              <FormControl>
+                  <FormLabel fontWeight="semibold">Periodo</FormLabel>
+                  <Select
+                    onChange={e => setIndice({ ...indice, periodo: e.target.value })}
+                    defaultValue={indice.periodo || ''}
+                  >
+                    <option value={1}>I</option>
+                    <option value={2}>II</option>
+                    <option value={3}>III</option>
+                    <option value={4}>IV</option>
+                  </Select>
                 </FormControl>
+
                 <FormControl isRequired alignSelf={'center'}>
                   <FormLabel fontWeight={'semibold'}>Estado</FormLabel>
                   <RadioGroup
@@ -152,22 +153,6 @@ const ModalEditarApertura = ({ row }) => {
                     <Stack direction="row">
                       <Radio value="true">Activo</Radio>
                       <Radio value="false">Inactivo</Radio>
-                    </Stack>
-                  </RadioGroup>
-                </FormControl>
-              </Stack>
-              <Stack spacing={4} direction="row" justifyContent="space-between">
-                <FormControl>
-                  <FormLabel fontWeight="semibold">Periodo</FormLabel>
-                  <RadioGroup
-                    onChange={e => setIndice({ ...indice, periodo: e })}
-                    value={indice.periodo || ''}
-                  >
-                    <Stack direction="row">
-                      <Radio value="I">I</Radio>
-                      <Radio value="II">II</Radio>
-                      <Radio value="III">III</Radio>
-                      <Radio value="IV">IV</Radio>
                     </Stack>
                   </RadioGroup>
                 </FormControl>

@@ -102,6 +102,23 @@ export const getAllNotasByStudent = createAsyncThunk(
     }
 )
 
+export const actualizarRankingPorMateria = createAsyncThunk(
+    "notas/actualizarRankingPorMateria",
+    async (idMateria, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await notaService.actualizarRankingPorMateria(idMateria, token);
+        } catch (error) {
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
 
 export const updateCalificacion = createAsyncThunk(
     "calificacion/update",

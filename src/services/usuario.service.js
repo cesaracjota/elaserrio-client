@@ -32,6 +32,19 @@ const getAllDocentes = async (token, id) => {
   return response.data;
 };
 
+// get role docente titular
+
+const getAllDocenteTitular = async (token, id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  };
+  const response = await axios.get(`${baseURL}/usuarios/docente_titular/${id}`, config);
+  return response.data;
+};
+
 // Get a specific user
 
 const getUser = async (id, token) => {
@@ -101,6 +114,7 @@ const usuarioService = {
   getAllUsuarios,
   getUser,
   getAllDocentes,
+  getAllDocenteTitular,
   createUser,
   updateUser,
   deleteUser,

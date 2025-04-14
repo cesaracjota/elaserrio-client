@@ -15,6 +15,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
 } from '@chakra-ui/react';
@@ -32,6 +34,7 @@ export const ModalAgregarPersona = ({ sedes }) => {
   const initialValues = {
     nombre: '',
     correo: '',
+    sexo: '',
     password: '',
     rol: '',
     sedes: [],
@@ -127,6 +130,22 @@ export const ModalAgregarPersona = ({ sedes }) => {
                       ? 'El correo debe contener el caracter @'
                       : ''}
                   </FormHelperText>
+                </FormControl>
+              </Stack>
+              <Stack direction="row" spacing={4} justifyContent={'center'} alignItems="center">
+                <FormControl>
+                  <FormLabel fontWeight="semibold">SEXO</FormLabel>
+                  <RadioGroup
+                    onChange={value => setIndice({ ...indice, sexo: value })}
+                    value={indice?.sexo}
+                    colorScheme="primary"
+                    size={'lg'}
+                  >
+                    <Stack direction="row">
+                      <Radio value="M">Masculino</Radio>
+                      <Radio value="F">Femenino</Radio>
+                    </Stack>
+                  </RadioGroup>
                 </FormControl>
               </Stack>
               <Stack direction="row" spacing={4}>

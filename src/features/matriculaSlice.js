@@ -120,6 +120,24 @@ export const updateMatricula = createAsyncThunk(
     }
 )
 
+export const updatedPromedioRankingPorGrado = createAsyncThunk(
+    "matricula/updatedPromedioRankingPorGrado",
+    async (idGrado, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await matriculaService.updatedPromedioRankingPorGrado(idGrado, token);
+        } catch (error) {
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
 export const deleteMatricula = createAsyncThunk(
     "matricula/delete",
     async (id, thunkAPI) => {
@@ -225,6 +243,18 @@ export const matriculaSlice = createSlice({
                 state.matriculas = state.matriculas.map((pay) => pay._id === action.payload._id ? action.payload : pay);
             })
             .addCase(updateMatricula.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(updatedPromedioRankingPorGrado.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updatedPromedioRankingPorGrado.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+            })
+            .addCase(updatedPromedioRankingPorGrado.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

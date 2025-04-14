@@ -77,6 +77,19 @@ const updateMatricula = async (data, token) => {
     return response.data.matricula;
 }
 
+const updatedPromedioRankingPorGrado = async (idGrado, token) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token,
+        }
+    }
+    const response = await axios.put(`${API_URL}/matriculas/actualizarpromedioranking/${idGrado}`, {}, config);
+    if (response.status === 200 || response.status === 201) {
+        CustomToast({ title: 'PROMEDIOS Y RANKING ACTUALIZADOS', message: 'Los promedios y ranking han sido actualizados correctamente', type: 'success', duration: 1500, position: 'top' });
+    }
+}
+
 const deleteMatricula = async (id, token) => {
     const config = {
         headers: {
@@ -98,6 +111,7 @@ const pagoService = {
     getAllMatriculasByCurso,
     createMatricula,
     updateMatricula,
+    updatedPromedioRankingPorGrado,
     deleteMatricula,
 }
 

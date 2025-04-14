@@ -60,6 +60,13 @@ const Sedes = () => {
       resizable: true,
     },
     {
+      name: 'CODIGO DANE',
+      selector: row => row.codigoDane,
+      sortable: true,
+      cellExport: row => row.codigoDane,
+      resizable: true,
+    },
+    {
       name: 'TELEFONO',
       selector: row => row.telefono,
       sortable: true,

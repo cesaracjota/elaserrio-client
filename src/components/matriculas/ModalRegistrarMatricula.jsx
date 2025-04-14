@@ -333,12 +333,6 @@ const ModalRegistrarMatricula = ({ academic_year }) => {
           </ModalBody>
           <ModalFooter>
             <Button
-              colorScheme="red"
-              _dark={{
-                bg: 'red.500',
-                color: 'white',
-                _hover: { bg: 'red.600' },
-              }}
               size="lg"
               mr={3}
               onClick={handleModalClose}

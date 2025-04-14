@@ -3,6 +3,7 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   Heading,
   HStack,
   Icon,
@@ -26,11 +27,18 @@ import {
   FiChevronsRight,
 } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
-import { AlertEliminar } from './AlertEliminar';
+import { AlertEliminar } from '../matriculas/AlertEliminar';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import { VscEdit } from 'react-icons/vsc';
-import { getAllMatriculasByGrado, reset } from '../../features/matriculaSlice';
+import {
+  getAllMatriculasByGrado,
+  reset,
+  updatedPromedioRankingPorGrado,
+} from '../../features/matriculaSlice';
+import { MdSystemUpdate } from 'react-icons/md';
+import ModalRegistrarObservaciones from '../matriculas/ModalRegistrarObservaciones';
+import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
+import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
 
 const EstudiantesPorGrado = () => {
   const navigate = useNavigate();
@@ -42,13 +50,12 @@ const EstudiantesPorGrado = () => {
 
   const grado = useParams();
 
-  const { matriculas, isLoading, isError, message } =
-    useSelector(state => state.matriculas);
+  const { matriculas, isLoading, isError, message } = useSelector(
+    state => state.matriculas
+  );
 
   useEffect(() => {
-    dispatch(
-      getAllMatriculasByGrado(grado?.id)
-    );
+    dispatch(getAllMatriculasByGrado(grado?.id));
 
     return () => {
       dispatch(reset());
@@ -56,7 +63,13 @@ const EstudiantesPorGrado = () => {
   }, [user, navigate, dispatch, grado.id, grado?._id]);
 
   if (isError) {
-    CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
+    CustomToast({
+      title: 'Error',
+      message,
+      type: 'error',
+      duration: 1500,
+      position: 'top',
+    });
     console.log(message);
   }
 
@@ -130,55 +143,9 @@ const EstudiantesPorGrado = () => {
       center: true,
       cell: row => (
         <div>
-          {/* <Link
-            to={{
-              pathname: '/estudiantes/pagos/' + row._id,
-            }}
-          >
-            <Tooltip hasArrow label="Ver Historial de Pagos" placement="auto">
-              <IconButton
-                aria-label="Ver"
-                icon={<FaFileInvoice />}
-                fontSize="2xl"
-                colorScheme="primary"
-                _dark={{ color: 'white', _hover: { bg: 'primary.300' } }}
-                variant={'solid'}
-              />
-            </Tooltip>
-          </Link> */}
-          <Link
-            to={{
-              pathname: '/estudiantes/' + row._id,
-            }}
-          >
-            <Tooltip hasArrow label="Ver Detalles" placement="auto">
-              <IconButton
-                aria-label="Ver"
-                icon={<CgEyeAlt />}
-                fontSize="2xl"
-                colorScheme="primary"
-                _dark={{ color: 'white', _hover: { bg: 'primary.300' } }}
-                variant={'solid'}
-                ml={2}
-              />
-            </Tooltip>
-          </Link>
-          <Link
-            to={{
-              pathname: '/estudiantes/editar/' + row._id,
-            }}
-          >
-            <Tooltip hasArrow label="Editar" placement="auto">
-              <IconButton
-                aria-label="Editar"
-                colorScheme="gray"
-                _dark={{ color: 'white', _hover: { bg: 'gray.500' } }}
-                icon={<Icon as={VscEdit} fontSize="2xl" />}
-                variant="solid"
-                ml={2}
-              />
-            </Tooltip>
-          </Link>
+          <ModalRegistrarObservaciones row={row} />
+          <ObserverButton data={row} />
+          <ReportButton data={row} />
           <AlertEliminar row={row} />
         </div>
       ),
@@ -190,10 +157,10 @@ const EstudiantesPorGrado = () => {
     columns: columns,
     data: matriculas,
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  
+  const handleUpdatePromedioRanking = () => {
+    dispatch(updatedPromedioRankingPorGrado(grado?.id));
+  };
 
   return (
     <>
@@ -205,7 +172,17 @@ const EstudiantesPorGrado = () => {
           justifyContent={'space-between'}
         >
           <Heading size="md">Estudiantes Matriculados por Grado</Heading>
-          {/* <ModalAgregarEstudiante grado={grado} /> */}
+          <Button
+            onClick={handleUpdatePromedioRanking}
+            colorScheme="primary"
+            variant="outline"
+            size="sm"
+            ml={2}
+            isLoading={isLoading}
+            leftIcon={<MdSystemUpdate />}
+          >
+            Actualizar Promedios y Ranking de Este Grado
+          </Button>
         </HStack>
       </Stack>
       <Box

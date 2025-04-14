@@ -121,7 +121,7 @@ const MisMaterias = () => {
                     navigate(`/mis-materias/${course._id}`);
                   }}
                 >
-                  VER MATERIA
+                  VER ASIGNATURA
                 </Button>
               </Flex>
             </CardFooter>
@@ -132,7 +132,7 @@ const MisMaterias = () => {
       {materiasByTeacher.length === 0 && (
         <Box textAlign="center" py={20}>
           <Text fontSize="xl" color="gray.500">
-            No tienes cursos asignados aún
+            NO TIENES ASIGNATURAS ASIGNADAS
           </Text>
         </Box>
       )}

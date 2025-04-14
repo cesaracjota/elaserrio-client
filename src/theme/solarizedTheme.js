@@ -10,12 +10,12 @@ export const solarizedTheme = createTheme('solarized', {
         warning: '#FFF',
     },
     background: {
-        default: '#151822',
+        default: '#0a0d0a',
         hover: '#1a222f',
         active: '#0b0f19'
     },
     context: {
-        background: '#151822',
+        background: '#0a0d0a',
         text: '#FFF',
     },
     divider: {

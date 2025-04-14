@@ -6,10 +6,10 @@ export const theme = createTheme('solarized', {
         secondary: '#FFF',
     },
     background: {
-        default: '#131516',
+        default: '#0a0d0a',
     },
     context: {
-        background: '#131516',
+        background: '#0a0d0a',
         text: '#FFF',
     },
     divider: {

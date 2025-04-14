@@ -3,6 +3,7 @@ import gradoService from "../services/grado.service";
 
 const initialState = {
     grados: [],
+    mis_grados: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -49,6 +50,25 @@ export const getGradosBySede = createAsyncThunk(
     async (id, thunkAPI) => {
         try {
             return await gradoService.getGradosBySede(id);
+        } catch (error) {
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
+export const getGradosByDocente = createAsyncThunk(
+    "grados/getGradosByDocente",
+    async (id, thunkAPI) => {
+        try {
+            
+            const token = thunkAPI.getState().auth.user.token;
+            return await gradoService.getGradosByDocente(id, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -126,6 +146,19 @@ export const gradoSlice = createSlice({
                 state.grados = action.payload;
             })
             .addCase(getGradosBySede.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getGradosByDocente.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getGradosByDocente.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.mis_grados = action.payload;
+            })
+            .addCase(getGradosByDocente.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
