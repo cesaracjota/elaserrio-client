@@ -17,7 +17,8 @@ export const LoginForm = ({ isLoading }) => {
             <Input
               {...field}
               type="email"
-              placeholder="usuario@colegio.com"
+              variant='filled'
+              placeholder="Ingrese su correo"
               size="lg"
               focusBorderColor="primary.100"
             />
@@ -32,6 +33,7 @@ export const LoginForm = ({ isLoading }) => {
             <InputGroup>
               <Input
                 {...field}
+                variant='filled'
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Contraseña"
                 size="lg"

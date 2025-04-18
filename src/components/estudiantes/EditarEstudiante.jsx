@@ -35,7 +35,6 @@ import {
   AlertDescription,
   IconButton,
   Text,
-  useToast,
   Container,
   Skeleton,
   Avatar,
@@ -64,11 +63,10 @@ import { CustomToast } from '../../helpers/toast';
 const EditarEstudiante = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const toast = useToast();
   const params = useParams();
 
   const { user, sedeSeleccionada } = useSelector(state => state.auth);
-  const { isLoading, isError, message } = useSelector(
+  const { isLoading } = useSelector(
     state => state.estudiantes
   );
 
@@ -142,14 +140,7 @@ const EditarEstudiante = () => {
           }));
         }
       } catch (error) {
-        toast({
-          title: 'Error',
-          description: 'No se pudo cargar la información del estudiante',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        });
+        console.log(error);
       }
     };
 
@@ -158,20 +149,7 @@ const EditarEstudiante = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, params.id, toast]);
-
-  useEffect(() => {
-    if (isError && message) {
-      toast({
-        title: 'Error',
-        description: message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      });
-    }
-  }, [isError, message, toast]);
+  }, [user, navigate, dispatch, params.id]);
 
   const handleChange = (field, value) => {
     setEstudiante(prev => {

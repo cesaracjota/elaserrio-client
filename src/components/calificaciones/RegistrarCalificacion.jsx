@@ -826,6 +826,9 @@ const RegistrarCalificacionPage = () => {
         </Button>
         <Button
           colorScheme="primary"
+          _dark={{
+            color: 'white',
+          }}
           onClick={handleSave}
           leftIcon={<FiSave />}
           size="lg"

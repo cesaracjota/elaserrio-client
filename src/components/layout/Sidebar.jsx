@@ -16,13 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import logo from '../../assets/img/logoColegio.png';
-import { FaCog } from 'react-icons/fa';
-import { FaSchool, FaUserGraduate, FaUsers } from 'react-icons/fa';
-import {
-  MdDashboard,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowRight,
-} from 'react-icons/md';
+import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md';
 import globalInformation from '../../helpers/globalInformation';
 
 export const NavItem = ({ icon, isOpen, label, indicatorIcon, ...rest }) => {
@@ -56,83 +50,8 @@ export const NavItem = ({ icon, isOpen, label, indicatorIcon, ...rest }) => {
   );
 };
 
-function Sidebar({ isOpen }) {
+function Sidebar({ isOpen, navigationItems }) {
   const { user, sedeSeleccionada } = useSelector(state => state.auth);
-
-  const navigationItems = [
-    {
-      icon: MdDashboard,
-      label: 'INICIO',
-      path: '/',
-      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_ROLE', 'DOCENTE_TITULAR_ROLE'],
-    },
-    {
-      icon: FaUsers,
-      label: 'USUARIOS',
-      path: `/usuarios`,
-      allowedRoles: ['ADMIN_ROLE'],
-    },
-    {
-      icon: FaSchool,
-      label: 'PERIODO ESCOLAR',
-      path: `/periodo-escolar`,
-      allowedRoles: ['ADMIN_ROLE'],
-    },
-    {
-      icon: FaUsers,
-      label: 'ESTUDIANTES',
-      path: `/${sedeSeleccionada?._id}/estudiantes`,
-      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_TITULAR_ROLE'],
-    },
-    {
-      icon: FaSchool,
-      label: 'MATRICULAS',
-      path: `/matriculas`,
-      allowedRoles: ['ADMIN_ROLE'],
-    },    
-    {
-      icon: FaSchool,
-      label: 'MIS MATERIAS',
-      path: '/mis-materias',
-      allowedRoles: ['DOCENTE_ROLE', 'DOCENTE_TITULAR_ROLE'],
-    },
-    {
-      icon: FaSchool,
-      label: 'MIS GRADOS',
-      path: '/mis-grados',
-      allowedRoles: ['DOCENTE_TITULAR_ROLE'],
-    },
-    {
-      icon: FaSchool,
-      label: 'MATERIAS',
-      path: `/${sedeSeleccionada?._id}/materias`,
-      allowedRoles: ['ADMIN_ROLE', 'DOCENTE_TITULAR_ROLE'], // Admin-only section
-    },
-    {
-      icon: FaSchool,
-      label: 'GRADOS',
-      path: `/${sedeSeleccionada?._id}/grados`,
-      allowedRoles: ['ADMIN_ROLE'],
-    },
-    {
-      icon: FaSchool,
-      label: 'SEDES',
-      path: '/sedes',
-      allowedRoles: ['ADMIN_ROLE'],
-    },
-    {
-      icon: FaUserGraduate,
-      label: 'INSTRUCTORES',
-      path: '/instructores',
-      allowedRoles: ['admin'],
-    },
-    {
-      icon: FaCog,
-      label: 'CONFIGURACIONES',
-      path: `/configuraciones`,
-      allowedRoles: ['ADMIN_ROLE'],
-    },
-  ];
 
   const filteredNavigationItems = navigationItems.filter(item => {
     if (!user?.usuario?.rol) return false; // Si no hay rol, no mostrar nada

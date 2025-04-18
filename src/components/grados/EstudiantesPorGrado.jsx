@@ -7,18 +7,15 @@ import {
   Heading,
   HStack,
   Icon,
-  IconButton,
   Stack,
   Text,
-  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { CgEyeAlt } from 'react-icons/cg';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CustomToast } from '../../helpers/toast';
 import {
   FiChevronLeft,
@@ -29,7 +26,6 @@ import {
 import { customStyles } from '../../helpers/customStyles';
 import { AlertEliminar } from '../matriculas/AlertEliminar';
 import '../../theme/solarizedTheme';
-import { Loading } from '../../helpers/Loading';
 import {
   getAllMatriculasByGrado,
   reset,

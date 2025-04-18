@@ -35,7 +35,13 @@ const ForgotPasswordPage = () => {
                 navigate(`/reset-password/${response.payload.correo}/${response.payload.emailToken}`);
             } else {
                 console.log("error")
-                CustomToast('Mensaje', response?.payload?.msg, 'error', 2500, 'bottom');
+                CustomToast({
+                    title: 'Mensaje',
+                    message: response?.payload?.msg,
+                    type: 'error',
+                    duration: 2500,
+                    position: 'bottom',
+                });
             }
         } catch (error) {
             console.error(error);
@@ -71,7 +77,7 @@ const ForgotPasswordPage = () => {
                             }}
                             px={8}
                             py={10}
-                            rounded="3xl"
+                            rounded="xl"
                             shadow="lg"
                             maxW="xl"
                             w="full"
@@ -89,7 +95,7 @@ const ForgotPasswordPage = () => {
                                                 type="email"
                                                 placeholder="Ingrese su correo electrónico"
                                                 _focus={{
-                                                    borderColor: 'purple.600',
+                                                    borderColor: 'primary.600',
                                                     boxShadow: 'none',
                                                 }}
                                             />
@@ -98,14 +104,7 @@ const ForgotPasswordPage = () => {
                                     )}
                                 </Field>
                                 <Button
-                                    colorScheme="red"
-                                    _dark={{
-                                        bg: 'red.600',
-                                        color: 'white',
-                                        _hover: {
-                                            bg: 'red.700',
-                                        },
-                                    }}
+                                    colorScheme="primary"
                                     fontSize="md"
                                     fontWeight="bold"
                                     w="full"

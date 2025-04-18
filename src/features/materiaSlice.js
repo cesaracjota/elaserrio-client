@@ -4,6 +4,7 @@ import materiaService from "../services/materia.service";
 const initialState = {
     materias: [],    
     materiasByTeacher: [],
+    materiasByGrado: [],
     materia: {},
     isError: false,
     isSuccess: false,
@@ -97,6 +98,23 @@ export const getMateriasByTeacher = createAsyncThunk(
         }
     }
 )
+
+export const getMateriasByGrado = createAsyncThunk(
+    "materia/getMateriasByGrado",
+    async (id, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await materiaService.getMateriasByGrado(id, token);
+        } catch (error) {
+            const message = (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
 
 export const updateMateria = createAsyncThunk(
     "materia/update",
@@ -192,7 +210,20 @@ export const materiaSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            })            
+            })
+            .addCase(getMateriasByGrado.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getMateriasByGrado.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.materiasByGrado = action.payload;
+            })
+            .addCase(getMateriasByGrado.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
             .addCase(createMateria.pending, (state) => {
                 state.isLoading = true;
             })

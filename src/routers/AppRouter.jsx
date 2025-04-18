@@ -38,7 +38,7 @@ import { ModuloPage } from '../pages/ModuloPage';
 import SelectSede from '../pages/auth/SelectSede';
 import { MateriaPage, DetalleMateriaPage, MisMateriasPage, RegistrarCalificacionPage } from '../pages/MateriaPage';
 import { SedePage } from '../pages/SedePage';
-import { GradosPage, EstudiantesPorGradoPage, MisGradosPage } from '../pages/grados';
+import { GradosPage, MisGradosPage, MateriasPorGradoPage, EstudiantesPorGradoPage } from '../pages/grados';
 import { ConfiguracionPage } from '../pages/ConfiguracionPage';
 
 export default function AppRouter() {
@@ -51,11 +51,13 @@ export default function AppRouter() {
         <Route path="/usuarios" element={<PersonasPage />} />
         <Route path="/periodo-escolar" element={<PeriodoEscolarPage />} />
         <Route path="/:idSede/grados" element={<GradosPage />} />
+        <Route path='/:idSede/grados/:id' element={<EstudiantesPorGradoPage />} />
         <Route path='/mis-grados' element={<MisGradosPage />} />        
         <Route
-          path="/:idSede/grados/:id"
-          element={<EstudiantesPorGradoPage />}
+          path="/mis-grados/:idSede/grados/:id"
+          element={<MateriasPorGradoPage />}
         />
+          <Route path="/mis-grados/:idSede/grados/:id/mis-materias/:id" element={<DetalleMateriaPage />} />
         <Route
           path="/:idSede/grados/:id/agregar"
           element={<EstudiantesPageAgregar />}

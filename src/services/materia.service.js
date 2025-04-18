@@ -31,6 +31,11 @@ const getMateriasByTeacher = async (id) => {
     return response.data;
 }
 
+const getMateriasByGrado = async (id) => {
+    const response = await axios.get(`${API_URL}/materias/grado/${id}`);
+    return response.data;
+}
+
 const create = async (data, token) => {
     const config = {
         headers: {
@@ -78,6 +83,7 @@ const materiaService = {
     get,
     getMateriasBySede,
     getMateriasByTeacher,
+    getMateriasByGrado,
     create,
     update,
     deleteMateria,

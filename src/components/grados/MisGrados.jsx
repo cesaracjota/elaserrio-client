@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import {
-  Avatar,
-  AvatarBadge,
   Badge,
   Box,
   Heading,
@@ -17,7 +15,6 @@ import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { CustomToast } from '../../helpers/toast';
-import { AlertEliminar } from './AlertEliminar';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -26,11 +23,9 @@ import {
 } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
 import { getGradosByDocente, reset } from '../../features/gradoSlice';
-import ModalAgregarGrado from './ModalAgregarGrado';
-import ModalEditarGrado from './ModalEditarGrado';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import { TiGroup } from "react-icons/ti";
+import { MdOutlineStreetview } from 'react-icons/md';
 
 const MisGrados = () => {
   const navigate = useNavigate();
@@ -74,33 +69,6 @@ const MisGrados = () => {
       resizable: true,
     },
     {
-      name: 'DOCENTE TITULAR',
-      selector: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
-      sortable: true,
-      cellExport: row => row?.docente_titular?.nombre || 'SIN ASIGNAR',
-      cell: row => (
-        <Stack direction="row" alignItems="center" alignSelf={'center'}>
-          <Avatar
-            name={row?.docente_titular?.nombre || 'SIN ASIGNAR'}
-            src={row?.docente_titular?.foto}
-            size="sm"
-            color={'white'}
-          >
-            <AvatarBadge boxSize="1.25em" bg="green.500" />
-          </Avatar>
-          <Box alignSelf={'center'}>
-            <Text fontSize="sm" fontWeight="bold">
-              {row?.docente_titular?.nombre || 'SIN ASIGNAR'}
-            </Text>
-            <Text fontSize="xs" color="gray.500">
-              {row?.docente_titular?.correo}
-            </Text>
-          </Box>
-        </Stack>
-      ),
-      width: '250px',
-    },
-    {
       name: 'ESTADO',
       selector: row => row.estado,
       sortable: true,
@@ -130,7 +98,7 @@ const MisGrados = () => {
         <div>
           <Link
             to={{
-                pathname: `/${sedeSeleccionada?._id}/grados/${row._id}`,
+                pathname: `/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}`,
                 state: { grado: row?.nombre },
             }}
           >
@@ -142,7 +110,7 @@ const MisGrados = () => {
                 _hover: { bg: 'primary.300' },
               }}
               aria-label="Ver Estudiantes"
-              icon={<Icon as={TiGroup} fontSize="2xl" />}
+              icon={<Icon as={MdOutlineStreetview} fontSize="2xl" />}
               variant="solid"
               rounded="xl"
             />
@@ -165,7 +133,7 @@ const MisGrados = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Heading size={'lg'}>MIS GRADOS ASIGNADAS</Heading>
+        <Heading size={'lg'}>MATERIAS - TITULAR DE GRADO</Heading>
       </Stack>
       <Box
         borderRadius="2xl"

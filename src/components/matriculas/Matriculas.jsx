@@ -44,7 +44,7 @@ import { MdRefresh } from 'react-icons/md';
 import { getAllAcademicYear } from '../../features/academicYearSlice';
 import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
 import ModalRegistrarObservaciones from './ModalRegistrarObservaciones';
-import { Loading } from '../../helpers/Loading';
+import { getAllConfiguraciones } from '../../features/configuracionSlice';
 
 const Matriculas = () => {
   const navigate = useNavigate();
@@ -54,9 +54,11 @@ const Matriculas = () => {
 
   const { sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { matriculas, currentPage, totalRows, isLoading } = useSelector(
+  const { matriculas, currentPage, totalRows } = useSelector(
     state => state.matriculas
   );
+
+  const { configuracion } = useSelector(state => state.configuraciones);
 
   const { academic_year } = useSelector(state => state.academic_year);
 
@@ -76,6 +78,7 @@ const Matriculas = () => {
         idSede: sedeSeleccionada?._id,
       })
     );
+    dispatch(getAllConfiguraciones());
 
     return () => {
       dispatch(reset());
@@ -154,7 +157,10 @@ const Matriculas = () => {
         <div>
           <ModalRegistrarObservaciones row={row} />
           <ObserverButton data={row} />
-          <ReportButton data={row} />
+          {
+            configuracion?.permitirDescargaDeDocumentos === true &&
+            <ReportButton data={row} />
+          }
           <AlertEliminar row={row} />
         </div>
       ),

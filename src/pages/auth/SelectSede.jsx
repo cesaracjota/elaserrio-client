@@ -81,7 +81,7 @@ const SelectSede = () => {
         bg="white"
         px={6}
         py={14}
-        rounded="3xl"
+        rounded="xl"
         shadow="lg"
         maxW="xl"
         w="full"

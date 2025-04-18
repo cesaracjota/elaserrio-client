@@ -29,14 +29,15 @@ import { getGradosBySede } from '../../features/gradoSlice';
 import DownloadStudentReport from './StudentReport';
 import { getMateria } from '../../features/materiaSlice';
 import { getAllMatriculasByCurso, reset } from '../../features/matriculaSlice';
-import {
-  actualizarRankingPorMateria,
-  getAllNotasByMateria,
-} from '../../features/notaSlice';
-import { FaRankingStar } from 'react-icons/fa6';
+import { getAllNotasByMateria } from '../../features/notaSlice';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
-import { FaFileExcel, FaGraduationCap, FaRegCalendarCheck } from 'react-icons/fa';
+import {
+  FaFileExcel,
+  FaGraduationCap,
+  FaRegCalendarCheck,
+} from 'react-icons/fa';
+import { getAllConfiguraciones } from '../../features/configuracionSlice';
 
 const DetalleMateria = () => {
   const dispatch = useDispatch();
@@ -47,27 +48,22 @@ const DetalleMateria = () => {
   const { materia } = useSelector(state => state.materias);
   const { notasByMateria } = useSelector(state => state.calificaciones);
   const { matriculas, isLoading } = useSelector(state => state.matriculas);
-  const [loadingRanking, setLoadingRanking] = useState(false);
-  
+
   const [search, setSearch] = useState('');
 
   const { sedeSeleccionada } = useSelector(state => state.auth);
+  const { configuracion } = useSelector(state => state.configuraciones);
 
   useEffect(() => {
     dispatch(getAllMatriculasByCurso(params.id));
     dispatch(getAllNotasByMateria(params.id));
     dispatch(getMateria(params.id));
     dispatch(getGradosBySede(sedeSeleccionada._id));
+    dispatch(getAllConfiguraciones());
     return () => {
       dispatch(reset());
     };
   }, [dispatch, params.id, sedeSeleccionada._id]);
-
-  const actualizarRanking = async () => {
-    setLoadingRanking(true);
-    await dispatch(actualizarRankingPorMateria(params.id));
-    setLoadingRanking(false);
-  };
 
   const filteredData = matriculas.filter(row =>
     (row.estudiante?.nombres + ' ' + row.estudiante?.apellidos)
@@ -134,10 +130,13 @@ const DetalleMateria = () => {
       center: true,
       cell: row => (
         <Stack direction="row" spacing={2}>
-          <Link to={`/mis-materias/${row._id}/registrar-calificacion/${materia?._id}`}>
+          <Link
+            to={`/mis-materias/${row._id}/registrar-calificacion/${materia?._id}`}
+          >
             <IconButton
               aria-label="Editar materia"
               icon={<FaRegCalendarCheck size={20} />}
+              isDisabled={configuracion?.permitirEditarNotas === false}
               size="lg"
               colorScheme="blue"
               variant="outline"
@@ -178,33 +177,10 @@ const DetalleMateria = () => {
               {materia.nombre}
             </Heading>
             <Stack direction="row" spacing={2}>
-              <Tag
-                colorScheme={'purple'}
-                px={4}
-                variant={'outline'}
-              >
+              <Tag colorScheme={'purple'} px={4} variant={'outline'}>
                 <Icon as={FaGraduationCap} mr={2} boxSize={4} />
                 GRADO: {materia?.grado?.nombre}
               </Tag>
-              <Tooltip
-                label={
-                  !loadingRanking
-                    ? 'Actualizar ranking'
-                    : 'Actualizando ranking...'
-                }
-                placement="auto"
-              >
-                <IconButton
-                  aria-label="Editar materia"
-                  icon={<FaRankingStar size={20} />}
-                  size="lg"
-                  colorScheme="blue"
-                  variant="outline"
-                  onClick={actualizarRanking}
-                  isLoading={loadingRanking}
-                  disabled={loadingRanking}
-                />
-              </Tooltip>
             </Stack>
           </Stack>
         </Flex>

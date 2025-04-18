@@ -13,6 +13,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading } = useSelector(state => state.auth);
+  const { configuracion } = useSelector(state => state.configuraciones);
 
   // 🔹 Valores iniciales del formulario
   const initialValues = {
@@ -77,7 +78,7 @@ const Login = () => {
               bg="white"
               px={6}
               py={14}
-              rounded="3xl"
+              rounded="xl"
               shadow="lg"
               maxW="xl"
               w="full"
@@ -90,7 +91,7 @@ const Login = () => {
               }}
             >
               <Stack spacing={6}>
-                <Header />
+                <Header configuracion={configuracion} />
                 <LoginForm isLoading={isSubmitting || isLoading} />
               </Stack>
             </Box>
@@ -102,7 +103,7 @@ const Login = () => {
 };
 
 // 🔹 Componente de encabezado
-const Header = () => (
+const Header = ({ configuracion }) => (
   <Box textAlign="center">
     <Image
       src={logo2}
@@ -115,7 +116,7 @@ const Header = () => (
       SISTEMA DE GESTIÓN ADMINISTRATIVA
     </Heading>
     <Text fontSize="md" color="gray.600" mt={2}>
-      Colegio Simón Bolívar
+      {configuracion?.nombreColegio || 'Nombre del colegio'}
     </Text>
   </Box>
 );
