@@ -48,8 +48,6 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
 
   const [indice, setIndice] = useState(initialValues);
 
-  console.log(indice);
-
   const handleModalOpen = data => {
     setIsModalOpen(true);
     setIndice(data);
@@ -172,7 +170,7 @@ export const ModalEditarPersona = ({ row, roles, sedes, cursos }) => {
                   <FormLabel fontWeight="semibold">SEXO</FormLabel>
                   <RadioGroup
                     onChange={value => setIndice({ ...indice, sexo: value })}
-                    value={indice?.sexo}
+                    value={indice?.sexo || ''}
                     colorScheme="primary"
                     size={'lg'}
                   >

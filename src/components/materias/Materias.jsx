@@ -6,33 +6,36 @@ import {
   Box,
   Heading,
   Icon,
+  IconButton,
   Stack,
   Text,
   useColorModeValue,
+  Select,
 } from '@chakra-ui/react';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
 import { AlertEliminar } from './AlertEliminar';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiChevronsLeft,
   FiChevronsRight,
+  FiFilter,
 } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
 import ModalAgregarCurso from './ModalAgregarMateria';
 import ModalEditarCurso from './ModalEditarMateria';
-import { getMateriasBySede, reset } from '../../features/materiaSlice';
+import { getMateriasByGrado, getMateriasBySede, reset } from '../../features/materiaSlice';
 import { getGradosBySede } from '../../features/gradoSlice';
 import { getAllDocentes } from '../../features/usuarioSlice';
 import ModalGestionarHorario from './ModalGestionarHorario';
 import ModalVerHorarioMateria from './ModalVerHorarioMateria';
+import { MdRefresh } from 'react-icons/md';
 
 const Materias = () => {
   const navigate = useNavigate();
@@ -42,9 +45,7 @@ const Materias = () => {
 
   const { user, sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { materias, isLoading, isError, message } = useSelector(
-    state => state.materias
-  );
+  const { materias, isLoading } = useSelector(state => state.materias);
 
   const { docentes } = useSelector(state => state.usuarios);
   const { grados } = useSelector(state => state.grados);
@@ -53,20 +54,11 @@ const Materias = () => {
     dispatch(getMateriasBySede(sedeSeleccionada._id));
     dispatch(getGradosBySede(sedeSeleccionada._id));
     dispatch(getAllDocentes(sedeSeleccionada._id));
-  
+
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, sedeSeleccionada._id]); // ✅ Aquí no incluimos isError ni message
-  
-  // 👇 Este `useEffect` maneja el toast de error sin ejecutarse múltiples veces
-  useEffect(() => {
-    if (isError) {
-      CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-      console.log(message);
-      dispatch(reset()); // Resetea el estado después de mostrar el toast
-    }
-  }, [isError, message, dispatch]); // ✅ Solo se ejecuta cuando hay un error
+  }, [user, navigate, dispatch, sedeSeleccionada._id]);
 
   const columns = [
     {
@@ -77,9 +69,11 @@ const Materias = () => {
       resizable: true,
       cell: row => (
         <Stack direction="row" alignItems="start">
-          <Text fontSize="sm" alignSelf={'center'}>{row.nombre}</Text>
+          <Text fontSize="sm" alignSelf={'center'}>
+            {row.nombre}
+          </Text>
           <Badge
-            bg='darkgreen'    
+            bg="darkgreen"
             color={'white'}
             variant={'subtle'}
             fontSize="8px"
@@ -145,7 +139,7 @@ const Materias = () => {
         </Stack>
       ),
       width: '250px',
-    },    
+    },
     {
       name: 'ACCIONES',
       sortable: true,
@@ -155,7 +149,12 @@ const Materias = () => {
         <div>
           <ModalVerHorarioMateria materia={row} />
           <ModalGestionarHorario row={row} />
-          <ModalEditarCurso row={row} grados={grados} docentes={docentes} sede={sedeSeleccionada?._id} />
+          <ModalEditarCurso
+            row={row}
+            grados={grados}
+            docentes={docentes}
+            sede={sedeSeleccionada?._id}
+          />
           <AlertEliminar row={row} />
         </div>
       ),
@@ -172,11 +171,51 @@ const Materias = () => {
     return <Loading />;
   }
 
+  const handleChangeGrado = e => {
+    dispatch(getMateriasByGrado(e.target.value));
+  };
+
+  const handleUpateMaterias = () => {
+    dispatch(getMateriasBySede(sedeSeleccionada._id));
+  };
+
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
         <Heading size="lg">ASIGNATURAS</Heading>
-        <ModalAgregarCurso grados={grados} docentes={docentes} sede={sedeSeleccionada?._id} />
+        <ModalAgregarCurso
+          grados={grados}
+          docentes={docentes}
+          sede={sedeSeleccionada?._id}
+        />
+      </Stack>
+      <Stack mt={2} spacing={4} direction="row" justifyContent="space-between">
+          <Heading alignSelf={'center'} size="sm">Filtrar por Grados</Heading>
+          <Stack direction="row" spacing={4}>
+            <Select
+              onChange={handleChangeGrado}
+              icon={<Icon as={FiFilter} fontSize="xl" />}
+              defaultValue={null}
+              colorScheme="primary"
+              placeholder="Selecciona un grado"
+            >
+              {grados?.map(data => (
+                <option key={data._id} value={data._id}>
+                  {data.nombre}
+                </option>
+              ))}
+            </Select>
+
+            <IconButton
+              aria-label="Actualizar"
+              onClick={handleUpateMaterias}
+              icon={<Icon as={MdRefresh} fontSize="2xl" />}
+              fontSize="2xl"
+              colorScheme="primary"
+              _dark={{ color: 'white', _hover: { bg: 'primary.300' } }}
+              variant={'solid'}
+            />
+          </Stack>
       </Stack>
       <Box
         borderRadius="2xl"

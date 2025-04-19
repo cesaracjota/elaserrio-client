@@ -625,7 +625,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
 };
 
 // Componente botón para generar y descargar el reporte
-const ReportButton = ({ data }) => {
+const ReportButton = ({ data, configuracion }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const dispatch = useDispatch();
 
@@ -726,7 +726,7 @@ const ReportButton = ({ data }) => {
         aria-label="Generar boletín PDF"
         isLoading={isGenerating}
         onClick={generateAndDownloadPdf}
-        isDisabled={!data?._id}
+        isDisabled={!data?._id || !configuracion?.permitirDescargarBoletin}
       />
     </Tooltip>
   );

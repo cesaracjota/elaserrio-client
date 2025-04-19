@@ -350,7 +350,7 @@ const RegistrarCalificacionPage = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/mis-materias');
+    navigate(-1);
   };
 
   const handleIndicadorChange = (periodoIndex, indicadorIndex, value) => {

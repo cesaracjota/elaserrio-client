@@ -155,12 +155,9 @@ const Matriculas = () => {
       center: true,
       cell: row => (
         <div>
-          <ModalRegistrarObservaciones row={row} />
-          <ObserverButton data={row} />
-          {
-            configuracion?.permitirDescargaDeDocumentos === true &&
-            <ReportButton data={row} />
-          }
+          <ModalRegistrarObservaciones row={row} configuracion={configuracion} />
+          <ObserverButton data={row} configuracion={configuracion} />
+          <ReportButton data={row} configuracion={configuracion} />
           <AlertEliminar row={row} />
         </div>
       ),
@@ -236,7 +233,7 @@ const Matriculas = () => {
           justifyContent={'space-between'}
         >
           <Heading size="md">Lista de Estudiantes Matriculadas</Heading>
-          <ModalRegistrarMatricula academic_year={academic_year} />
+          <ModalRegistrarMatricula academic_year={academic_year} configuracion={configuracion} />
         </HStack>
       </Stack>
       <Stack mt={2} spacing={4} direction="row" justifyContent="space-between">

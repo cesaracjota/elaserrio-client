@@ -27,7 +27,6 @@ import {
   CheckCircleIcon,
   SettingsIcon,
   RepeatIcon,
-  EditIcon,
   LockIcon,
   UnlockIcon,
 } from '@chakra-ui/icons';
@@ -81,6 +80,7 @@ const Configuracion = () => {
     permitirDescargarMatriculas: false,
     permitirRegistrarObservadores: false,
     permitirDescargarObservadores: false,
+    permitirDescargarBoletin: false,
   });
 
   const mutedText = useColorModeValue('gray.600', 'gray.400');
@@ -216,8 +216,8 @@ const Configuracion = () => {
               display="flex"
               alignItems="center"
               p={3}
-              borderRadius="md"              
-              bg={'gray.100'}           
+              borderRadius="md"
+              bg={'gray.100'}
               _dark={{ bg: 'primary.800' }}
             >
               <Switch
@@ -244,7 +244,9 @@ const Configuracion = () => {
               <Spacer />
               <Icon
                 as={config.permitirRegistrarMatriculas ? UnlockIcon : LockIcon}
-                color={config.permitirRegistrarMatriculas ? 'green.500' : 'red.500'}
+                color={
+                  config.permitirRegistrarMatriculas ? 'green.500' : 'red.500'
+                }
                 fontSize={'25px'}
               />
             </FormControl>
@@ -320,9 +322,7 @@ const Configuracion = () => {
               <Spacer />
               <Icon
                 as={config.permitirRegistrarNotas ? UnlockIcon : LockIcon}
-                color={
-                  config.permitirRegistrarNotas ? 'green.500' : 'red.500'
-                }
+                color={config.permitirRegistrarNotas ? 'green.500' : 'red.500'}
                 fontSize={'25px'}
               />
             </FormControl>
@@ -358,9 +358,7 @@ const Configuracion = () => {
               <Spacer />
               <Icon
                 as={config.permitirModificarNotas ? UnlockIcon : LockIcon}
-                color={
-                  config.permitirModificarNotas ? 'green.500' : 'red.500'
-                }
+                color={config.permitirModificarNotas ? 'green.500' : 'red.500'}
                 fontSize={'25px'}
               />
             </FormControl>
@@ -395,7 +393,9 @@ const Configuracion = () => {
               </Box>
               <Spacer />
               <Icon
-                as={config.permitirRegistrarObservadores ? UnlockIcon : LockIcon}
+                as={
+                  config.permitirRegistrarObservadores ? UnlockIcon : LockIcon
+                }
                 color={
                   config.permitirRegistrarObservadores ? 'green.500' : 'red.500'
                 }
@@ -433,9 +433,51 @@ const Configuracion = () => {
               </Box>
               <Spacer />
               <Icon
-                as={config.permitirDescargarObservadores ? UnlockIcon : LockIcon}
+                as={
+                  config.permitirDescargarObservadores ? UnlockIcon : LockIcon
+                }
                 color={
                   config.permitirDescargarObservadores ? 'green.500' : 'red.500'
+                }
+                fontSize={'25px'}
+              />
+            </FormControl>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              p={3}
+              borderRadius="md"
+              bg={'gray.100'}
+              _dark={{ bg: 'primary.800' }}
+            >
+              <Switch
+                id="permitirDescargarBoletin"
+                name="permitirDescargarBoletin"
+                isChecked={config.permitirDescargarBoletin}
+                onChange={handleSwitch}
+                colorScheme="primary"
+                size="lg"
+              />
+              <Box ml={3}>
+                <FormLabel
+                  htmlFor="permitirDescargarBoletin"
+                  mb="0"
+                  cursor="pointer"
+                  fontWeight="medium"
+                >
+                  Permitir Descargar Boletin de Notas
+                </FormLabel>
+                <Text fontSize="sm" color={mutedText}>
+                  Permite a los docentes descargar boletin de notas
+                </Text>
+              </Box>
+              <Spacer />
+              <Icon
+                as={
+                  config.permitirDescargarBoletin ? UnlockIcon : LockIcon
+                }
+                color={
+                  config.permitirDescargarBoletin ? 'green.500' : 'red.500'
                 }
                 fontSize={'25px'}
               />
@@ -444,13 +486,7 @@ const Configuracion = () => {
         </ConfigSection>
       </Stack>
 
-      <Flex
-        justify="flex-end"
-        mt={8}
-        p={4}
-        borderRadius="lg"
-        boxShadow="sm"
-      >
+      <Flex justify="flex-end" mt={8} p={4} borderRadius="lg" boxShadow="sm">
         {hasChanges && (
           <Tooltip label="Descartar todos los cambios">
             <Button
@@ -474,7 +510,7 @@ const Configuracion = () => {
             isLoading={isSubmitting}
             loadingText="Guardando..."
             leftIcon={<CheckCircleIcon />}
-            isDisabled={!hasChanges}
+            isDisabled={config ? !hasChanges : false}
           >
             Guardar configuración
           </Button>

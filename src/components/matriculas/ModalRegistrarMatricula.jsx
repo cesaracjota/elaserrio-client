@@ -46,7 +46,7 @@ import { createMatricula } from '../../features/matriculaSlice';
 import { FiPlus } from 'react-icons/fi';
 import { getGradosBySede, reset } from '../../features/gradoSlice';
 
-const ModalRegistrarMatricula = ({ academic_year }) => {
+const ModalRegistrarMatricula = ({ academic_year, configuracion }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -128,6 +128,7 @@ const ModalRegistrarMatricula = ({ academic_year }) => {
         }}
         size="lg"
         fontSize={'sm'}
+        isDisabled={!configuracion?.permitirRegistrarMatriculas}
         onClick={handleModalOpen}
       >
         MATRICULAR ESTUDIANTE

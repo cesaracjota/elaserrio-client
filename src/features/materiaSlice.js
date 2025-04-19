@@ -4,7 +4,6 @@ import materiaService from "../services/materia.service";
 const initialState = {
     materias: [],    
     materiasByTeacher: [],
-    materiasByGrado: [],
     materia: {},
     isError: false,
     isSuccess: false,
@@ -217,7 +216,7 @@ export const materiaSlice = createSlice({
             .addCase(getMateriasByGrado.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.materiasByGrado = action.payload;
+                state.materias = action.payload;
             })
             .addCase(getMateriasByGrado.rejected, (state, action) => {
                 state.isLoading = false;

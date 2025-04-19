@@ -44,7 +44,7 @@ import { updateMatricula, getMatricula } from '../../features/matriculaSlice';
 import { MdOutlineAddTask } from 'react-icons/md';
 import { getAllNotasByStudent, reset } from '../../features/notaSlice';
 
-const ModalRegistrarObservaciones = ({ row }) => {
+const ModalRegistrarObservaciones = ({ row, configuracion }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { matricula } = useSelector(state => state.matriculas);
@@ -156,12 +156,13 @@ const ModalRegistrarObservaciones = ({ row }) => {
 
   return (
     <>
-      <Tooltip label="Registrar observaciones" placement="auto" hasArrow>
+      <Tooltip label={!configuracion?.permitirRegistrarObservadores ? "No tiene permiso para registrar observaciones" : "Registrar observaciones"} placement="auto" hasArrow>
         <IconButton
           colorScheme="purple"
           isRound
           onClick={handleModalOpen}
           icon={<MdOutlineAddTask />}
+          isDisabled={!configuracion?.permitirRegistrarObservadores}
           mr={2}
           aria-label="Registrar observaciones"
         />

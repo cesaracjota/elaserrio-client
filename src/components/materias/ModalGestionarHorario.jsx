@@ -159,8 +159,6 @@ const ModalGestionarHorario = ({ row }) => {
       >
         <ModalOverlay backdropFilter="blur(2px)" />
         <ModalContent
-          boxShadow="xl"
-          borderRadius="lg"
           _dark={{ bg: 'primary.1100' }}
         >
           <ModalHeader borderTopRadius="lg">

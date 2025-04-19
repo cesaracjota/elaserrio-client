@@ -334,7 +334,7 @@ function DrawerExample({ user }) {
   return (
     <>
       <Avatar
-        // src={user?.img}
+        src={user?.img}
         name={user?.nombre}
         ignoreFallback={true}
         onClick={onOpen}

@@ -27,7 +27,7 @@ const MateriasPorGrado = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { materiasByGrado, isLoading } = useSelector(state => state.materias);
+  const { materias, isLoading } = useSelector(state => state.materias);
 
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const MateriasPorGrado = () => {
   return (
     <Box>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} spacing={4}>
-        {materiasByGrado.map(course => (
+        {materias?.map(course => (
           <Card
             key={course._id}
             borderTop="8px solid"
@@ -130,7 +130,7 @@ const MateriasPorGrado = () => {
         ))}
       </SimpleGrid>
 
-      {materiasByGrado.length === 0 && (
+      {materias?.length === 0 && (
         <Box textAlign="center" py={20}>
           <Text fontSize="xl" color="gray.500">
             NO TIENES ASIGNATURAS ASIGNADAS

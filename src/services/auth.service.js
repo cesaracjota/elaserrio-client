@@ -69,8 +69,7 @@ const resetPassword = async (data) => {
 const logout = () => {
     CustomToast({ title: 'FINALIZANDO SESIÓN ...', message: 'HASTA PRONTO!', type: 'loading', duration: 2000, position: 'top' });
     localStorage.removeItem("user");
-    // localStorage.removeItem("chakra-ui-color-mode");
-    // window.location.reload();
+    localStorage.removeItem("sedeSeleccionada");
 }
 
 const authService = {

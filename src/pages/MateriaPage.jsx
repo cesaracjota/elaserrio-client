@@ -4,6 +4,7 @@ import MisMaterias from '../components/materias/MisMaterias';
 import Materias from '../components/materias/Materias';
 import DetalleMateria from '../components/materias/DetalleCurso';
 import RegistrarCalificacion from '../components/calificaciones/RegistrarCalificacion';
+import DocenteTitularMaterias from '../components/materias/docenteTitular/DocenteTitularMaterias';
 
 export const MateriaPage = () => {
     return ( <Layout children={<Materias />} /> )
@@ -20,3 +21,7 @@ export const RegistrarCalificacionPage = () => {
 export const DetalleMateriaPage = () => {
     return ( <Layout children={<DetalleMateria />} /> )
 }
+
+export const DocenteTitularMateriasPage = () => {
+    return ( <Layout children={<DocenteTitularMaterias />} /> )
+}   

@@ -28,7 +28,7 @@ const ModalAgregarApertura = () => {
     startDate: '',
     endDate: '',
     numBimestres: '',
-    periodo: 1,
+    periodo: "1",
     isActive: true,
   };
 
@@ -132,10 +132,10 @@ const ModalAgregarApertura = () => {
                     value={indice?.periodo || ''}
                   >
                     <Stack direction="row">
-                      <Radio value={1}>I</Radio>
-                      <Radio value={2}>II</Radio>
-                      <Radio value={3}>III</Radio>
-                      <Radio value={4}>IV</Radio>
+                      <Radio value={"1"}>I</Radio>
+                      <Radio value={"2"}>II</Radio>
+                      <Radio value={"3"}>III</Radio>
+                      <Radio value={"4"}>IV</Radio>
                     </Stack>
                   </RadioGroup>
                 </FormControl>

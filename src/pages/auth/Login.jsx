@@ -8,6 +8,8 @@ import { CustomToast } from '../../helpers/toast';
 import { login, setSede } from '../../features/authSlice';
 import bgGradient from '../../assets/img/gradient-bg.svg';
 import logo2 from '../../assets/img/logoColegio.png';
+import { getAllConfiguraciones } from '../../features/configuracionSlice';
+import { useEffect } from 'react';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -20,6 +22,10 @@ const Login = () => {
     correo: '',
     password: '',
   };
+
+  useEffect(() => {
+    dispatch(getAllConfiguraciones());
+  }, [dispatch]);
 
   // 🔹 Esquema de validación con Yup
   const validationSchema = Yup.object({
@@ -51,7 +57,7 @@ const Login = () => {
         message: error?.message || 'Credenciales incorrectas',
         type: 'error',
         duration: 2500,
-        position: 'bottom'
+        position: 'bottom',
       });
     }
 
@@ -116,7 +122,7 @@ const Header = ({ configuracion }) => (
       SISTEMA DE GESTIÓN ADMINISTRATIVA
     </Heading>
     <Text fontSize="md" color="gray.600" mt={2}>
-      {configuracion?.nombreColegio || 'Nombre del colegio'}
+      {configuracion?.nombreColegio || 'I.E. EL ASERRÍO'}
     </Text>
   </Box>
 );

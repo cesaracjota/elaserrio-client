@@ -193,7 +193,7 @@ export const ModalAgregarPersona = ({ sedes }) => {
                   onChange={e => setIndice({ ...indice, rol: e.target.value })}
                   placeholder="SELECCIONE ROL DEL USUARIO"
                 >
-                  <option value="ADMIN_ROLE">ADMINISTRADO</option>
+                  <option value="ADMIN_ROLE">ADMINISTRADOR</option>
                   <option value="DOCENTE_ROLE">DOCENTE</option>
                   {/* <option value="SECRETARIA_ROLE">SECRETARIA</option> */}
                   <option value="DOCENTE_TITULAR_ROLE">DOCENTE TITULAR</option>

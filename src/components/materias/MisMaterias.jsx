@@ -118,7 +118,7 @@ const MisMaterias = () => {
                   colorScheme="primary"
                   rightIcon={<FiSearch color="primary.500" />}
                   onClick={() => {
-                    navigate(`/mis-materias/${course._id}`);
+                    navigate(`/mis-asignaturas/${course._id}`);
                   }}
                 >
                   VER ASIGNATURA

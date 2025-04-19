@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import {
+  Avatar,
+  AvatarBadge,
   Badge,
   Box,
   Heading,
   Icon,
-  IconButton,
   Stack,
   Text,
   useColorModeValue,
@@ -13,22 +14,26 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AlertEliminar } from '../AlertEliminar';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiChevronsLeft,
   FiChevronsRight,
 } from 'react-icons/fi';
-import { customStyles } from '../../helpers/customStyles';
-import { getGradosByDocente, reset } from '../../features/gradoSlice';
-import '../../theme/solarizedTheme';
-import { Loading } from '../../helpers/Loading';
-import { MdOutlineSchool, MdOutlineStreetview } from 'react-icons/md';
-import { TiGroup } from 'react-icons/ti';
+import { customStyles } from '../../../helpers/customStyles';
+import '../../../theme/solarizedTheme';
+import { Loading } from '../../../helpers/Loading';
+import ModalAgregarCurso from '../ModalAgregarMateria';
+import ModalEditarCurso from '../ModalEditarMateria';
+import { getMateriasByGrado, reset } from '../../../features/materiaSlice';
+import { getGradosBySede } from '../../../features/gradoSlice';
+import { getAllDocentes } from '../../../features/usuarioSlice';
+import ModalGestionarHorario from '../ModalGestionarHorario';
+import ModalVerHorarioMateria from '../ModalVerHorarioMateria';
 
-const MisGrados = () => {
+const DocenteTitularMaterias = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,28 +41,22 @@ const MisGrados = () => {
 
   const { user, sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { mis_grados, isLoading, isError, message } = useSelector(
-    state => state.grados
-  );
+  const { materias, isLoading } = useSelector(state => state.materias);
+
+  const { docentes } = useSelector(state => state.usuarios);
+  const { grados } = useSelector(state => state.grados);
+
+  const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getGradosByDocente(user?.usuario?.id));
+    dispatch(getMateriasByGrado(id));
+    dispatch(getGradosBySede(sedeSeleccionada?._id));
+    dispatch(getAllDocentes(sedeSeleccionada._id));
 
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, sedeSeleccionada?._id]);
-
-  if (isError) {
-    CustomToast({
-      title: 'Error',
-      message,
-      type: 'error',
-      duration: 1500,
-      position: 'top',
-    });
-    console.log(message);
-  }
+  }, [user, navigate, dispatch, sedeSeleccionada._id]);
 
   const columns = [
     {
@@ -66,34 +65,78 @@ const MisGrados = () => {
       sortable: true,
       cellExport: row => row.nombre,
       resizable: true,
+      cell: row => (
+        <Stack direction="row" alignItems="start">
+          <Text fontSize="sm" alignSelf={'center'}>
+            {row.nombre}
+          </Text>
+          <Badge
+            bg="darkgreen"
+            color={'white'}
+            variant={'subtle'}
+            fontSize="8px"
+            fontWeight={'normal'}
+            textAlign="left"
+            py={1.5}
+            px={2}
+            rounded="lg"
+            ml={2}
+          >
+            {row.grado.nombre}
+            <Text fontSize="7px" color="gray.400">
+              {row.grado.nivel}
+            </Text>
+          </Badge>
+        </Stack>
+      ),
+      width: '350px',
     },
     {
-      name: 'NIVEL',
-      selector: row => row.nivel,
+      name: 'COLOR',
+      selector: row => row.brand_color,
       sortable: true,
-      cellExport: row => row.nivel,
+      cellExport: row => row.brand_color,
       resizable: true,
-    },
-    {
-      name: 'ESTADO',
-      selector: row => row.estado,
-      sortable: true,
-      cellExport: row => (row.estado === true ? 'ACTIVO' : 'INACTIVO'),
-      center: true,
       cell: row => (
         <div>
           <Badge
-            colorScheme={row.estado === 'activo' ? 'green' : 'red'}
+            bg={row.brand_color}
             variant="solid"
-            w={24}
+            w={8}
             textAlign="center"
-            py={2}
+            py={4}
             rounded="full"
-          >
-            {row.estado}
-          </Badge>
+          />
         </div>
       ),
+      center: true,
+    },
+    {
+      name: 'DOCENTE ASIGNADO',
+      selector: row => row?.docente?.nombre || 'SIN DOCENTE',
+      sortable: true,
+      cellExport: row => row?.docente?.nombre || 'SIN DOCENTE',
+      cell: row => (
+        <Stack direction="row" alignItems="center" alignSelf={'center'}>
+          <Avatar
+            name={row?.docente?.nombre || 'SIN ASIGNAR'}
+            src={row?.docente?.foto}
+            size="sm"
+            color={'white'}
+          >
+            <AvatarBadge boxSize="1.25em" bg="green.500" />
+          </Avatar>
+          <Box alignSelf={'center'}>
+            <Text fontSize="sm" fontWeight="bold">
+              {row?.docente?.nombre || 'SIN ASIGNAR'}
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+              {row?.docente?.correo}
+            </Text>
+          </Box>
+        </Stack>
+      ),
+      width: '250px',
     },
     {
       name: 'ACCIONES',
@@ -102,71 +145,24 @@ const MisGrados = () => {
       center: true,
       cell: row => (
         <div>
-          <Link
-            to={{
-              pathname: `/${sedeSeleccionada?._id}/grados/${row._id}`,
-              state: { grado: row?.nombre },
-            }}
-          >
-            <IconButton
-              colorScheme="primary"
-              _dark={{
-                bg: 'primary.100',
-                color: 'white',
-                _hover: { bg: 'primary.300' },
-              }}
-              aria-label="Ver Estudiantes"
-              icon={<Icon as={TiGroup} fontSize="2xl" />}
-              variant="solid"
-              rounded="xl"
-              mr={2}
-            />
-          </Link>
-          <Link
-            to={{
-              pathname: `/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}`,
-              state: { grado: row?.nombre },
-            }}
-          >
-            <IconButton
-              colorScheme="teal"
-              _dark={{
-                bg: 'teal.500',
-                color: 'white',
-                _hover: { bg: 'teal.600' },
-              }}
-              aria-label="Ver Estudiantes"
-              icon={<Icon as={MdOutlineStreetview} fontSize="2xl" />}
-              variant="solid"
-              rounded="xl"
-              mr={2}
-            />
-          </Link>
-          <Link
-            to={`/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}/asignaturas`}
-          >
-            <IconButton
-              colorScheme="pink"
-              _dark={{
-                bg: 'pink.500',
-                color: 'white',
-                _hover: { bg: 'pink.600' },
-              }}
-              aria-label="Ver Estudiantes"
-              icon={<Icon as={MdOutlineSchool} fontSize="2xl" />}
-              variant="solid"
-              rounded="xl"
-            />
-          </Link>
+          <ModalVerHorarioMateria materia={row} />
+          <ModalGestionarHorario row={row} />
+          <ModalEditarCurso
+            row={row}
+            grados={grados}
+            docentes={docentes}
+            sede={sedeSeleccionada?._id}
+          />
+          <AlertEliminar row={row} />
         </div>
       ),
-      width: '180px',
+      width: '250px',
     },
   ];
 
   const tableData = {
     columns: columns,
-    data: mis_grados,
+    data: materias,
   };
 
   if (isLoading) {
@@ -176,7 +172,12 @@ const MisGrados = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Heading size={'md'}>LISTA DE GRADOS A CARGO</Heading>
+        <Heading size="lg">ASIGNATURAS</Heading>
+        <ModalAgregarCurso
+          grados={grados}
+          docentes={docentes}
+          sede={sedeSeleccionada?._id}
+        />
       </Stack>
       <Box
         borderRadius="2xl"
@@ -195,13 +196,17 @@ const MisGrados = () => {
           exportHeaders={true}
           filterPlaceholder="BUSCAR"
           numberOfColumns={7}
-          fileName={'GRADOS'}
+          fileName={'ASIGNATURAS'}
         >
           <DataTable
             defaultSortField="createdAt"
             defaultSortAsc={false}
             defaultSortOrder="desc"
             pagination={true}
+            sortServer={true}
+            fixedHeader={true}
+            sortPosition="left"
+            sortable={true}
             paginationIconFirstPage={
               <Icon
                 as={FiChevronsLeft}
@@ -255,4 +260,4 @@ const MisGrados = () => {
   );
 };
 
-export default MisGrados;
+export default DocenteTitularMaterias;

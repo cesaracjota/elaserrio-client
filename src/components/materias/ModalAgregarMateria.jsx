@@ -27,14 +27,12 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
 
   const initialValues = {
     nombre: '',
-    codigo: '',
     brand_color: '#000000',
     descripcion: '',
     grado: null,
     docente: null,
     sede: sede,
     intensidadHorariaSemanal: 0,
-    esPublico: false,
     estado: '',
   };
 
@@ -103,16 +101,6 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                     type="text"
                     onChange={e =>
                       setIndice({ ...indice, nombre: e.target.value })
-                    }
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel fontWeight="semibold">CODIGO DE ASIGNATURA</FormLabel>
-                  <Input
-                    placeholder="Codigo del Curso"
-                    type="text"
-                    onChange={e =>
-                      setIndice({ ...indice, codigo: e.target.value })
                     }
                   />
                 </FormControl>
@@ -228,7 +216,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
               mr={3}
               onClick={handleSave}
               isDisabled={
-                indice.nombre === '' || indice.icon === '' || indice.path === ''
+                indice.nombre === '' || indice.grado === ''
               }
               borderRadius="xl"
             >

@@ -4,7 +4,7 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { MdDashboard } from "react-icons/md";
-import { FaCog, FaSchool, FaUserGraduate, FaUsers } from "react-icons/fa";
+import { FaCog, FaSchool, FaUsers } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 
@@ -59,7 +59,7 @@ function Layout({ children }) {
         {
           icon: FaSchool,
           label: 'MIS ASIGNATURAS',
-          path: '/mis-materias',
+          path: '/mis-asignaturas',
           allowedRoles: ['DOCENTE_ROLE', 'DOCENTE_TITULAR_ROLE'],
         },
         {
@@ -70,9 +70,9 @@ function Layout({ children }) {
         },
         {
           icon: FaSchool,
-          label: 'MATERIAS',
-          path: `/${sedeSeleccionada?._id}/materias`,
-          allowedRoles: ['ADMIN_ROLE', 'DOCENTE_TITULAR_ROLE'], // Admin-only section
+          label: 'ASIGNATURAS',
+          path: `/${sedeSeleccionada?._id}/asignaturas`,
+          allowedRoles: ['ADMIN_ROLE'],
         },
         {
           icon: FaSchool,
@@ -85,12 +85,6 @@ function Layout({ children }) {
           label: 'SEDES',
           path: '/sedes',
           allowedRoles: ['ADMIN_ROLE'],
-        },
-        {
-          icon: FaUserGraduate,
-          label: 'INSTRUCTORES',
-          path: '/instructores',
-          allowedRoles: ['admin'],
         },
         {
           icon: FaCog,

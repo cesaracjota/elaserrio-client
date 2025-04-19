@@ -33,14 +33,12 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
   const initialValues = {
     _id: null,
     nombre: '',
-    codigo: '',
     brand_color: '#000000',
     descripcion: '',
     sede: sede,
     grado: null,
     docente: null,
     intensidadHorariaSemanal: 0,
-    esPublico: false,
     estado: '',
   };
 
@@ -104,17 +102,6 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
                     type="text"
                     onChange={e =>
                       setIndice({ ...indice, nombre: e.target.value })
-                    }
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontWeight="semibold">CODIGO DE CURSO</FormLabel>
-                  <Input
-                    defaultValue={indice ? indice.codigo : ''}
-                    placeholder="ESCRIBE EL CODIGO"
-                    type="text"
-                    onChange={e =>
-                      setIndice({ ...indice, codigo: e.target.value })
                     }
                   />
                 </FormControl>

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 4,
   },
-  
+
   // Tabla unificada con mejor diseño
   table: {
     display: 'table',
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     borderRightColor: '#AED6F1',
     color: '#FFFFFF',
   },
-  
+
   // Alternancia de colores en filas
   evenRow: {
     backgroundColor: '#F8F9F9',
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   oddRow: {
     backgroundColor: '#FFFFFF',
   },
-  
+
   // Notas adicionales con estilo mejorado
   notesSection: {
     marginTop: 5,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     lineHeight: 1.4,
   },
-  
+
   // Nuevo estilo para la sección de comportamiento unificada
   behaviorSection: {
     marginTop: 5,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     color: '#2874A6',
     marginBottom: 5,
   },
-  
+
   // Firmas con estilo mejorado
   signatureSection: {
     flexDirection: 'row',
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#D5D8DC',
     paddingTop: 5,
   },
-  
+
   // Nueva estructura para las observaciones en dos columnas
   observationHalfCell: {
     flex: 1,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderRightColor: '#D6EAF8',
   },
-  
+
   // Para las observaciones adicionales
   additionalNotesRow: {
     borderTopWidth: 1,
@@ -293,9 +293,10 @@ const styles = StyleSheet.create({
 
 // Componente para generar el PDF del observador
 const StudentObserverPDF = ({ studentData }) => {
-  const academicYear = studentData?.academic_year?.year || new Date().getFullYear();
+  const academicYear =
+    studentData?.academic_year?.year || new Date().getFullYear();
   const currentPeriod = studentData?.academic_year?.periodo || 'Periodo actual';
-  
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -316,7 +317,9 @@ const StudentObserverPDF = ({ studentData }) => {
               {globalInformation.institucion_educativa}
             </Text>
             <Text style={styles.headerSubtitle}>
-              RESOLUCIÓN DE APROBACIÓN DE ESTUDIOS {globalInformation.decretos[0].numero} {globalInformation.decretos[0].fecha}
+              RESOLUCIÓN DE APROBACIÓN DE ESTUDIOS{' '}
+              {globalInformation.decretos[0].numero}{' '}
+              {globalInformation.decretos[0].fecha}
             </Text>
             <Text style={styles.headerSubtitle}>
               DANE: {globalInformation.codigo_dane}
@@ -332,8 +335,10 @@ const StudentObserverPDF = ({ studentData }) => {
 
         {/* Datos del estudiante */}
         <View style={styles.studentInfoBox}>
-          <Text style={styles.studentInfoTitle}>INFORMACIÓN DEL ESTUDIANTE</Text>
-          
+          <Text style={styles.studentInfoTitle}>
+            INFORMACIÓN DEL ESTUDIANTE
+          </Text>
+
           <View style={styles.studentInfoRow}>
             <Text style={styles.studentInfoLabel}>NOMBRES Y APELLIDOS:</Text>
             <Text style={styles.studentInfoValue}>
@@ -341,31 +346,43 @@ const StudentObserverPDF = ({ studentData }) => {
               {studentData?.estudiante?.apellidos}
             </Text>
           </View>
-          
+
           <View style={styles.studentInfoRow}>
-            <Text style={styles.studentInfoLabel}>NÚMERO DE IDENTIFICACIÓN:</Text>
-            <Text style={styles.studentInfoValue}>{studentData?.estudiante?.dni}</Text>
+            <Text style={styles.studentInfoLabel}>
+              NÚMERO DE IDENTIFICACIÓN:
+            </Text>
+            <Text style={styles.studentInfoValue}>
+              {studentData?.estudiante?.dni}
+            </Text>
           </View>
-          
+
           <View style={styles.studentInfoRow}>
             <Text style={styles.studentInfoLabel}>DIRECCIÓN:</Text>
-            <Text style={styles.studentInfoValue}>{studentData?.estudiante?.direccion || 'NO REGISTRADA'}</Text>
+            <Text style={styles.studentInfoValue}>
+              {studentData?.estudiante?.direccion || 'NO REGISTRADA'}
+            </Text>
           </View>
-          
+
           <View style={styles.studentInfoRow}>
             <Text style={styles.studentInfoLabel}>GRADO:</Text>
-            <Text style={styles.studentInfoValue}>{studentData?.grado?.nombre}</Text>
+            <Text style={styles.studentInfoValue}>
+              {studentData?.grado?.nombre}
+            </Text>
           </View>
-          
+
           <View style={styles.studentInfoRow}>
             <Text style={styles.studentInfoLabel}>AÑO ACADÉMICO:</Text>
-            <Text style={styles.studentInfoValue}>{academicYear} - {currentPeriod}</Text>
+            <Text style={styles.studentInfoValue}>
+              {academicYear} - {currentPeriod}
+            </Text>
           </View>
-        </View>       
+        </View>
 
         {/* Sección unificada de observaciones */}
-        <Text style={styles.observationsTitle}>SEGUIMIENTO INTEGRAL DEL ESTUDIANTE</Text>
-        
+        <Text style={styles.observationsTitle}>
+          SEGUIMIENTO INTEGRAL DEL ESTUDIANTE
+        </Text>
+
         {/* Tabla unificada de observaciones por periodo */}
         <View style={styles.table}>
           {/* Encabezado de la tabla */}
@@ -376,39 +393,65 @@ const StudentObserverPDF = ({ studentData }) => {
             <View style={[styles.tableHeaderCell, { flex: 1 }]}>
               <Text>OBSERVACIÓN ACADÉMICA</Text>
             </View>
-            <View style={[styles.tableHeaderCell, { flex: 1, borderRightWidth: 0 }]}>
+            <View
+              style={[styles.tableHeaderCell, { flex: 1, borderRightWidth: 0 }]}
+            >
               <Text>OBSERVACIÓN COMPORTAMENTAL</Text>
             </View>
           </View>
-          
+
           {/* Mostrar observaciones por periodos */}
           {studentData?.observacionesPeriodo?.length > 0 ? (
             studentData.observacionesPeriodo.map((nota, index) => (
               <React.Fragment key={index}>
-                <View style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]}>
+                <View
+                  style={[
+                    styles.tableRow,
+                    index % 2 === 0 ? styles.evenRow : styles.oddRow,
+                  ]}
+                >
                   <View style={styles.periodCell}>
                     <Text>{nota.periodo}</Text>
                   </View>
                   <View style={styles.observationHalfCell}>
                     <Text style={styles.observationText}>
-                      {nota?.academica || 'Sin observaciones académicas registradas.'}
+                      {nota?.academica ||
+                        'Sin observaciones académicas registradas.'}
                     </Text>
                   </View>
-                  <View style={[styles.observationHalfCell, { borderRightWidth: 0 }]}>
+                  <View
+                    style={[
+                      styles.observationHalfCell,
+                      { borderRightWidth: 0 },
+                    ]}
+                  >
                     <Text style={styles.observationText}>
-                      {nota?.comportamental || 'Sin observaciones comportamentales registradas.'}
+                      {nota?.comportamental ||
+                        'Sin observaciones comportamentales registradas.'}
                     </Text>
                   </View>
                 </View>
-                
+
                 {/* Si hay notas adicionales, mostrarlas en una fila separada */}
-                {nota.observaciones && nota.observaciones.trim() !== "" && (
+                {nota.observaciones && nota.observaciones.trim() !== '' && (
                   <View style={[styles.tableRow, styles.additionalNotesRow]}>
-                    <View style={[styles.periodCell, {backgroundColor: '#F5F5F5'}]}>
-                      <Text style={{fontWeight: 'bold', fontSize: 8}}>NOTAS</Text>
+                    <View
+                      style={[
+                        styles.periodCell,
+                        { backgroundColor: '#F5F5F5' },
+                      ]}
+                    >
+                      <Text style={{ fontWeight: 'bold', fontSize: 8 }}>
+                        NOTAS
+                      </Text>
                     </View>
-                    <View style={[styles.tableCell, {flex: 2, borderRightWidth: 0}]}>
-                      <Text style={{fontStyle: 'italic', fontSize: 8}}>
+                    <View
+                      style={[
+                        styles.tableCell,
+                        { flex: 2, borderRightWidth: 0 },
+                      ]}
+                    >
+                      <Text style={{ fontStyle: 'italic', fontSize: 8 }}>
                         {nota.observaciones}
                       </Text>
                     </View>
@@ -421,21 +464,27 @@ const StudentObserverPDF = ({ studentData }) => {
               <View style={styles.periodCell}>
                 <Text>-</Text>
               </View>
-              <View style={[styles.tableCell, {flex: 2, borderRightWidth: 0}]}>
-                <Text style={{textAlign: 'center', padding: 10, color: '#7F8C8D'}}>
+              <View
+                style={[styles.tableCell, { flex: 2, borderRightWidth: 0 }]}
+              >
+                <Text
+                  style={{ textAlign: 'center', padding: 10, color: '#7F8C8D' }}
+                >
                   NO SE ENCONTRARON OBSERVACIONES REGISTRADAS PARA EL ESTUDIANTE
                 </Text>
               </View>
             </View>
           )}
         </View>
-        
+
         {/* Espacio para comentarios y recomendaciones */}
         <View style={styles.notesSection}>
           <Text style={styles.notesTitle}>RECOMENDACIONES GENERALES:</Text>
           <Text style={styles.notesText}>
-            El presente documento recoge las observaciones académicas y comportamentales del estudiante durante el año lectivo. 
-            Se recomienda hacer seguimiento periódico de estas observaciones para apoyar el proceso formativo del estudiante.
+            El presente documento recoge las observaciones académicas y
+            comportamentales del estudiante durante el año lectivo. Se
+            recomienda hacer seguimiento periódico de estas observaciones para
+            apoyar el proceso formativo del estudiante.
           </Text>
         </View>
 
@@ -466,7 +515,10 @@ const StudentObserverPDF = ({ studentData }) => {
               minute: '2-digit',
             })}
           </Text>
-          <Text style={{marginTop: 3}}>Este documento tiene carácter informativo y de seguimiento académico.</Text>
+          <Text style={{ marginTop: 3 }}>
+            Este documento tiene carácter informativo y de seguimiento
+            académico.
+          </Text>
         </View>
       </Page>
     </Document>
@@ -474,7 +526,7 @@ const StudentObserverPDF = ({ studentData }) => {
 };
 
 // Componente botón para generar y descargar el reporte
-const ObserverButton = ({ data }) => {
+const ObserverButton = ({ data, configuracion }) => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   // Generar y descargar el PDF
@@ -494,11 +546,7 @@ const ObserverButton = ({ data }) => {
 
     try {
       // Generar el PDF
-      const pdfDoc = (
-        <StudentObserverPDF
-          studentData={data}
-        />
-      );
+      const pdfDoc = <StudentObserverPDF studentData={data} />;
 
       // Crear blob y descargar
       const blob = await pdf(pdfDoc).toBlob();
@@ -542,7 +590,14 @@ const ObserverButton = ({ data }) => {
   };
 
   return (
-    <Tooltip placement='auto' label= {data?.observacionesPeriodo?.length > 0 ? "Ver observador del estudiante" : "No hay observaciones para este estudiante"}>
+    <Tooltip
+      placement="auto"
+      label={
+        data?.observacionesPeriodo?.length > 0
+          ? 'Ver observador del estudiante'
+          : 'No hay observaciones para este estudiante'
+      }
+    >
       <IconButton
         icon={<FiEye />}
         size="md"
@@ -554,7 +609,11 @@ const ObserverButton = ({ data }) => {
         aria-label="Ver observador"
         isLoading={isGenerating}
         onClick={generateAndDownloadPdf}
-        isDisabled={data?.observacionesPeriodo?.length > 0 ? false : true}
+        isDisabled={
+          data?.observacionesPeriodo?.length > 0
+            ? false
+            : true && !configuracion?.permitirDescargarObservador
+        }
       />
     </Tooltip>
   );
