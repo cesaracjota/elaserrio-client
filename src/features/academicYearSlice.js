@@ -3,6 +3,7 @@ import academicYearService from "../services/academic_year.service";
 
 const initialState = {
     academic_year: [],
+    active_academic_year: {},
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -28,7 +29,7 @@ export const createAcademicYear = createAsyncThunk(
 )
 
 export const getAllAcademicYear = createAsyncThunk(
-    "academic_year/get",
+    "academic_year/getAll",
     async (_, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.user.token;
@@ -52,6 +53,24 @@ export const getAcademicYear = createAsyncThunk(
     async (id, thunkAPI) => {
         try {
             return await academicYearService.getAcademicYear(id);
+        } catch (error) {
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
+export const getActiveAcademicYear = createAsyncThunk(
+    "academic_year/getActive",
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await academicYearService.getActiveAcademicYear(token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -116,6 +135,19 @@ export const academicYearSlice = createSlice({
                 state.academic_year = action.payload;
             })
             .addCase(getAllAcademicYear.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getActiveAcademicYear.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getActiveAcademicYear.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.active_academic_year = action.payload;
+            })
+            .addCase(getActiveAcademicYear.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

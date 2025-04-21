@@ -77,7 +77,10 @@ const Configuracion = () => {
     permitirRegistrarNotas: false,
     permitirModificarNotas: false,
     permitirRegistrarMatriculas: false,
+    permitirModificarMatriculas: false,
+    permitirDescargarFichaMatricula: false,
     permitirDescargarMatriculas: false,
+    permitirEliminarMatriculas: false,
     permitirRegistrarObservadores: false,
     permitirDescargarObservadores: false,
     permitirDescargarBoletin: false,
@@ -158,7 +161,7 @@ const Configuracion = () => {
           <Flex align="center" justify="space-between">
             <HStack>
               <SettingsIcon boxSize={4} />
-              <Heading size="md">Configuración del Sistema</Heading>
+              <Heading size="md">CONFIGURACION DEL SISTEMA</Heading>
             </HStack>
 
             <HStack spacing={4}>
@@ -260,6 +263,44 @@ const Configuracion = () => {
               _dark={{ bg: 'primary.800' }}
             >
               <Switch
+                id="permitirDescargarFichaMatricula"
+                name="permitirDescargarFichaMatricula"
+                isChecked={config.permitirDescargarFichaMatricula}
+                onChange={handleSwitch}
+                colorScheme="primary"
+                size="lg"
+              />
+              <Box ml={3}>
+                <FormLabel
+                  htmlFor="permitirDescargarFichaMatricula"
+                  mb="0"
+                  cursor="pointer"
+                  fontWeight="medium"
+                >
+                  Permitir Descargar Ficha Matrículas
+                </FormLabel>
+                <Text fontSize="sm" color={mutedText}>
+                  Habilita el permiso de descargar ficha de matrículas en el sistema
+                </Text>
+              </Box>
+              <Spacer />
+              <Icon
+                as={config.permitirDescargarFichaMatricula ? UnlockIcon : LockIcon}
+                color={
+                  config.permitirDescargarFichaMatricula ? 'green.500' : 'red.500'
+                }
+                fontSize={'25px'}
+              />
+            </FormControl>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              p={3}
+              borderRadius="md"
+              bg={'gray.100'}
+              _dark={{ bg: 'primary.800' }}
+            >
+              <Switch
                 id="permitirDescargarMatriculas"
                 name="permitirDescargarMatriculas"
                 isChecked={config.permitirDescargarMatriculas}
@@ -286,6 +327,44 @@ const Configuracion = () => {
                 as={config.permitirDescargarMatriculas ? UnlockIcon : LockIcon}
                 color={
                   config.permitirDescargarMatriculas ? 'green.500' : 'red.500'
+                }
+                fontSize={'25px'}
+              />
+            </FormControl>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              p={3}
+              borderRadius="md"
+              bg={'gray.100'}
+              _dark={{ bg: 'primary.800' }}
+            >
+              <Switch
+                id="permitirEliminarMatriculas"
+                name="permitirEliminarMatriculas"
+                isChecked={config.permitirEliminarMatriculas}
+                onChange={handleSwitch}
+                colorScheme="primary"
+                size="lg"
+              />
+              <Box ml={3}>
+                <FormLabel
+                  htmlFor="permitirEliminarMatriculas"
+                  mb="0"
+                  cursor="pointer"
+                  fontWeight="medium"
+                >
+                  Permitir eliminar registro de matriculas
+                </FormLabel>
+                <Text fontSize="sm" color={mutedText}>
+                  Permite a los docentes eliminar registro de matriculas
+                </Text>
+              </Box>
+              <Spacer />
+              <Icon
+                as={config.permitirEliminarMatriculas ? UnlockIcon : LockIcon}
+                color={
+                  config.permitirEliminarMatriculas ? 'green.500' : 'red.500'
                 }
                 fontSize={'25px'}
               />
@@ -510,7 +589,7 @@ const Configuracion = () => {
             isLoading={isSubmitting}
             loadingText="Guardando..."
             leftIcon={<CheckCircleIcon />}
-            isDisabled={config ? !hasChanges : false}
+            isDisabled={config ? false : true || !hasChanges}
           >
             Guardar configuración
           </Button>

@@ -182,7 +182,7 @@ const Materias = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Heading size="lg">ASIGNATURAS</Heading>
+        <Heading size="md">ASIGNATURAS</Heading>
         <ModalAgregarCurso
           grados={grados}
           docentes={docentes}
@@ -201,7 +201,7 @@ const Materias = () => {
             >
               {grados?.map(data => (
                 <option key={data._id} value={data._id}>
-                  {data.nombre}
+                  {data.nombre} - {data.nivel}
                 </option>
               ))}
             </Select>

@@ -9,7 +9,7 @@ const theme = extendTheme({
   },
   colors: {
     primary: {
-      50: '#e6f9ec',    // muy claro, ideal para fondos suaves
+      50: '#f8f9fa',    // muy claro, ideal para fondos suaves
       100: '#2fa33a',   // tono base (verde tipo logo)
       200: '#299533',
       300: '#24852e',

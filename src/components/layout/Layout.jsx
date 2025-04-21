@@ -4,9 +4,8 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { MdDashboard } from "react-icons/md";
-import { FaCog, FaSchool, FaUsers } from "react-icons/fa";
+import { FaChartLine, FaCog, FaSchool, FaUsers } from "react-icons/fa";
 import { useSelector } from "react-redux";
-
 
 function Layout({ children }) {
 
@@ -87,6 +86,12 @@ function Layout({ children }) {
           allowedRoles: ['ADMIN_ROLE'],
         },
         {
+          icon: FaChartLine,
+          label: 'REPORTES',
+          path: `/${sedeSeleccionada?._id}/reportes`,
+          allowedRoles: ['ADMIN_ROLE'],
+        },
+        {
           icon: FaCog,
           label: 'CONFIGURACIONES',
           path: `/configuraciones`,
@@ -120,7 +125,7 @@ function Layout({ children }) {
                 p={6}
                 ml={{
                     base: 0,
-                    lg: isOpen ? "280px" : "0"
+                    lg: isOpen ? "300px" : "0"
                 }}
                 transition=".08s ease-out"
                 mt={{

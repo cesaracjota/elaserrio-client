@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import reporteService from "../services/reporte.service";
 
 const initialState = {
+    reportes: [],
     reportesEBR: [],
     reportePagos: [],
     reporteVentasPorFechas: [],
@@ -17,6 +18,24 @@ const initialState = {
     isLoading: false,
     message: '',
 };
+
+export const getAllReports = createAsyncThunk(
+    "reportes/getAllReports",
+    async (query, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await reporteService.getAllReports(token, query);
+        } catch (error){
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
 
 export const getAllReportesEBR = createAsyncThunk(
     "reportes/getAllReportesEBR",
@@ -121,6 +140,19 @@ export const reportesSlice = createSlice({
         reset : () => initialState,
     },
     extraReducers: (builder) => {
+        builder.addCase(getAllReports.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getAllReports.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.reportes = action.payload;
+        });
+        builder.addCase(getAllReports.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        });
         builder.addCase(getAllReportesEBR.pending, (state) => {
             state.isLoading = true;
         });

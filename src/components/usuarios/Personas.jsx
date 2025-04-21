@@ -212,7 +212,7 @@ const Personas = () => {
         py={4}
         px={0}
       >
-        <Heading size="lg">Usuarios</Heading>
+        <Heading size="md">USUARIOS</Heading>
         <ModalAgregarPersona roles={roles} sedes={sedes} />
       </Stack>
       <Box

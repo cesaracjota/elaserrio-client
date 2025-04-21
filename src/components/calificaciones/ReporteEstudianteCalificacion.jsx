@@ -557,7 +557,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
               </Text>
             </View>
             <Text style={styles.averageValue}>
-              PROMEDIO GENERAL: {studentData?.promedioGeneral.toFixed(3) || 0} 
+              PROMEDIO GENERAL: {studentData?.promedioGeneral?.toFixed(3) || 0} 
             </Text>
           </View>
           <View style={styles.summaryBox}>
@@ -721,12 +721,16 @@ const ReportButton = ({ data, configuracion }) => {
         mr={2}
         color={'white'}
         colorScheme="primary"
+        _dark={{ bg: 'primary.500', color: 'white', _hover: { bg: 'primary.600' } }}
         isRound
         variant="solid"
         aria-label="Generar boletín PDF"
         isLoading={isGenerating}
         onClick={generateAndDownloadPdf}
-        isDisabled={!data?._id || !configuracion?.permitirDescargarBoletin}
+        isDisabled={
+          configuracion?.permitirDescargarObservadores === false || // si hay configuración y no permite ver
+          configuracion ==! null
+        }
       />
     </Tooltip>
   );

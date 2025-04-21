@@ -44,8 +44,8 @@ export const AlertEliminar = ({ row }) => {
                     icon={<Icon as={MdDelete} />}
                     fontSize="2xl"
                     colorScheme="red"
+                    _dark={{ color: "white", bg: 'red.500', _hover: { bg: "red.600" } }}
                     variant={'solid'}
-                    _dark={{ color: "white", _hover: { bg: "red.500" } }}
                     ml={2}
                 />
             </Tooltip>

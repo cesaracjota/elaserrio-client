@@ -23,7 +23,6 @@ import {
 import CategoriasEquipoPage from '../pages/activos/categorias';
 import CategoriasUniformePage from '../pages/uniformes/categorias';
 import { BoletaPagoPage, PagosPage, PagosPageDetalles } from '../pages/pagos';
-import { ReportesEBRPage } from '../pages/reportes';
 import '../styles/globals.css';
 import ForgotPasswordPage from '../pages/auth/ForgotPassword';
 import ResetPasswordPage from '../pages/auth/ResetPassword';
@@ -51,12 +50,14 @@ import {
   EstudiantesPorGradoPage,
 } from '../pages/grados';
 import { ConfiguracionPage } from '../pages/ConfiguracionPage';
+import { ReportesPage } from '../pages/ReportesPage';
+import HomePage from '../pages/HomePage';
 
 export default function AppRouter() {
   return (
     <Routes>
       <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<ReportesEBRPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/configuraciones" element={<ConfiguracionPage />} />
         <Route path="/perfil" element={<MiPerfilPage />} />
         <Route path="/usuarios" element={<PersonasPage />} />
@@ -141,7 +142,7 @@ export default function AppRouter() {
           element={<ConceptoPagosPage />}
         />
 
-        <Route path="/reportes" element={<ReportesEBRPage />} />
+        <Route path="/:idSeede/reportes" element={<ReportesPage />} />
 
         <Route path="/select-sede" element={<SelectSede />} />
       </Route>

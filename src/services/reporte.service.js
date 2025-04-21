@@ -4,6 +4,21 @@ import { CustomToast } from "../helpers/toast";
 
 const baseURL = process.env.REACT_APP_API_URL;
 
+// get reports by query params
+
+const getAllReports = async (token, query) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        params: query,
+    }
+
+    const response = await axios.get(`${baseURL}/reportes`, config);
+    return response.data;
+}
+
 // Get reportes modalidad EBR
 const getReportesEBR = async (token) => {
 
@@ -87,6 +102,7 @@ const getReportesRESIDENCIA = async (token) => {
 
 
 const reporteService = {
+    getAllReports,
     getAllReportesEBR,
     getReportesEBR,
     getReportesCEBA,

@@ -75,11 +75,11 @@ function Header({ onToggle, isOpen, navigationItems }) {
     <Flex
       as="header"
       _dark={{
-        bgColor: 'rgba(11,15,25, 0.8)',
+        bgColor: 'rgba(11,15,25, 0)',
         color: 'primary.100',
         backdropBlur: 'blur(50px)',
       }}
-      bg="rgba(248, 249, 250, 0.8)"
+      bg="rgba(248, 249, 250, 0.5)"
       backdropFilter="blur(10px)"
       position={{
         base: 'fixed',
@@ -87,7 +87,7 @@ function Header({ onToggle, isOpen, navigationItems }) {
       }}
       ml={{
         base: 0,
-        lg: isOpen ? '280px' : '0',
+        lg: isOpen ? '300px' : '0',
       }}
       top="0"
       left="0"
@@ -131,7 +131,7 @@ function Header({ onToggle, isOpen, navigationItems }) {
         size="xs"
       >
         <DrawerOverlay
-          bg="rgba(11,15,25, 0.8)"
+          bg="rgba(11,15,25, 0.9)"
           backdropFilter="auto"
           backdropBlur="2px"
         />

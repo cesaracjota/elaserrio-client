@@ -11,9 +11,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Radio,
-  RadioGroup,
+  Select,
   Stack,
+  Switch,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { createAcademicYear } from '../../features/academicYearSlice';
@@ -28,8 +28,8 @@ const ModalAgregarApertura = () => {
     startDate: '',
     endDate: '',
     numBimestres: '',
-    periodo: "1",
-    isActive: true,
+    periodo: '1',
+    isActive: false,
   };
 
   const [indice, setIndice] = useState(initialValues);
@@ -47,13 +47,6 @@ const ModalAgregarApertura = () => {
     dispatch(createAcademicYear(indice));
     setIsModalOpen(false);
     setIndice(initialValues);
-  };
-
-  const handleRadioChange = value => {
-    setIndice(prevState => ({
-      ...prevState,
-      isActive: value === 'true', // RadioGroup value is a string
-    }));
   };
 
   return (
@@ -127,29 +120,29 @@ const ModalAgregarApertura = () => {
               <Stack spacing={4} direction="row" justifyContent="space-between">
                 <FormControl>
                   <FormLabel fontWeight="semibold">Periodo</FormLabel>
-                  <RadioGroup
-                    onChange={e => setIndice({ ...indice, periodo: e })}
-                    value={indice?.periodo || ''}
+                  <Select
+                    onChange={e =>
+                      setIndice({ ...indice, periodo: e.target.value })
+                    }
+                    value={indice.periodo}
                   >
-                    <Stack direction="row">
-                      <Radio value={"1"}>I</Radio>
-                      <Radio value={"2"}>II</Radio>
-                      <Radio value={"3"}>III</Radio>
-                      <Radio value={"4"}>IV</Radio>
-                    </Stack>
-                  </RadioGroup>
+                    <option value="1">I</option>
+                    <option value="2">II</option>
+                    <option value="3">III</option>
+                    <option value="4">IV</option>
+                  </Select>
                 </FormControl>
                 <FormControl isRequired alignSelf={'center'}>
                   <FormLabel fontWeight={'semibold'}>Estado</FormLabel>
-                  <RadioGroup
-                    onChange={handleRadioChange}
+                  <Switch
+                    colorScheme="green"
+                    size="lg"
+                    isChecked={indice.isActive}
+                    onChange={e =>
+                      setIndice({ ...indice, isActive: e.target.checked })
+                    }
                     value={indice.isActive.toString()}
-                  >
-                    <Stack direction="row">
-                      <Radio value="true">Activo</Radio>
-                      <Radio value="false">Inactivo</Radio>
-                    </Stack>
-                  </RadioGroup>
+                  />
                 </FormControl>
               </Stack>
             </Stack>
@@ -175,11 +168,7 @@ const ModalAgregarApertura = () => {
               size="lg"
               mr={3}
               onClick={handleSave}
-              isDisabled={
-                indice.year === '' ||
-                indice.startDate === '' ||
-                indice.endDate === ''
-              }
+              isDisabled={indice.year === ''}
               borderRadius="xl"
             >
               GUARDAR

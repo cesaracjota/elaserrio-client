@@ -11,7 +11,6 @@ import {
   Text,
   Stack,
   useColorModeValue,
-  Collapse,
   Tooltip,
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
@@ -74,21 +73,24 @@ function Sidebar({ isOpen, navigationItems }) {
     setOpenSubModule(openSubModule === index ? null : index);
   };
 
+    const activeLinkcolor = useColorModeValue('primary.500', 'primary.300');
+    const bgActiveLinkColor = useColorModeValue('white', 'primary.900');
+
   return (
     <Box
-      w={{ base: isOpen ? '0' : '0', lg: '280px' }}
+      w={{ base: isOpen ? '0' : '0', lg: '300px' }}
       display={{
         base: isOpen ? 'block' : 'none',
       }}
-      bgColor="primary.1000"
+      bgColor="#f8f9fa"
       _dark={{
-        bgColor: 'primary.1000',
+        bgColor: 'primary.1100',
         color: 'white',
-        borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+        borderRight: '0.1px solid rgba(255, 255, 255, 0.09)',
       }}
-      borderRight="0.1px solid rgba(0, 0, 0, 0.02)"
-      color="white"
+      borderRight="0.1px solid rgba(0, 0, 0, 0.09)"
       pos="fixed"
+      color={'gray.700'}
       top="0"
       left="0"
       bottom="0"
@@ -153,7 +155,10 @@ function Sidebar({ isOpen, navigationItems }) {
               <Heading
                 fontSize="16px"
                 fontWeight="bold"
-                color="white"
+                color="black"
+                _dark={{
+                  color: 'white',
+                }}
                 alignSelf={'start'}
                 justifySelf={'start'}
                 textAlign="start"
@@ -162,7 +167,7 @@ function Sidebar({ isOpen, navigationItems }) {
               </Heading>
               <Text
                 fontSize="14px"
-                color="gray.400"
+                color="gray.800"
                 _dark={{
                   color: 'gray.400',
                 }}
@@ -184,12 +189,12 @@ function Sidebar({ isOpen, navigationItems }) {
               to={item.path}
               fontSize="14px"
               mb={2}
-              color="white"
               _activeLink={{
-                color: 'white',
-                bg: 'primary.700',
-                fontWeight: '500',
+                color: activeLinkcolor,
+                bg: bgActiveLinkColor,
+                fontWeight: '600',
                 borderRadius: 'md',
+                boxShadow: 'base',
               }}
               _hover={{ textDecoration: 'none' }}
               onClick={() => item.submodules && handleSubModuleToggle(index)} // Toggle submodules on click
@@ -207,37 +212,6 @@ function Sidebar({ isOpen, navigationItems }) {
                 } // Set the indicator icon
               />
             </Link>
-
-            {item.submodules && (
-              <Collapse in={openSubModule === index}>
-                <Box pl={4}>
-                  {item.submodules.map((submodule, subIndex) => (
-                    <Link
-                      key={subIndex}
-                      as={NavLink}
-                      to={submodule.path}
-                      display="block"
-                      fontSize="14px"
-                      mb={2}
-                      color="gray.500"
-                      _activeLink={{
-                        color: 'primary.100',
-                        bg: 'primary.800',
-                        fontWeight: '500',
-                        borderRadius: 'md',
-                      }}
-                      _hover={{ textDecoration: 'none' }}
-                    >
-                      <NavItem
-                        isOpen={isOpen}
-                        label={submodule.label}
-                        icon={submodule.icon}
-                      />
-                    </Link>
-                  ))}
-                </Box>
-              </Collapse>
-            )}
           </React.Fragment>
         ))}
 

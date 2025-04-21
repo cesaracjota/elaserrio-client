@@ -35,6 +35,8 @@ import { MdSystemUpdate } from 'react-icons/md';
 import ModalRegistrarObservaciones from '../matriculas/ModalRegistrarObservaciones';
 import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
 import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
+import { getAllConfiguraciones } from '../../features/configuracionSlice';
+import ModalEditarMatricula from '../matriculas/ModalEditarMatricula';
 
 const EstudiantesPorGrado = () => {
   const navigate = useNavigate();
@@ -49,9 +51,11 @@ const EstudiantesPorGrado = () => {
   const { matriculas, isLoading, isError, message } = useSelector(
     state => state.matriculas
   );
+  const { configuracion } = useSelector(state => state.configuraciones);
 
   useEffect(() => {
     dispatch(getAllMatriculasByGrado(grado?.id));
+    dispatch(getAllConfiguraciones());
 
     return () => {
       dispatch(reset());
@@ -99,9 +103,9 @@ const EstudiantesPorGrado = () => {
     },
     {
       name: 'GRADO',
-      selector: row => row.grado?.nombre,
+      selector: row => row.grado?.nombre + ' ' + row.grado?.nivel,
       sortable: true,
-      cellExport: row => row.grado?.nombre,
+      cellExport: row => row.grado?.nombre + ' ' + row.grado?.nivel,
       resizable: true,
     },
     {
@@ -139,13 +143,14 @@ const EstudiantesPorGrado = () => {
       center: true,
       cell: row => (
         <div>
-          <ModalRegistrarObservaciones row={row} />
-          <ObserverButton data={row} />
-          <ReportButton data={row} />
-          <AlertEliminar row={row} />
+          <ModalRegistrarObservaciones row={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
+          <ObserverButton data={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
+          <ReportButton data={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
+          <ModalEditarMatricula data={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
+          <AlertEliminar row={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
         </div>
       ),
-      width: '240px',
+      width: '350px',
     },
   ];
 

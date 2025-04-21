@@ -10,7 +10,7 @@ const Footer = ({ isOpen }) => {
                 justifyContent="justify-between"
                 ml={{
                     base: 0,
-                    lg: isOpen ? "280px" : "0"
+                    lg: isOpen ? "300px" : "0"
                 }}
                 transition=".08s ease-out"
             >

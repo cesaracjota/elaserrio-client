@@ -24,7 +24,7 @@ import { VscEdit } from 'react-icons/vsc';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateGrado } from '../../features/gradoSlice';
 
-const ModalEditarGrado = ({ row, academic_year, docentes }) => {
+const ModalEditarGrado = ({ row, docentes }) => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +35,6 @@ const ModalEditarGrado = ({ row, academic_year, docentes }) => {
     nombre: '',
     nivel: '',
     docente_titular: null,
-    academic_year: '',
     sede: sedeSeleccionada?._id,
   };
 
@@ -94,22 +93,6 @@ const ModalEditarGrado = ({ row, academic_year, docentes }) => {
               justifyContent="space-between"
               p={4}
             >
-              <FormControl isRequired>
-                <FormLabel fontWeight="semibold">AÑO ACADEMICO</FormLabel>
-                <Select
-                  onChange={e =>
-                    setIndice({ ...indice, academic_year: e.target.value })
-                  }
-                  defaultValue={indice.academic_year?._id}
-                >
-                  <option>SELECCIONE UN AÑO ACADÉMICO</option>
-                  {academic_year.map(data => (
-                    <option key={data?._id} value={data?._id}>
-                      {data.year}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
               <FormControl>
                 <FormLabel fontWeight="semibold">NOMBRE</FormLabel>
                 <Input
@@ -164,7 +147,7 @@ const ModalEditarGrado = ({ row, academic_year, docentes }) => {
                 >
                   <Stack direction="row">
                     <Radio value="activo">Activo</Radio>
-                    <Radio value="inactivo">Inactivo</Radio>
+                    <Radio colorScheme='red' value="inactivo">Inactivo</Radio>
                   </Stack>
                 </RadioGroup>
               </Stack>

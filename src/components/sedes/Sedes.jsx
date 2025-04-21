@@ -123,7 +123,7 @@ const Sedes = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Heading size="md">Sedes</Heading>
+        <Heading size="md">SEDES</Heading>
         <ModalAgregarSede />
       </Stack>
 

@@ -30,7 +30,6 @@ import ModalAgregarGrado from './ModalAgregarGrado';
 import ModalEditarGrado from './ModalEditarGrado';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import { getAllAcademicYear } from '../../features/academicYearSlice';
 import { TiGroup } from "react-icons/ti";
 import { getAllDocentesTitulares } from '../../features/usuarioSlice';
 
@@ -46,13 +45,11 @@ const Grados = () => {
     state => state.grados
   );
 
-  const { academic_year } = useSelector(state => state.academic_year);
   const { docentes_titulares } = useSelector(state => state.usuarios);
 
   useEffect(() => {
     dispatch(getAllDocentesTitulares(sedeSeleccionada?._id));
     dispatch(getGradosBySede(sedeSeleccionada?._id));
-    dispatch(getAllAcademicYear());
 
     return () => {
       dispatch(reset());
@@ -154,7 +151,7 @@ const Grados = () => {
               rounded="xl"
             />
           </Link>
-          <ModalEditarGrado row={row} academic_year={academic_year} docentes={docentes_titulares} />
+          <ModalEditarGrado row={row} docentes={docentes_titulares} />
           <AlertEliminar row={row} />
         </div>
       ),
@@ -174,8 +171,8 @@ const Grados = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Heading size={'lg'}>GRADOS</Heading>
-        <ModalAgregarGrado academic_year={academic_year} docentes={docentes_titulares} />
+        <Heading size={'md'}>GRADOS</Heading>
+        <ModalAgregarGrado docentes={docentes_titulares} />
       </Stack>
       <Box
         borderRadius="2xl"

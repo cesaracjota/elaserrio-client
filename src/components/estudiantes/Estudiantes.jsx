@@ -123,20 +123,6 @@ const Estudiantes = () => {
             center: true,
             cell: row => (
                 <div>
-                    {/* <Link to={{
-                        pathname: '/estudiantes/pagos/' + row._id
-                    }}>
-                        <Tooltip hasArrow label='Ver Historial de Pagos' placement='auto'>
-                            <IconButton
-                                aria-label="Ver"
-                                icon={<FaFileInvoice />}
-                                fontSize="2xl"
-                                colorScheme="primary"
-                                _dark={{ color: "white", _hover: { bg: "primary.300" } }}
-                                variant={'solid'}
-                            />
-                        </Tooltip>
-                    </Link> */}
                     <Link to={{
                         pathname: `/${sedeSeleccionada?._id}/estudiantes/${row._id}`,
                         state: { estudiante: row }
@@ -198,7 +184,7 @@ const Estudiantes = () => {
         <>
             <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
                 <HStack spacing={4} direction="row" w={'full'} justifyContent={'space-between'}>
-                    <Heading size="md">Lista de Estudiantes</Heading>
+                    <Heading size="md">LISTA DE ESTUDIANTES</Heading>
                     <Link to={{
                         pathname: `/${sedeSeleccionada?._id}/estudiantes/nuevo`,
                         state: { idSede: sedeSeleccionada?._id }

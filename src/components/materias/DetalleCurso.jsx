@@ -119,9 +119,9 @@ const DetalleMateria = () => {
     },
     {
       name: 'GRADO',
-      selector: row => row.grado?.nombre,
+      selector: row => row.grado?.nombre + ' ' + row.grado?.nivel,
       sortable: true,
-      cellExport: row => row.grado?.nombre,
+      cellExport: row => row.grado?.nombre + ' ' + row.grado?.nivel,
       resizable: true,
     },
     {

@@ -156,13 +156,21 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
 
   return (
     <>
-      <Tooltip label={!configuracion?.permitirRegistrarObservadores ? "No tiene permiso para registrar observaciones" : "Registrar observaciones"} placement="auto" hasArrow>
+      <Tooltip
+        label={'Registrar observaciones del estudiante'}
+        placement="auto"
+        hasArrow
+      >
         <IconButton
           colorScheme="purple"
+          _dark={{ bg: 'purple.500', color: 'white', _hover: { bg: 'purple.600' } }}
           isRound
           onClick={handleModalOpen}
           icon={<MdOutlineAddTask />}
-          isDisabled={!configuracion?.permitirRegistrarObservadores}
+          isDisabled={
+            configuracion?.permitirRegistrarObservadores === false || // si hay configuración y no permite ver
+            configuracion !== null
+          }
           mr={2}
           aria-label="Registrar observaciones"
         />
@@ -233,12 +241,14 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
                             {nota.indicadores &&
                               nota.indicadores.map(item => (
                                 <div key={item._id}>
-                                  {item.indicador &&
-                                  item.indicador.length > 0 ? (
-                                    item.indicador.map((subItem, index) => (
-                                      <p key={index}> - {subItem.indicador}</p> // Muestra cada indicador
-                                    ))
-                                  ) : null }
+                                  {item.indicador && item.indicador.length > 0
+                                    ? item.indicador.map((subItem, index) => (
+                                        <p key={index}>
+                                          {' '}
+                                          - {subItem.indicador}
+                                        </p> // Muestra cada indicador
+                                      ))
+                                    : null}
                                 </div>
                               ))}
                           </Td>

@@ -13,11 +13,10 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Radio,
-  RadioGroup,
   Stack,
   Tooltip,
-  Select
+  Select,
+  Switch
 } from '@chakra-ui/react';
 import { VscEdit } from 'react-icons/vsc';
 import { useDispatch } from 'react-redux';
@@ -53,13 +52,6 @@ const ModalEditarApertura = ({ row }) => {
   const handleUpdate = () => {
     dispatch(updateAcademicYear(indice));
     setIsModalOpen(false);
-  };
-
-  const handleRadioChange = value => {
-    setIndice(prevState => ({
-      ...prevState,
-      isActive: value === 'true', // RadioGroup value is a string
-    }));
   };
 
   return (
@@ -136,25 +128,24 @@ const ModalEditarApertura = ({ row }) => {
                     onChange={e => setIndice({ ...indice, periodo: e.target.value })}
                     defaultValue={indice.periodo || ''}
                   >
-                    <option value={1}>I</option>
-                    <option value={2}>II</option>
-                    <option value={3}>III</option>
-                    <option value={4}>IV</option>
+                    <option value={"1"}>I</option>
+                    <option value={"2"}>II</option>
+                    <option value={"3"}>III</option>
+                    <option value={"4"}>IV</option>
                   </Select>
                 </FormControl>
 
                 <FormControl isRequired alignSelf={'center'}>
-                  <FormLabel fontWeight={'semibold'}>Estado</FormLabel>
-                  <RadioGroup
-                    onChange={handleRadioChange}
-                    defaultValue={indice ? indice.isActive.toString() : ''}
-                    value={indice.isActive.toString()} // Convert boolean to string
-                  >
-                    <Stack direction="row">
-                      <Radio value="true">Activo</Radio>
-                      <Radio value="false">Inactivo</Radio>
-                    </Stack>
-                  </RadioGroup>
+                  <FormLabel fontWeight={'semibold'}>Habilitar año académico</FormLabel>
+                  <Switch
+                    colorScheme="green"
+                    size="lg"
+                    isChecked={indice.isActive}
+                    onChange={e =>
+                      setIndice({ ...indice, isActive: e.target.checked })
+                    }
+                    value={indice.isActive.toString()}
+                  />
                 </FormControl>
               </Stack>
             </Stack>

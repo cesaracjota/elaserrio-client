@@ -603,6 +603,7 @@ const ObserverButton = ({ data, configuracion }) => {
         size="md"
         mr={2}
         colorScheme="teal"
+        _dark={{ bg: 'teal.500', color: 'white', _hover: { bg: 'teal.600' } }}
         color="white"
         isRound
         variant="solid"
@@ -610,9 +611,9 @@ const ObserverButton = ({ data, configuracion }) => {
         isLoading={isGenerating}
         onClick={generateAndDownloadPdf}
         isDisabled={
-          data?.observacionesPeriodo?.length > 0
-            ? false
-            : true && !configuracion?.permitirDescargarObservador
+          !data.observacionesPeriodo?.length || // si no hay observaciones, deshabilitar
+          configuracion?.permitirDescargarObservadores === false || // si hay configuración y no permite ver
+          configuracion ==! null
         }
       />
     </Tooltip>

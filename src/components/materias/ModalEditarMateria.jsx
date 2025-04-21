@@ -141,7 +141,7 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
                   >
                     {grados.map(grado => (
                       <option key={grado._id} value={grado._id}>
-                        {grado.nombre}
+                        {grado.nombre} - {grado.nivel}
                       </option>
                     ))}
                   </Select>

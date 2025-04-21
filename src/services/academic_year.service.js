@@ -19,6 +19,17 @@ const getAcademicYear = async id => {
   return response.data;
 };
 
+const getActiveAcademicYear = async token => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  };
+  const response = await axios.get(`${API_URL}/academic_year/active`, config);
+  return response.data;
+};
+
 const createAcademicYear = async (data, token) => {
   const config = {
     headers: {
@@ -86,6 +97,7 @@ const deleteAcademicYear = async (id, token) => {
 const activoService = {
   getAllAcademicYear,
   getAcademicYear,
+  getActiveAcademicYear,
   createAcademicYear,
   updateAcademicYear,
   deleteAcademicYear,

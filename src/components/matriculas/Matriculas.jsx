@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Grid,
   Heading,
   Text,
@@ -41,10 +40,12 @@ import { AlertEliminar } from './AlertEliminar';
 import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
 import { getGradosBySede } from '../../features/gradoSlice';
 import { MdRefresh } from 'react-icons/md';
-import { getAllAcademicYear } from '../../features/academicYearSlice';
+import { getActiveAcademicYear } from '../../features/academicYearSlice';
 import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
 import ModalRegistrarObservaciones from './ModalRegistrarObservaciones';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
+import ModalEditarMatricula from './ModalEditarMatricula';
+import ReporteFichaMatricula from './ReporteFichaMatricula';
 
 const Matriculas = () => {
   const navigate = useNavigate();
@@ -52,15 +53,13 @@ const Matriculas = () => {
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { sedeSeleccionada } = useSelector(state => state.auth);
+  const { sedeSeleccionada, user } = useSelector(state => state.auth);
 
   const { matriculas, currentPage, totalRows } = useSelector(
     state => state.matriculas
   );
 
   const { configuracion } = useSelector(state => state.configuraciones);
-
-  const { academic_year } = useSelector(state => state.academic_year);
 
   const { grados } = useSelector(state => state.grados);
 
@@ -69,7 +68,7 @@ const Matriculas = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getAllAcademicYear());
+    dispatch(getActiveAcademicYear());
     dispatch(getGradosBySede(sedeSeleccionada?._id));
     dispatch(
       getAllMatriculas({
@@ -86,6 +85,14 @@ const Matriculas = () => {
   }, [navigate, dispatch, currentPage, perPage, sedeSeleccionada?._id]);
 
   const columns = [
+    {
+      name: 'CM',
+      selector: row => row.codigo,
+      sortable: true,
+      cellExport: row => row.codigo,
+      resizable: true,
+      width: '110px',
+    },
     {
       name: 'ESTUDIANTE',
       selector: row =>
@@ -115,9 +122,9 @@ const Matriculas = () => {
     },
     {
       name: 'GRADO',
-      selector: row => row.grado?.nombre,
+      selector: row => row.grado?.nombre + ' - ' + row.grado?.nivel,
       sortable: true,
-      cellExport: row => row.grado?.nombre,
+      cellExport: row => row.grado?.nombre + ' - ' + row.grado?.nivel,
       resizable: true,
     },
     {
@@ -155,20 +162,56 @@ const Matriculas = () => {
       center: true,
       cell: row => (
         <div>
-          <ModalRegistrarObservaciones row={row} configuracion={configuracion} />
-          <ObserverButton data={row} configuracion={configuracion} />
-          <ReportButton data={row} configuracion={configuracion} />
-          <AlertEliminar row={row} />
+          <ModalRegistrarObservaciones
+            row={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ObserverButton
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ReportButton
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ModalEditarMatricula
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ReporteFichaMatricula
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <AlertEliminar
+            row={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
         </div>
       ),
-      width: '240px',
+      width: '350px',
     },
   ];
 
   const handlePageChange = page => {
     setPage(page);
     dispatch(
-      getAllMatriculas({ page, perPage, idSede: sedeSeleccionada?._id })
+      getAllMatriculas({
+        page,
+        perPage,
+        idSede: sedeSeleccionada?._id,
+      })
     );
   };
 
@@ -189,7 +232,11 @@ const Matriculas = () => {
 
   const handleUpdateMatricula = () => {
     dispatch(
-      getAllMatriculas({ page: 1, perPage, idSede: sedeSeleccionada?._id })
+      getAllMatriculas({
+        page: 1,
+        perPage,
+        idSede: sedeSeleccionada?._id,
+      })
     );
   };
 
@@ -203,7 +250,7 @@ const Matriculas = () => {
   // }
 
   return (
-    <Container maxW="full">
+    <Box>
       <Grid
         templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
         gap={6}
@@ -232,8 +279,8 @@ const Matriculas = () => {
           w={'full'}
           justifyContent={'space-between'}
         >
-          <Heading size="md">Lista de Estudiantes Matriculadas</Heading>
-          <ModalRegistrarMatricula academic_year={academic_year} configuracion={configuracion} />
+          <Heading size="md">LISTA DE ESTUDIANTES MATRICULADOS</Heading>
+          <ModalRegistrarMatricula configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
         </HStack>
       </Stack>
       <Stack mt={2} spacing={4} direction="row" justifyContent="space-between">
@@ -254,7 +301,7 @@ const Matriculas = () => {
             >
               {grados?.map(data => (
                 <option key={data._id} value={data._id}>
-                  {data.nombre}
+                  {data.nombre} - {data.nivel}
                 </option>
               ))}
             </Select>
@@ -349,7 +396,7 @@ const Matriculas = () => {
           />
         </DataTableExtensions>
       </Box>
-    </Container>
+    </Box>
   );
 };
 

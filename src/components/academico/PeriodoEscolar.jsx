@@ -35,28 +35,26 @@ const PeriodoEscolar = () => {
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { user } = useSelector(state => state.auth);
-
   const { academic_year, isLoading, isError, message } = useSelector(
     state => state.academic_year
   );
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    } else if (!user.token) {
-      navigate('/login');
-    }
-
     dispatch(getAllAcademicYear());
 
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch]);
+  }, [navigate, dispatch]);
 
   if (isError) {
-    CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
+    CustomToast({
+      title: 'Error',
+      message,
+      type: 'error',
+      duration: 1500,
+      position: 'top',
+    });
     console.log(message);
   }
 
@@ -77,16 +75,24 @@ const PeriodoEscolar = () => {
     },
     {
       name: 'FECHA INICIO',
-      selector: row => Moment(row.startDate).format('DD-MM-YYYY'),
+      selector: row =>
+        row?.startDate
+          ? Moment(row.startDate).format('DD-MM-YYYY')
+          : 'sin fecha',
       sortable: true,
-      cellExport: row => Moment(row.startDate).format('DD-MM-YYYY'),
+      cellExport: row =>
+        row?.startDate
+          ? Moment(row.startDate).format('DD-MM-YYYY')
+          : 'sin fecha',
       resizable: true,
     },
     {
       name: 'FECHA FIN',
-      selector: row => Moment(row.endDate).format('DD-MM-YYYY'),
+      selector: row =>
+        row?.startDate ? Moment(row.endDate).format('DD-MM-YYYY') : 'sin fecha',
       sortable: true,
-      cellExport: row => Moment(row.endDate).format('DD-MM-YYYY'),
+      cellExport: row =>
+        row?.startDate ? Moment(row.endDate).format('DD-MM-YYYY') : 'sin fecha',
       resizable: true,
     },
     {
@@ -139,14 +145,10 @@ const PeriodoEscolar = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <HStack spacing={4} direction="row">
-          <ModalAgregarApertura />
-        </HStack>
-        <HStack spacing={4} direction="row">
-          <Text fontSize="lg" fontWeight={'bold'}>
-            Gestión de Periodos Escolares
-          </Text>
-        </HStack>
+        <Text fontSize="lg" fontWeight={'bold'}>
+          GESTION DE AÑO ACADÉMICO
+        </Text>
+        <ModalAgregarApertura />
       </Stack>
       <Box
         borderRadius="2xl"
