@@ -75,7 +75,6 @@ const Configuracion = () => {
   const [config, setConfig] = useState({
     nombreColegio: '',
     permitirRegistrarNotas: false,
-    permitirModificarNotas: false,
     permitirRegistrarMatriculas: false,
     permitirModificarMatriculas: false,
     permitirDescargarFichaMatricula: false,
@@ -440,42 +439,6 @@ const Configuracion = () => {
               <Icon
                 as={config.permitirRegistrarNotas ? UnlockIcon : LockIcon}
                 color={config.permitirRegistrarNotas ? 'green.500' : 'red.500'}
-                fontSize={'25px'}
-              />
-            </FormControl>
-            <FormControl
-              display="flex"
-              alignItems="center"
-              p={3}
-              borderRadius="md"
-              bg={'gray.100'}
-              _dark={{ bg: 'primary.800' }}
-            >
-              <Switch
-                id="permitirModificarNotas"
-                name="permitirModificarNotas"
-                isChecked={config.permitirModificarNotas}
-                onChange={handleSwitch}
-                colorScheme="primary"
-                size="lg"
-              />
-              <Box ml={3}>
-                <FormLabel
-                  htmlFor="permitirModificarNotas"
-                  mb="0"
-                  cursor="pointer"
-                  fontWeight="medium"
-                >
-                  Permitir Modificar notas
-                </FormLabel>
-                <Text fontSize="sm" color={mutedText}>
-                  Permite a los profesores Modificar notas
-                </Text>
-              </Box>
-              <Spacer />
-              <Icon
-                as={config.permitirModificarNotas ? UnlockIcon : LockIcon}
-                color={config.permitirModificarNotas ? 'green.500' : 'red.500'}
                 fontSize={'25px'}
               />
             </FormControl>

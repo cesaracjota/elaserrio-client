@@ -69,6 +69,10 @@ const Matriculas = () => {
 
   const misGradoIds = mis_grados.map(g => g._id.toString());
 
+  const calcularTotalEstudiantesPorGrado = (gradoId) => {
+    return matriculas.filter(m => m.grado._id === gradoId).length;
+  };
+
   const matriculaFiltro = matriculas.filter(m =>
     misGradoIds.includes(m.grado?._id?.toString())
   );
@@ -102,7 +106,7 @@ const Matriculas = () => {
       sortable: true,
       cellExport: row => row.codigo,
       resizable: true,
-      width: '110px',
+      width: '120px',
     },
     {
       name: 'ESTUDIANTE',
@@ -187,6 +191,7 @@ const Matriculas = () => {
           />
           <ReportButton
             data={row}
+            getTotalEstudiantesPorGrado={() => calcularTotalEstudiantesPorGrado(row.grado._id)}
             configuracion={
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }
@@ -201,6 +206,7 @@ const Matriculas = () => {
           />
           <ReporteFichaMatricula
             data={row}
+
             configuracion={
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }

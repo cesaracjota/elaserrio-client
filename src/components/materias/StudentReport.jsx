@@ -275,6 +275,13 @@ const styles = StyleSheet.create({
     fontWeight: 600,
   },
 
+  signatureImage: {
+    width: 120,
+    height: 60,
+    marginBottom: 5,
+    alignSelf: 'center',
+  },
+
   // Enhanced Footer with contact information
   footer: {
     position: 'absolute',
@@ -551,18 +558,21 @@ const StudentReport = ({ students, schoolInfo, courseInfo }) => {
         {/* Professional Signature section */}
         <View style={styles.signatureSection}>
           <View style={styles.signature}>
+            <Image src={schoolInfo.firmaUrl} style={styles.signatureImage} />
             <View style={styles.signatureLine}></View>
-            <Text style={styles.signatureText}>Director(a) Académico</Text>
+            <Text style={styles.signatureText}>Rector(a) Académico</Text>
           </View>
           
           <View style={styles.signature}>
+            <View style={styles.signatureImage} />
             <View style={styles.signatureLine}></View>
-            <Text style={styles.signatureText}>Profesor(a) Titular</Text>
+            <Text style={styles.signatureText}>Docente Titular</Text>
           </View>
           
           <View style={styles.signature}>
+            <View style={styles.signatureImage} />
             <View style={styles.signatureLine}></View>
-            <Text style={styles.signatureText}>Sello Institucional</Text>
+            <Text style={styles.signatureText}>Docente</Text>
           </View>
         </View>
         
@@ -590,6 +600,7 @@ const DownloadStudentReport = ({ students, schoolInfo, courseInfo }) => {
   const defaultSchoolInfo = {
     name: globalInformation.colegioNombre,
     logoUrl: globalInformation.logoColegio,
+    firmaUrl: globalInformation.firmaRector,
     address: globalInformation.direccionColegio,
     phone: globalInformation.telefonoColegio,
     email: globalInformation.emailColegio,

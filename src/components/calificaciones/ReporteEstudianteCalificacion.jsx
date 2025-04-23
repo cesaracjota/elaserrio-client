@@ -11,6 +11,7 @@ import {
 import { Tooltip, IconButton } from '@chakra-ui/react';
 import { FiFileText } from 'react-icons/fi';
 import LogoColegio from '../../assets/img/logoColegio.png';
+import FirmaRector from '../../assets/img/firmaRector.png'; // Importa la firma del rector
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllNotasByStudent } from '../../features/notaSlice';
 import globalInformation from '../../helpers/globalInformation';
@@ -299,6 +300,12 @@ const styles = StyleSheet.create({
     color: '#34495E',
     textAlign: 'center',
   },
+  signatureImage: {
+    width: 120,
+    height: 60,
+    marginBottom: 5,
+    alignSelf: 'center',
+  },
 
   // Pie de página
   footer: {
@@ -343,7 +350,13 @@ const getGradeColor = grade => {
 };
 
 // Componente principal del reporte
-const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
+const AcademicReportPDF = ({
+  studentData,
+  subjectData,
+  schoolInfo,
+  sede,
+  totalEstudiantesPorGrado,
+}) => {
   // Extraer información del estudiante
   const student = studentData?.estudiante || {};
   const academicYear = studentData?.academic_year || '2025';
@@ -359,7 +372,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
         {/* Encabezado con información de la institución */}
         <View style={styles.headerContainer}>
           <View style={styles.logoContainer}>
-            <Image src={schoolInfo?.logoUrl || LogoColegio} />
+            <Image src={LogoColegio} />
           </View>
           <View style={styles.schoolInfoContainer}>
             <Text style={styles.schoolName}>
@@ -402,7 +415,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
             <Text style={styles.studentInfoValue}>{academicYear?.periodo}</Text>
             <Text style={styles.studentInfoLabel}>PUESTO:</Text>
             <Text style={styles.studentInfoValue}>
-              {position} de {totalStudents}
+              {position} de {totalEstudiantesPorGrado}
             </Text>
           </View>
         </View>
@@ -464,8 +477,9 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
               const gradeColor = getGradeColor(promedio);
               const isEvenRow = index % 2 === 0;
               const indicadoresPeriodo =
-                subject?.indicadores?.find(i => i.periodo === academicYear?.periodo)
-                  ?.indicador || [];
+                subject?.indicadores?.find(
+                  i => i.periodo === academicYear?.periodo
+                )?.indicador || [];
 
               return (
                 <React.Fragment key={index}>
@@ -527,9 +541,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
                   {indicadoresPeriodo.map((item, index) => (
                     <View style={styles.observationRow} key={index}>
                       <Text style={styles.observationText}>
-                        <Text style={styles.observationLabel}>
-                          {"- "}
-                        </Text>
+                        <Text style={styles.observationLabel}>{'- '}</Text>
                         {item?.indicador || '—'}
                       </Text>
                     </View>
@@ -557,7 +569,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
               </Text>
             </View>
             <Text style={styles.averageValue}>
-              PROMEDIO GENERAL: {studentData?.promedioGeneral?.toFixed(3) || 0} 
+              PROMEDIO GENERAL: {studentData?.promedioGeneral?.toFixed(3) || 0}
             </Text>
           </View>
           <View style={styles.summaryBox}>
@@ -586,6 +598,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
         {/* Sección de firmas */}
         <View style={styles.signatureSection}>
           <View style={styles.signature}>
+            <Image src={FirmaRector} style={styles.signatureImage} />
             <View style={styles.signatureLine}></View>
             <Text style={styles.signatureText}>Rector(a)</Text>
             <Text style={[styles.signatureText, { fontWeight: 700 }]}>
@@ -593,11 +606,11 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
             </Text>
           </View>
           <View style={styles.signature}>
+            <View style={styles.signatureImage} />
             <View style={styles.signatureLine}></View>
             <Text style={styles.signatureText}>Docente Titular</Text>
             <Text style={[styles.signatureText, { fontWeight: 700 }]}>
-              {grade?.docente_titular?.nombre ||
-                'NOMBRE DEL DOCENTE TITULAR'}
+              {grade?.docente_titular?.nombre || 'NOMBRE DEL DOCENTE TITULAR'}
             </Text>
           </View>
         </View>
@@ -625,7 +638,7 @@ const AcademicReportPDF = ({ studentData, subjectData, schoolInfo, sede }) => {
 };
 
 // Componente botón para generar y descargar el reporte
-const ReportButton = ({ data, configuracion }) => {
+const ReportButton = ({ data, configuracion, getTotalEstudiantesPorGrado }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const dispatch = useDispatch();
 
@@ -640,6 +653,8 @@ const ReportButton = ({ data, configuracion }) => {
   };
 
   const generateAndDownloadPdf = async () => {
+    const totalEstudiantesPorGrado = await getTotalEstudiantesPorGrado();
+
     if (!data?._id) {
       CustomToast({
         title: 'Error',
@@ -671,6 +686,7 @@ const ReportButton = ({ data, configuracion }) => {
           sede={sedeSeleccionada}
           subjectData={notas}
           schoolInfo={defaultSchoolInfo}
+          totalEstudiantesPorGrado={totalEstudiantesPorGrado}
         />
       );
 
@@ -721,7 +737,11 @@ const ReportButton = ({ data, configuracion }) => {
         mr={2}
         color={'white'}
         colorScheme="primary"
-        _dark={{ bg: 'primary.500', color: 'white', _hover: { bg: 'primary.600' } }}
+        _dark={{
+          bg: 'primary.500',
+          color: 'white',
+          _hover: { bg: 'primary.600' },
+        }}
         isRound
         variant="solid"
         aria-label="Generar boletín PDF"
@@ -729,7 +749,7 @@ const ReportButton = ({ data, configuracion }) => {
         onClick={generateAndDownloadPdf}
         isDisabled={
           configuracion?.permitirDescargarObservadores === false || // si hay configuración y no permite ver
-          configuracion ==! null
+          configuracion == !null
         }
       />
     </Tooltip>

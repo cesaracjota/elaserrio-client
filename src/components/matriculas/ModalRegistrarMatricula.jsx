@@ -106,8 +106,7 @@ const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
 
   const handleSave = () => {
     dispatch(createMatricula(indice));
-    setIsModalOpen(false);
-    setIndice(initialValues);
+    handleModalClose();
   };
 
   const handleSelectEstudiante = data => {

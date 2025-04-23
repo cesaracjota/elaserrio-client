@@ -37,8 +37,8 @@ import {
   FaGraduationCap,
 } from 'react-icons/fa';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
-import { MdOutlinePlaylistAddCheckCircle } from 'react-icons/md';
 import { CircleCheck } from 'lucide-react';
+import CustomBackRoute from '../../helpers/CustomBackRoute';
 
 const DetalleMateria = () => {
   const dispatch = useDispatch();
@@ -168,8 +168,10 @@ const DetalleMateria = () => {
         p={6}
       >
         <Flex justify="space-between" align="center">
+          <CustomBackRoute />
           <Stack
             spacing={2}
+            ml={2}
             w="full"
             direction="row"
             justifyContent={'space-between'}

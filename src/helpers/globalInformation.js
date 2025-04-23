@@ -1,5 +1,6 @@
 // global Informacion
 import logoColegio from '../assets/img/logoColegio.png';
+import firmaRector from '../assets/img/firmaRector.png';
 
 const globalInformation = {
     colegioNombre: 'INSTITUCION EDUCATIVA EL ASERRÍO',
@@ -13,7 +14,8 @@ const globalInformation = {
     secretaria_educacion: "SECRETARÍA DE EDUCACIÓN DEPARTAMENTAL",
     municipio: "MUNICIPIO DE TEORAMA",
     institucion_educativa: "INSTITUCIÓN EDUCATIVA EL ASERRÍO",
-    rector: "AUGUSTO GOMEZ GARCÍA",
+    rector: "RAUL JHONEDINSON MARTINEZ SUAREZ",
+    firmaRector: firmaRector,
     subdireccion: "SUBDIRECCIÓN DE EDUCACIÓN RURAL",
     decretos: [
       {

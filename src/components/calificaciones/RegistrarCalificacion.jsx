@@ -477,6 +477,7 @@ const RegistrarCalificacionPage = () => {
           justify="space-between"
           align="center"
           mb={6}
+          mt={2}
           p={4}
           borderRadius="lg"
           boxShadow="base"
