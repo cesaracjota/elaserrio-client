@@ -149,7 +149,7 @@ const EditarEstudiante = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, params.id]);
+  }, [dispatch, params.id]);
 
   const handleChange = (field, value) => {
     setEstudiante(prev => {

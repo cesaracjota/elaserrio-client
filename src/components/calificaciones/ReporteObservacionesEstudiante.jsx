@@ -612,8 +612,7 @@ const ObserverButton = ({ data, configuracion }) => {
         onClick={generateAndDownloadPdf}
         isDisabled={
           !data.observacionesPeriodo?.length || // si no hay observaciones, deshabilitar
-          configuracion?.permitirDescargarObservadores === false || // si hay configuración y no permite ver
-          configuracion ==! null
+          configuracion?.permitirDescargarObservadores === false
         }
       />
     </Tooltip>

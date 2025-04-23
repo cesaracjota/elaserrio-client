@@ -13,22 +13,19 @@ import {
   useColorModeValue,
   Grid,
   GridItem,
-  IconButton,
-  Badge,
+  Tag,
   Progress,
 } from '@chakra-ui/react';
 import {
   BookOpen,
   Calendar,
   Users,
-  FileText,
-  ChevronRight,
   ClipboardList,
   BarChart2,
-  AlertCircle,
+  GraduationCap,
 } from 'lucide-react';
 
-const DashboardDocenteTitular = () => {
+const DashboardDocenteTitular = ({ reportes}) => {
   const [greeting, setGreeting] = useState('');
   const cardBg = useColorModeValue('white', 'primary.900');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
@@ -42,43 +39,6 @@ const DashboardDocenteTitular = () => {
     else if (hour < 18) setGreeting('Buenas tardes');
     else setGreeting('Buenas noches');
   }, []);
-
-  const docenteData = {
-    stats: [
-      { label: 'Mis Estudiantes', value: '32', icon: Users },
-      { label: 'Mis Cursos', value: '4', icon: BookOpen },
-      { label: 'Tareas por Calificar', value: '12', icon: ClipboardList },
-      { label: 'Próximas Clases', value: '3', icon: Calendar },
-    ],
-    notifications: [
-      {
-        type: 'alert',
-        message: 'Entrega pendiente en Matemática - 6°A',
-        time: 'Hace 20 minutos',
-      },
-      {
-        type: 'info',
-        message: 'Reunión con padres programada',
-        time: 'Ayer',
-      },
-      {
-        type: 'success',
-        message: 'Clase registrada exitosamente',
-        time: 'Hace 3 días',
-      },
-    ],
-  };
-
-  const getNotificationColor = type => {
-    switch (type) {
-      case 'alert':
-        return 'red.500';
-      case 'success':
-        return 'green.500';
-      default:
-        return 'blue.500';
-    }
-  };
 
   return (
     <Box minH="100vh">
@@ -137,10 +97,8 @@ const DashboardDocenteTitular = () => {
         </Card>
 
         {/* Estadísticas */}
-        <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={4}>
-          {docenteData.stats.map((stat, index) => (
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 2 }} spacing={4}>
             <Card
-              key={index}
               borderRadius="lg"
               boxShadow="sm"
               _dark={{ bg: 'primary.900'}}
@@ -149,27 +107,81 @@ const DashboardDocenteTitular = () => {
             >
               <CardBody>
                 <Flex justify="space-between" mb={2}>
-                  <Icon as={stat.icon} boxSize={6} color={accentColor} />
-                  <Badge colorScheme="blue" variant="subtle">
-                    Hoy
-                  </Badge>
+                  <Icon as={Users} boxSize={6} color={accentColor} />
                 </Flex>
                 <Text fontSize="3xl" fontWeight="bold" color={textColor}>
-                  {stat.value}
+                  {reportes?.resumen?.totalEstudiantesMatriculados || 0}
                 </Text>
                 <Text fontSize="sm" color={secondaryTextColor}>
-                  {stat.label}
+                  TOTAL DE ESTUDIANTES MATRICULADOS
                 </Text>
                 <Progress
                   mt={2}
                   size="xs"
-                  value={Math.floor(Math.random() * 100)}
+                  value={
+                    reportes?.resumen?.totalEstudiantesMatriculados / reportes?.resumen?.totalEstudiantesGeneral
+                  }
                   colorScheme="blue"
                   borderRadius="full"
                 />
               </CardBody>
             </Card>
-          ))}
+            <Card
+              borderRadius="lg"
+              boxShadow="sm"
+              _dark={{ bg: 'primary.900'}}
+              borderWidth="1px"
+              borderColor={borderColor}
+            >
+              <CardBody>
+                <Flex justify="space-between" mb={2}>
+                  <Icon as={BookOpen} boxSize={6} color={accentColor} />
+                </Flex>
+                <Text fontSize="3xl" fontWeight="bold" color={textColor}>
+                  {reportes?.resumen?.totalGradosAsignados || 0}
+                </Text>
+                <Text fontSize="sm" color={secondaryTextColor}>
+                  TOTAL DE ESTUDIANTES MATRICULADOS
+                </Text>
+                <Progress
+                  mt={2}
+                  size="xs"
+                  value={
+                    reportes?.resumen?.totalGradosAsignados / 100
+                  }
+                  colorScheme="blue"
+                  borderRadius="full"
+                />
+              </CardBody>
+            </Card>
+            <Card
+              borderRadius="lg"
+              boxShadow="sm"
+              _dark={{ bg: 'primary.900'}}
+              borderWidth="1px"
+              borderColor={borderColor}
+            >
+              <CardBody>
+                <Flex justify="space-between" mb={2}>
+                  <Icon as={Users} boxSize={6} color={accentColor} />
+                </Flex>
+                <Text fontSize="3xl" fontWeight="bold" color={textColor}>
+                  {reportes?.resumen?.totalMateriasAsignadas || 0}
+                </Text>
+                <Text fontSize="sm" color={secondaryTextColor}>
+                  TOTAL DE MATERIAS ASIGNADAS
+                </Text>
+                <Progress
+                  mt={2}
+                  size="xs"
+                  value={
+                    reportes?.resumen?.totalMateriasAsignadas / 100
+                  }
+                  colorScheme="blue"
+                  borderRadius="full"
+                />
+              </CardBody>
+            </Card>
         </SimpleGrid>
 
         {/* Notificaciones */}
@@ -183,43 +195,72 @@ const DashboardDocenteTitular = () => {
           <CardBody>
             <Flex justify="space-between" align="center" mb={4}>
               <Heading size="md" color={textColor}>
-                Notificaciones
+                Materias Asignadas
               </Heading>
-              <Button
-                size="xs"
-                variant="ghost"
-                colorScheme="blue"
-                rightIcon={<ChevronRight size={14} />}
-              >
-                Ver todas
-              </Button>
             </Flex>
             <VStack spacing={3} align="stretch">
-              {docenteData.notifications.map((n, i) => (
+              {reportes?.materias?.map((data, i) => (
                 <Flex
                   key={i}
                   p={4}
                   borderWidth="1px"
-                  borderRadius="md"
-                  borderLeftWidth="4px"
-                  borderLeftColor={getNotificationColor(n.type)}
+                  borderRadius="xl"
+                  borderLeftWidth="8px"
+                  borderLeftColor={data?.brand_color || '#000000'}
                   align="center"
                   justify="space-between"
                 >
                   <Box>
                     <Text fontWeight="medium" color={textColor} fontSize="sm">
-                      {n.message}
+                      {data?.nombre || 'No nombre'}
                     </Text>
                     <Text fontSize="xs" color={secondaryTextColor}>
-                      {n.time}
+                      {data?.descripcion || 'No descripción'}
                     </Text>
                   </Box>
-                  <IconButton
-                    aria-label="Detalles"
-                    icon={<ChevronRight size={16} />}
-                    size="sm"
-                    variant="ghost"
-                  />
+                  <Tag bg={data?.brand_color} color={'white'} px={2} variant={'subtle'}>
+                    <Icon as={GraduationCap} mr={2} boxSize={4} />
+                    {data?.grado?.nombre || 'Grado'}
+                  </Tag>
+                </Flex>
+              ))}
+            </VStack>
+          </CardBody>
+        </Card>
+        <Card
+          bg={cardBg}
+          borderRadius="lg"
+          boxShadow="sm"
+          borderWidth="1px"
+          borderColor={borderColor}
+        >
+          <CardBody>
+            <Flex justify="space-between" align="center" mb={4}>
+              <Heading size="md" color={textColor}>
+                Grados a Cargo
+              </Heading>
+            </Flex>
+            <VStack spacing={3} align="stretch">
+              {reportes?.gradosAsignados?.map((data, i) => (
+                <Flex
+                  key={i}
+                  p={4}
+                  borderWidth="1px"
+                  borderRadius="xl"
+                  borderLeftWidth="8px"
+                  borderLeftColor={'teal'}
+                  align="center"
+                  justify="space-between"
+                >
+                  <Tag colorScheme='teal' color={'white'} px={2} variant={'solid'}>
+                    <Icon as={GraduationCap} mr={2} boxSize={4} />
+                    {data?.nombre || 'S/N'}
+                  </Tag>
+                  <Box>
+                    <Text fontSize="xs" color={secondaryTextColor}>
+                      {data?.nivel || 'No nivel'}
+                    </Text>
+                  </Box>                  
                 </Flex>
               ))}
             </VStack>

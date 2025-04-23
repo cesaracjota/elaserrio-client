@@ -53,7 +53,7 @@ function Layout({ children }) {
           icon: FaSchool,
           label: 'MATRICULAS',
           path: `/matriculas`,
-          allowedRoles: ['ADMIN_ROLE'],
+          allowedRoles: ['ADMIN_ROLE', 'DOCENTE_TITULAR_ROLE'],
         },    
         {
           icon: FaSchool,

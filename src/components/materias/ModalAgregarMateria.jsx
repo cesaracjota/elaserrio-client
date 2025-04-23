@@ -14,9 +14,10 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Select,
+  Select as SelectChakra,
   Textarea,
 } from '@chakra-ui/react';
+import { Select } from 'chakra-react-select';
 import { useDispatch } from 'react-redux';
 import { createMateria } from '../../features/materiaSlice';
 
@@ -53,6 +54,20 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
     setIndice(initialValues);
   };
 
+  const colorOptions = [
+    { label: 'ROJO', value: '#FF5733' },
+    { label: 'VERDE', value: '#33FF57' },
+    { label: 'AZUL', value: '#3357FF' },
+    { label: 'AMARILLO', value: '#FFD700' },
+    { label: 'ROSADO', value: '#FF69B4' },
+    { label: 'VIOLETA', value: '#8A2BE2' },
+    { label: 'TURQUESA', value: '#00CED1' },
+    { label: 'NARANJA', value: '#FFA500' },
+    { label: 'MARRÓN', value: '#A52A2A' },
+    { label: 'GRIS OSCURO', value: '#2F4F4F' },
+    { label: 'CUSTOM', value: '#000000' },
+  ];
+  
   return (
     <>
       <Button
@@ -68,73 +83,71 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
       >
         REGISTRAR NUEVA ASIGNATURA
       </Button>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        size="5xl"
-        isCentered
-      >
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} size="5xl" isCentered>
         <ModalOverlay
           bg="rgba(11,15,25, 0.8)"
           backdropFilter="auto"
           backdropBlur="2px"
         />
         <ModalContent _dark={{ bg: 'primary.1000' }} borderRadius="2xl">
-          <ModalHeader textAlign="center">REGISTRAR NUEVA MATERIA ASIGNATURA</ModalHeader>
+          <ModalHeader textAlign="center">
+            REGISTRAR NUEVA MATERIA ASIGNATURA
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack
-              spacing={4}
-              direction="column"
-              justifyContent="space-between"
-              p={4}
-            >
-              <Stack
-                spacing={4}
-                direction={['column', 'column', 'row']}
-                justifyContent={'space-between'}
-              >
+            <Stack spacing={4} direction="column" justifyContent="space-between" p={4}>
+              <Stack spacing={4} direction={['column', 'column', 'row']} justifyContent={'space-between'}>
                 <FormControl isRequired>
                   <FormLabel fontWeight="semibold">NOMBRE</FormLabel>
                   <Input
                     placeholder="Nombre del Curso"
                     type="text"
-                    onChange={e =>
-                      setIndice({ ...indice, nombre: e.target.value })
-                    }
+                    onChange={e => setIndice({ ...indice, nombre: e.target.value })}
                   />
                 </FormControl>
-                <FormControl w={'10%'}>
+                <FormControl w="50%">
                   <FormLabel fontWeight="semibold">COLOR</FormLabel>
-                  <Input
-                    type="color"
-                    onChange={e =>
-                      setIndice({ ...indice, brand_color: e.target.value })
+                  <Select
+                    options={colorOptions}
+                    value={colorOptions.find(c => c.value === indice.brand_color)}
+                    onChange={option =>
+                      setIndice({ ...indice, brand_color: option.value })
                     }
-                    defaultValue={indice ? indice.brand_color : '#000000'}
+                    isSearchable={false}
+                    getOptionLabel={e => (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div
+                          style={{
+                            width: 12,
+                            height: 12,
+                            borderRadius: '50%',
+                            backgroundColor: e.value,
+                          }}
+                        />
+                        {e.label}
+                      </div>
+                    )}
                   />
                 </FormControl>
               </Stack>
+
               <Stack spacing={4} direction="row" justifyContent="space-between">
                 <FormControl isRequired>
                   <FormLabel fontWeight="semibold">DESCRIPCIÓN</FormLabel>
                   <Textarea
                     placeholder="Descripción del Curso"
                     rows={4}
-                    onChange={e =>
-                      setIndice({ ...indice, descripcion: e.target.value })
-                    }
+                    onChange={e => setIndice({ ...indice, descripcion: e.target.value })}
                   />
                 </FormControl>
               </Stack>
+
               <Stack spacing={4} direction="row" justifyContent="space-between">
                 <FormControl>
                   <FormLabel fontWeight="semibold">GRADO</FormLabel>
-                  <Select
+                  <SelectChakra
                     placeholder="Seleccione el grado"
-                    onChange={e =>
-                      setIndice({ ...indice, grado: e.target.value })
-                    }
+                    onChange={e => setIndice({ ...indice, grado: e.target.value })}
                     defaultValue={indice ? indice.grado : ''}
                   >
                     {grados.map(grado => (
@@ -142,7 +155,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                         {grado.nombre} - {grado.nivel}
                       </option>
                     ))}
-                  </Select>
+                  </SelectChakra>
                 </FormControl>
                 <FormControl>
                   <FormLabel fontWeight="semibold">INTENSIDAD HORARIA SEMANAL</FormLabel>
@@ -150,21 +163,21 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                     placeholder="Intensidad horaria semanal"
                     type="number"
                     onChange={e =>
-                      setIndice({ ...indice, intensidadHorariaSemanal: e.target.value })
+                      setIndice({
+                        ...indice,
+                        intensidadHorariaSemanal: e.target.value,
+                      })
                     }
                   />
                 </FormControl>
               </Stack>
 
               <Stack spacing={4} direction="row" justifyContent="space-between">
-                
-              <FormControl>
+                <FormControl>
                   <FormLabel fontWeight="semibold">ASIGNAR DOCENTE</FormLabel>
-                  <Select
+                  <SelectChakra
                     placeholder="Seleccione el docente"
-                    onChange={e =>
-                      setIndice({ ...indice, docente: e.target.value })
-                    }
+                    onChange={e => setIndice({ ...indice, docente: e.target.value })}
                     defaultValue={indice ? indice.docente : ''}
                   >
                     {docentes.map(docente => (
@@ -172,7 +185,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
                         {docente.nombre}
                       </option>
                     ))}
-                  </Select>
+                  </SelectChakra>
                 </FormControl>
               </Stack>
 
@@ -195,12 +208,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              size="lg"
-              mr={3}
-              onClick={handleModalClose}
-              borderRadius="xl"
-            >
+            <Button size="lg" mr={3} onClick={handleModalClose} borderRadius="xl">
               CANCELAR
             </Button>
             <Button
@@ -215,9 +223,7 @@ const ModalAgregarMateria = ({ grados, docentes, sede }) => {
               size="lg"
               mr={3}
               onClick={handleSave}
-              isDisabled={
-                indice.nombre === '' || indice.grado === ''
-              }
+              isDisabled={indice.nombre === '' || indice.grado === ''}
               borderRadius="xl"
             >
               GUARDAR

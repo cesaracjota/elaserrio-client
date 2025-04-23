@@ -38,6 +38,7 @@ import {
 } from 'react-icons/fa';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import { MdOutlinePlaylistAddCheckCircle } from 'react-icons/md';
+import { CircleCheck } from 'lucide-react';
 
 const DetalleMateria = () => {
   const dispatch = useDispatch();
@@ -135,12 +136,12 @@ const DetalleMateria = () => {
           >
             <IconButton
               aria-label="Editar materia"
-              icon={<MdOutlinePlaylistAddCheckCircle size={32} />}
+              icon={<CircleCheck size={32} />}
               isDisabled={!configuracion?.permitirRegistrarNotas}
               size="lg"
               isRound
               colorScheme="green"
-              variant="outline"
+              variant="solid"
             />
           </Link>
         </Stack>

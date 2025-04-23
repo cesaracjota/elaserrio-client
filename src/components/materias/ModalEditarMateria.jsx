@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   FormControl,
-  Select,
   FormLabel,
   Icon,
   IconButton,
@@ -20,10 +19,12 @@ import {
   Text,
   Textarea,
   Tooltip,
+  Select,
 } from '@chakra-ui/react';
 import { VscEdit } from 'react-icons/vsc';
 import { useDispatch } from 'react-redux';
 import { updateMateria } from '../../features/materiaSlice';
+import { Select as ChakraReactSelect } from 'chakra-react-select';
 
 const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
   const dispatch = useDispatch();
@@ -56,6 +57,25 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
   const handleUpdate = () => {
     dispatch(updateMateria(indice));
     setIsModalOpen(false);
+  };
+
+  const colorOptions = [
+    { label: 'ROJO', value: '#FF5733' },
+    { label: 'VERDE', value: '#33FF57' },
+    { label: 'AZUL', value: '#3357FF' },
+    { label: 'AMARILLO', value: '#FFD700' },
+    { label: 'ROSADO', value: '#FF69B4' },
+    { label: 'VIOLETA', value: '#8A2BE2' },
+    { label: 'TURQUESA', value: '#00CED1' },
+    { label: 'NARANJA', value: '#FFA500' },
+    { label: 'MARRÓN', value: '#A52A2A' },
+    { label: 'GRIS OSCURO', value: '#2F4F4F' },
+    { label: 'CUSTOM', value: '#000000' },
+  ];
+
+  const getColorLabel = hex => {
+    const found = colorOptions.find(opt => opt.value === hex);
+    return found ? found.label : 'Color personalizado';
   };
 
   return (
@@ -105,14 +125,31 @@ const ModalEditarMateria = ({ row, grados, docentes, sede }) => {
                     }
                   />
                 </FormControl>
-                <FormControl w={'10%'}>
+                <FormControl w="50%">
                   <FormLabel fontWeight="semibold">COLOR</FormLabel>
-                  <Input
-                    type="color"
-                    defaultValue={indice ? indice.brand_color : '#000000'}
-                    onChange={e =>
-                      setIndice({ ...indice, brand_color: e.target.value })
+                  <ChakraReactSelect
+                    options={colorOptions}
+                    value={{
+                      label: getColorLabel(indice.brand_color),
+                      value: indice.brand_color,
+                    }}
+                    onChange={option =>
+                      setIndice({ ...indice, brand_color: option.value })
                     }
+                    isSearchable={false}
+                    getOptionLabel={e => (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div
+                          style={{
+                            width: 12,
+                            height: 12,
+                            borderRadius: '50%',
+                            backgroundColor: e.value,
+                          }}
+                        />
+                        {e.label}
+                      </div>
+                    )}
                   />
                 </FormControl>
               </Stack>

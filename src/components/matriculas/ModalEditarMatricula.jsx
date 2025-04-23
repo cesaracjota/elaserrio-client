@@ -24,29 +24,26 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEstudianteSearch } from '../../features/estudianteSlice';
+import { getEstudianteSearch, reset } from '../../features/estudianteSlice';
 import { CustomToast } from '../../helpers/toast';
 import { useNavigate } from 'react-router-dom';
 import { updateMatricula } from '../../features/matriculaSlice';
 import { FiEdit3 } from 'react-icons/fi';
-import { getGradosBySede, reset } from '../../features/gradoSlice';
 
-const ModalEditarMatricula = ({ data, configuracion }) => {
+const ModalEditarMatricula = ({ data, configuracion, grados, mis_grados }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { sedeSeleccionada } = useSelector(state => state.auth);
+  const { sedeSeleccionada, user } = useSelector(state => state.auth);
   const { isError, message } = useSelector(state => state.matriculas);
-  const { grados } = useSelector(state => state.grados);
 
   useEffect(() => {
     dispatch(getEstudianteSearch(''));
-    dispatch(getGradosBySede(sedeSeleccionada._id));
     return () => {
       dispatch(reset());
     };
-  }, [navigate, dispatch, sedeSeleccionada._id]);
+  }, [navigate, dispatch]);
 
   if (isError) {
     CustomToast({
@@ -99,8 +96,7 @@ const ModalEditarMatricula = ({ data, configuracion }) => {
         isRound
         fontSize={'sm'}
         isDisabled={
-          configuracion?.permitirModificarMatriculas === false ||
-          configuracion !== null
+          configuracion?.permitirModificarMatriculas === false
         }
         onClick={() => handleModalOpen(data)}
         mr={2}
@@ -179,22 +175,41 @@ const ModalEditarMatricula = ({ data, configuracion }) => {
                     direction="row"
                     justifyContent="space-between"
                   >
-                    <FormControl>
-                      <FormLabel>GRADO A MATRICULAR</FormLabel>
-                      <SelectChakra
-                        onChange={e =>
-                          setIndice({ ...indice, grado: e.target.value })
-                        }
-                        defaultValue={indice?.grado?._id || ''}
-                      >
-                        <option>SELECCIONE GRADO A MATRICULAR</option>
-                        {grados?.map(data => (
-                          <option key={data?._id} value={data?._id}>
-                            {data.nombre} - {data.nivel}
-                          </option>
-                        ))}
-                      </SelectChakra>
-                    </FormControl>
+                    {user?.usuario?.rol === 'ADMIN_ROLE' ? (
+                      <FormControl>
+                        <FormLabel>GRADO A MATRICULAR</FormLabel>
+                        <SelectChakra
+                          onChange={e =>
+                            setIndice({ ...indice, grado: e.target.value })
+                          }
+                          defaultValue={indice?.grado?._id || ''}
+                        >
+                          <option>SELECCIONE GRADO A MATRICULAR</option>
+                          {grados?.map(data => (
+                            <option key={data?._id} value={data?._id}>
+                              {data.nombre} - {data.nivel}
+                            </option>
+                          ))}
+                        </SelectChakra>
+                      </FormControl>
+                    ) : (
+                      <FormControl>
+                        <FormLabel>GRADO A MATRICULAR</FormLabel>
+                        <SelectChakra
+                          onChange={e =>
+                            setIndice({ ...indice, grado: e.target.value })
+                          }
+                          defaultValue={indice?.grado?._id || ''}
+                        >
+                          <option>SELECCIONE GRADO A MATRICULAR</option>
+                          {mis_grados?.map(data => (
+                            <option key={data?._id} value={data?._id}>
+                              {data.nombre} - {data.nivel}
+                            </option>
+                          ))}
+                        </SelectChakra>
+                      </FormControl>
+                    )}                  
                   </Stack>
                   <FormControl>
                     <FormLabel fontWeight="semibold">OBSERVACIONES</FormLabel>

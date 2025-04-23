@@ -340,6 +340,44 @@ const Configuracion = () => {
               _dark={{ bg: 'primary.800' }}
             >
               <Switch
+                id="permitirModificarMatriculas"
+                name="permitirModificarMatriculas"
+                isChecked={config.permitirModificarMatriculas}
+                onChange={handleSwitch}
+                colorScheme="primary"
+                size="lg"
+              />
+              <Box ml={3}>
+                <FormLabel
+                  htmlFor="permitirModificarMatriculas"
+                  mb="0"
+                  cursor="pointer"
+                  fontWeight="medium"
+                >
+                  Permitir Modificar registro de matriculas
+                </FormLabel>
+                <Text fontSize="sm" color={mutedText}>
+                  Permite a los docentes modificar registro de matriculas
+                </Text>
+              </Box>
+              <Spacer />
+              <Icon
+                as={config.permitirModificarMatriculas ? UnlockIcon : LockIcon}
+                color={
+                  config.permitirModificarMatriculas ? 'green.500' : 'red.500'
+                }
+                fontSize={'25px'}
+              />
+            </FormControl>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              p={3}
+              borderRadius="md"
+              bg={'gray.100'}
+              _dark={{ bg: 'primary.800' }}
+            >
+              <Switch
                 id="permitirEliminarMatriculas"
                 name="permitirEliminarMatriculas"
                 isChecked={config.permitirEliminarMatriculas}

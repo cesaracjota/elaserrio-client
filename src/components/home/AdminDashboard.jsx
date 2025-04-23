@@ -4,292 +4,356 @@ import {
   Flex,
   Text,
   Heading,
-  Button,
   SimpleGrid,
   Card,
   CardBody,
-  Stack,
-  VStack,
-  Badge,
+  Container,
   Icon,
-  Grid,
-  GridItem,
-  IconButton,
-  useColorModeValue,
   Progress,
+  HStack,
+  VStack,
+  Stat,
+  StatNumber,
+  StatLabel,
+  Badge,
+  Divider
 } from '@chakra-ui/react';
 import {
-  Settings,
-  User,
   Users,
-  FileText,
-  ChevronRight,
-  Activity,
-  BarChart2,
-  Layers,
-  Download,
-  PieChart,
-  Monitor,
+  User,
+  BookOpen,
+  Shield,
+  TrendingUp
 } from 'lucide-react';
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ reportes }) => {
   const [greeting, setGreeting] = useState('');
-
-  const cardBg = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
-  const textColor = useColorModeValue('gray.800', 'gray.100');
-  const secondaryTextColor = useColorModeValue('gray.500', 'gray.400');
-
-  // Admin-specific styling
-  const accentColor = useColorModeValue('primary.600', 'primary.300');
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   // Set greeting based on time of day
   useEffect(() => {
-    const hour = new Date().getHours();
-    let greetingText = '';
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now);
+      
+      const hour = now.getHours();
+      let greetingText = '';
 
-    if (hour < 12) greetingText = 'Buenos días';
-    else if (hour < 18) greetingText = 'Buenas tardes';
-    else greetingText = 'Buenas noches';
+      if (hour < 12) greetingText = 'Buenos días';
+      else if (hour < 18) greetingText = 'Buenas tardes';
+      else greetingText = 'Buenas noches';
 
-    setGreeting(greetingText);
+      setGreeting(greetingText);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 60000); // Update every minute
+
+    return () => clearInterval(interval);
   }, []);
 
-  // Admin mock data
-  const adminData = {
-    stats: [
-      { label: 'Estudiantes', value: '1,245', icon: Users, percentage: 8 },
-      { label: 'Docentes', value: '78', icon: User, percentage: 3 },
-      { label: 'Cursos', value: '42', icon: FileText, percentage: 0 },
-      { label: 'Ocupación', value: '86%', icon: Activity, percentage: 4 },
-    ],
-    notifications: [
-      {
-        type: 'alert',
-        message: 'Nuevo reporte financiero disponible',
-        time: 'Hace 10 minutos',
-      },
-      {
-        type: 'info',
-        message: '3 profesores pendientes de aprobación',
-        time: 'Hace 1 hora',
-      },
-      {
-        type: 'success',
-        message: 'Backup del sistema completado',
-        time: 'Hace 2 horas',
-      },
-    ],
-    quickLinks: [
-      { icon: Users, label: 'Gestión de Estudiantes' },
-      { icon: Layers, label: 'Organización Académica' },
-      { icon: PieChart, label: 'Informes' },
-      { icon: Settings, label: 'Configuración' },
-      { icon: Monitor, label: 'Estado del Sistema' },
-      { icon: Download, label: 'Exportar Datos' },
-    ],
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('es-ES', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
   };
 
-  const getNotificationColor = type => {
-    switch (type) {
-      case 'alert':
-        return 'red.500';
-      case 'success':
-        return 'green.500';
-      default:
-        return 'blue.500';
-    }
+  const formatDate = (date) => {
+    return date.toLocaleDateString('es-ES', { 
+      weekday: 'long', 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    });
   };
+
+  // Calculate percentages
+  const matriculadosPercent = Math.round((reportes.totalEstudiantesMatriculados / reportes.totalEstudiantesGeneral) * 100) || 0;
+  const docenteTitularPercent = Math.round((reportes.totalDocentesTitulares / reportes.totalDocentes) * 100) || 0;
 
   return (
-    <Box minH="100vh">
-      {/* Main Content */}
-      <Stack spacing={4} direction="column">
-        {/* Admin Welcome Section */}
+    <>
         <Card
-          borderRadius="lg"
-          boxShadow="sm"
-          borderWidth="1px"
-          _dark={{ bg: 'primary.900' }}
-          borderColor={borderColor}
-          mb={5}
+          mb={6}
           position="relative"
+          borderRadius="xl"
           overflow="hidden"
+          boxShadow="lg"
+          bg="linear(to-br, primary.400, primary.600)"
+          color="white"
         >
-          <CardBody p={{ base: 4, md: 6 }}>
-            <Grid templateColumns={{ base: '1fr', lg: '1fr auto' }} gap={4}>
-              <GridItem>
-                <VStack align="start" spacing={2}>
-                  <Flex align="center">
-                    <Text
-                      fontSize="md"
-                      fontWeight="medium"
-                      color={secondaryTextColor}
-                    >
-                      {greeting},
-                    </Text>
-                    <Text
-                      fontSize="md"
-                      fontWeight="semibold"
-                      color={accentColor}
-                      ml={1}
-                    >
-                      Administrador
-                    </Text>
-                  </Flex>
-
-                  <Heading size="lg" color={textColor}>
-                    Panel de Control Administrativo
-                  </Heading>
-
-                  <Text fontSize="md" color={secondaryTextColor}>
-                    Gestione la institución desde este panel centralizado con
-                    acceso a todas las áreas.
+          <Box
+            bgImage="https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/background/background-4.jpg"
+            bgSize="cover"
+            bgPosition="center"
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            opacity={0.6}
+          />
+          <CardBody p={{ base: 6, md: 8 }} position="relative">
+            <Flex justify="space-between" align="center">
+              <Box>
+                <Flex align="center">
+                  <Text
+                    fontSize="xl"
+                    fontWeight="medium"
+                    color="white"
+                  >
+                    {greeting},
                   </Text>
-                </VStack>
-              </GridItem>
-
-              <GridItem
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Button
-                  leftIcon={<BarChart2 size={16} />}
-                  colorScheme="primary"
-                  variant="outline"
-                  size="md"
-                >
-                  Ver informes
-                </Button>
-              </GridItem>
-            </Grid>
+                  <Text
+                    fontSize="xl"
+                    fontWeight="bold"
+                    color="white"
+                    ml={1}
+                  >
+                    Administrador
+                  </Text>
+                </Flex>
+                <Heading size="xl" mt={2}>
+                  Panel de Control
+                </Heading>
+                <Text fontSize="md" color="whiteAlpha.800" mt={2} maxW="lg">
+                  Gestión centralizada con acceso a estadísticas en tiempo real
+                </Text>
+              </Box>
+              
+              <Box textAlign="right" display={{ base: 'none', md: 'block' }}>
+                <Text fontSize="3xl" fontWeight="bold">
+                  {formatTime(currentTime)}
+                </Text>
+                <Text fontSize="md" color="whiteAlpha.800">
+                  {formatDate(currentTime)}
+                </Text>
+              </Box>
+            </Flex>
           </CardBody>
         </Card>
 
-        {/* Admin Stats Cards */}
-        <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={4} mb={5}>
-          {adminData.stats.map((stat, index) => (
-            <Card
-              key={index}
-              borderRadius="lg"
-              boxShadow="sm"
-              borderWidth="1px"
+        {/* Main Content - Just 3 attractive cards */}
+        <SimpleGrid columns={{ base: 1, sm: 1, md: 2, lg: 3 }} spacing={4}>
+          {/* Card 1: Students */}
+          <Card
+            borderRadius="xl"
+            overflow="hidden"
+            boxShadow="md"
+            transition="all 0.3s"
+            _hover={{ transform: 'translateY(-5px)', boxShadow: 'lg' }}
+            position="relative"
+          >
+            <Box
+              bg="primary.50"
               _dark={{ bg: 'primary.900' }}
-              borderColor={borderColor}
-              overflow="hidden"
-              transition="transform 0.2s"
-              _hover={{ transform: 'translateY(-2px)', boxShadow: 'md' }}
-            >
-              <CardBody p={4}>
-                <Flex justify="space-between" mb={2}>
-                  <Icon as={stat.icon} boxSize={6} color={accentColor} />
-                  <Badge
-                    variant="subtle"
-                    colorScheme={
-                      stat.percentage > 0
-                        ? 'green'
-                        : stat.percentage < 0
-                        ? 'red'
-                        : 'gray'
-                    }
-                  >
-                    {stat.percentage > 0
-                      ? `+${stat.percentage}%`
-                      : stat.percentage < 0
-                      ? `${stat.percentage}%`
-                      : '='}
-                  </Badge>
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              height="40%"
+              borderBottomLeftRadius="40%"
+              borderBottomRightRadius="40%"
+            />
+            <CardBody p={6} position="relative">
+              <Flex justify="space-between" align="center" mb={4}>
+                <Flex align="center">
+                  <Icon as={Users} boxSize={8} color="blue.500" />
+                  <Heading size="md" ml={2}>Estudiantes</Heading>
                 </Flex>
-                <Text fontSize="3xl" fontWeight="bold" color={textColor} mb={1}>
-                  {stat.value}
+                <Badge colorScheme="blue" fontSize="sm" p={2} borderRadius="full">
+                  <Flex align="center">
+                    <Icon as={TrendingUp} mr={1} boxSize={3} />
+                    <Text>Activo</Text>
+                  </Flex>
+                </Badge>
+              </Flex>
+              
+              <Stat mt={4}>
+                <StatNumber fontSize="4xl" fontWeight="bold">
+                  {reportes.totalEstudiantesMatriculados}
+                </StatNumber>
+                <StatLabel fontSize="sm" color="gray.500">
+                  ESTUDIANTES MATRICULADOS
+                </StatLabel>
+              </Stat>
+              
+              <Box mt={6}>
+                <Flex justify="space-between" mb={1}>
+                  <Text fontSize="sm" fontWeight="medium">Capacidad Total:</Text>
+                  <Text fontSize="sm" fontWeight="medium">{reportes.totalEstudiantesGeneral}</Text>
+                </Flex>
+                <Progress 
+                  value={matriculadosPercent} 
+                  colorScheme="blue" 
+                  size="sm" 
+                  borderRadius="full" 
+                  mb={1}
+                />
+                <Text fontSize="xs" textAlign="right" color="gray.500">
+                  {matriculadosPercent}% de capacidad ocupada
                 </Text>
-                <Text fontSize="sm" color={secondaryTextColor}>
-                  {stat.label}
-                </Text>
-
-                {stat.percentage !== 0 && (
-                  <Progress
-                    size="xs"
-                    mt={2}
-                    value={80}
-                    colorScheme={stat.percentage > 0 ? 'green' : 'red'}
-                    borderRadius="full"
-                  />
-                )}
-              </CardBody>
-            </Card>
-          ))}
-        </SimpleGrid>
-
-        {/* Admin Main Content Grid */}
-        <SimpleGrid columns={1} spacing={5} mb={5}>
-          {/* Recent Notifications */}
-          <GridItem colSpan={{ base: 1, lg: 1 }}>
-            <Card
-              bg={cardBg}
-              borderRadius="lg"
-              boxShadow="sm"
-              borderWidth="1px"
+                
+                <Divider my={4} />
+                
+                <HStack justify="space-between">
+                  <Text fontSize="sm">Espacios Disponibles</Text>
+                  <Text fontSize="sm" fontWeight="bold" color="blue.500">
+                    {reportes.totalEstudiantesGeneral - reportes.totalEstudiantesMatriculados}
+                  </Text>
+                </HStack>
+              </Box>
+            </CardBody>
+          </Card>
+          
+          {/* Card 2: Teachers */}
+          <Card
+            borderRadius="xl"
+            overflow="hidden"
+            boxShadow="md"
+            transition="all 0.3s"
+            _hover={{ transform: 'translateY(-5px)', boxShadow: 'lg' }}
+            position="relative"
+          >
+            <Box
+              bg="purple.50"
               _dark={{ bg: 'primary.900' }}
-              borderColor={borderColor}
-              height="100%"
-            >
-              <CardBody p={{ base: 4, md: 5 }}>
-                <Flex justify="space-between" align="center" mb={4}>
-                  <Heading size="md" color={textColor}>
-                    Notificaciones Recientes
-                  </Heading>
-                  <Button
-                    size="xs"
-                    variant="ghost"
-                    colorScheme="blue"
-                    rightIcon={<ChevronRight size={14} />}
-                  >
-                    Ver todas
-                  </Button>
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              height="40%"
+              borderBottomLeftRadius="40%"
+              borderBottomRightRadius="40%"
+            />
+            <CardBody p={6} position="relative">
+              <Flex justify="space-between" align="center" mb={4}>
+                <Flex align="center">
+                  <Icon as={User} boxSize={8} color="purple.500" />
+                  <Heading size="md" ml={2}>Docentes</Heading>
                 </Flex>
-
-                <VStack spacing={3} align="stretch">
-                  {adminData.notifications.map((notification, index) => (
-                    <Flex
-                      key={index}
-                      p={4}
-                      borderWidth="1px"
-                      borderRadius="md"
-                      borderLeftWidth="4px"
-                      borderLeftColor={getNotificationColor(notification.type)}
-                      _dark={{ bg: 'primary.900' }}
-                      align="center"
-                      justify="space-between"
-                    >
-                      <Box>
-                        <Text
-                          fontWeight="medium"
-                          color={textColor}
-                          fontSize="sm"
-                        >
-                          {notification.message}
-                        </Text>
-                        <Text fontSize="xs" color={secondaryTextColor} mt={1}>
-                          {notification.time}
-                        </Text>
-                      </Box>
-                      <IconButton
-                        aria-label="Ver detalles"
-                        icon={<ChevronRight size={16} />}
-                        size="sm"
-                        variant="ghost"
-                      />
+                <Badge colorScheme="purple" fontSize="sm" p={2} borderRadius="full">
+                  <Flex align="center">
+                    <Icon as={TrendingUp} mr={1} boxSize={3} />
+                    <Text>Activo</Text>
+                  </Flex>
+                </Badge>
+              </Flex>
+              
+              <Stat mt={4}>
+                <StatNumber fontSize="4xl" fontWeight="bold">
+                  {reportes.totalDocentes}
+                </StatNumber>
+                <StatLabel fontSize="sm" color="gray.500">
+                  TOTAL DOCENTES
+                </StatLabel>
+              </Stat>
+              
+              <Box mt={6}>
+                <Flex justify="space-between" mb={1}>
+                  <Text fontSize="sm" fontWeight="medium">Docentes Titulares:</Text>
+                  <Text fontSize="sm" fontWeight="medium">{reportes.totalDocentesTitulares}</Text>
+                </Flex>
+                <Progress 
+                  value={docenteTitularPercent} 
+                  colorScheme="purple" 
+                  size="sm" 
+                  borderRadius="full" 
+                  mb={1}
+                />
+                <Text fontSize="xs" textAlign="right" color="gray.500">
+                  {docenteTitularPercent}% de titularidad
+                </Text>
+                
+                <Divider my={4} />
+                
+                <HStack justify="space-between">
+                  <Text fontSize="sm">Materias por Docente</Text>
+                  <Text fontSize="sm" fontWeight="bold" color="purple.500">
+                    {(reportes.totalMaterias / reportes.totalDocentes).toFixed(1)}
+                  </Text>
+                </HStack>
+              </Box>
+            </CardBody>
+          </Card>
+          
+          {/* Card 3: System Overview */}
+          <Card
+            borderRadius="xl"
+            overflow="hidden"
+            boxShadow="md"
+            transition="all 0.3s"
+            _hover={{ transform: 'translateY(-5px)', boxShadow: 'lg' }}
+            position="relative"
+          >
+            <Box
+              bg="green.50"
+              _dark={{ bg: 'primary.900' }}
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              height="40%"
+              borderBottomLeftRadius="40%"
+              borderBottomRightRadius="40%"
+            />
+            <CardBody p={6} position="relative">
+              <Flex justify="space-between" align="center" mb={4}>
+                <Flex align="center">
+                  <Icon as={BookOpen} boxSize={8} color="green.500" />
+                  <Heading size="md" ml={2}>Sistema</Heading>
+                </Flex>
+                <Badge colorScheme="green" fontSize="sm" p={2} borderRadius="full">
+                  <Flex align="center">
+                    <Icon as={TrendingUp} mr={1} boxSize={3} />
+                    <Text>Operativo</Text>
+                  </Flex>
+                </Badge>
+              </Flex>
+              
+              <VStack spacing={4} mt={4} align="stretch">
+                <Box p={3} bg="white" _dark={{ bg: 'primary.800' }} borderRadius="lg" boxShadow="sm">
+                  <Flex justify="space-between" align="center">
+                    <Flex align="center">
+                      <Icon as={BookOpen} color="green.500" mr={2} />
+                      <Text fontWeight="medium">Materias</Text>
                     </Flex>
-                  ))}
-                </VStack>
-              </CardBody>
-            </Card>
-          </GridItem>
+                    <Text fontWeight="bold" fontSize="xl">{reportes.totalMaterias}</Text>
+                  </Flex>
+                </Box>
+                
+                <Box p={3} bg="white" _dark={{ bg: 'primary.800' }} borderRadius="lg" boxShadow="sm">
+                  <Flex justify="space-between" align="center">
+                    <Flex align="center">
+                      <Icon as={Shield} color="orange.500" mr={2} />
+                      <Text fontWeight="medium">Usuarios</Text>
+                    </Flex>
+                    <Text fontWeight="bold" fontSize="xl">{reportes.totalUsuarios}</Text>
+                  </Flex>
+                </Box>
+                
+                <Box p={3} bg="white" _dark={{ bg: 'primary.800' }} borderRadius="lg" boxShadow="sm">
+                  <Flex justify="space-between" align="center">
+                    <Flex align="center">
+                      <Icon as={TrendingUp} color="blue.500" mr={2} />
+                      <Text fontWeight="medium">Tasa Ocupación</Text>
+                    </Flex>
+                    <Text 
+                      fontWeight="bold" 
+                      fontSize="xl" 
+                      color={matriculadosPercent > 80 ? "red.500" : "green.500"}
+                    >
+                      {matriculadosPercent}%
+                    </Text>
+                  </Flex>
+                </Box>
+              </VStack>
+            </CardBody>
+          </Card>
         </SimpleGrid>
-      </Stack>
-    </Box>
+    </>
   );
 };
 

@@ -19,6 +19,51 @@ const getAllReports = async (token, query) => {
     return response.data;
 }
 
+const getAllReportesAdminBySede = async (token, idSede) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        params: { sede: idSede },
+    }
+
+    const response = await axios.get(`${baseURL}/reportes/admin`, config);
+    return response.data;
+}
+
+const getAllReportesDocenteTitularBySede = async (token, idSede) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        params: {
+            sede: idSede,
+        },
+    }
+
+    const response = await axios.get(`${baseURL}/reportes/docente-titular`, config);
+    return response.data;
+}
+
+
+const getAllReportesDocenteBySede = async (token, idSede) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        params: {
+            sede: idSede,
+        },
+    }
+
+    const response = await axios.get(`${baseURL}/reportes/docente`, config);
+    return response.data;
+}
+
+
 // Get reportes modalidad EBR
 const getReportesEBR = async (token) => {
 
@@ -63,50 +108,12 @@ const getDataBetweenDates = (desde, hasta) => {
 };
 
 
-const getAllReportesEBR = async () => {
-
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    }
-
-    const response = await axios.get(`${baseURL}/reportes/ebr`, config);
-    return response.data;
-
-}
-
-
-
-const getReportesCEBA = async (token) => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        },
-    }
-    const response = await axios.get(`${baseURL}/reportes/ceba`, config);
-    return response.data;
-}
-
-const getReportesRESIDENCIA = async (token) => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        },
-    }
-    const response = await axios.get(`${baseURL}/reportes/residencia`, config);
-    return response.data;
-}
-
-
 const reporteService = {
     getAllReports,
-    getAllReportesEBR,
+    getAllReportesAdminBySede,
+    getAllReportesDocenteTitularBySede,
+    getAllReportesDocenteBySede,
     getReportesEBR,
-    getReportesCEBA,
-    getReportesRESIDENCIA,
     getDataBetweenDates
 }
 

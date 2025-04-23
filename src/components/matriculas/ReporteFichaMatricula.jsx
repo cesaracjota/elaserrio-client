@@ -618,8 +618,7 @@ const ReporteFichaMatricula = ({ data, configuracion }) => {
         aria-label="Descargar ficha de matrícula"
         isLoading={isGenerating}
         isDisabled={
-          configuracion?.permitirDescargarFichaMatricula === false ||
-          configuracion !== null
+          configuracion?.permitirDescargarFichaMatricula === false
         }
         onClick={generateAndDownloadPdf}
       />

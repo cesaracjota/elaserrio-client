@@ -37,6 +37,7 @@ import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
 import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import ModalEditarMatricula from '../matriculas/ModalEditarMatricula';
+import CustomBackRoute from '../../helpers/CustomBackRoute';
 
 const EstudiantesPorGrado = () => {
   const navigate = useNavigate();
@@ -143,11 +144,36 @@ const EstudiantesPorGrado = () => {
       center: true,
       cell: row => (
         <div>
-          <ModalRegistrarObservaciones row={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
-          <ObserverButton data={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
-          <ReportButton data={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
-          <ModalEditarMatricula data={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
-          <AlertEliminar row={row} configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
+          <ModalRegistrarObservaciones
+            row={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ObserverButton
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ReportButton
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <ModalEditarMatricula
+            data={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
+          <AlertEliminar
+            row={row}
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+          />
         </div>
       ),
       width: '350px',
@@ -158,7 +184,7 @@ const EstudiantesPorGrado = () => {
     columns: columns,
     data: matriculas,
   };
-  
+
   const handleUpdatePromedioRanking = () => {
     dispatch(updatedPromedioRankingPorGrado(grado?.id));
   };
@@ -169,22 +195,22 @@ const EstudiantesPorGrado = () => {
         <HStack
           spacing={4}
           direction="row"
-          w={'full'}
           justifyContent={'space-between'}
+          alignSelf={'center'}
         >
-          <Heading size="md">Estudiantes Matriculados por Grado</Heading>
-          <Button
-            onClick={handleUpdatePromedioRanking}
-            colorScheme="primary"
-            variant="outline"
-            size="sm"
-            ml={2}
-            isLoading={isLoading}
-            leftIcon={<MdSystemUpdate />}
-          >
-            Actualizar Promedios y Ranking de Este Grado
-          </Button>
+          <CustomBackRoute />
+          <Heading size="md" alignSelf={'center'}>Estudiantes Matriculados por Grado</Heading>
         </HStack>
+        <Button
+          onClick={handleUpdatePromedioRanking}
+          colorScheme="primary"
+          variant="outline"
+          size="sm"
+          isLoading={isLoading}
+          leftIcon={<MdSystemUpdate />}
+        >
+          Actualizar Promedios y Ranking de Este Grado
+        </Button>
       </Stack>
       <Box
         borderRadius="2xl"

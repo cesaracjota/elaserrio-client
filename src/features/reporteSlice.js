@@ -3,6 +3,9 @@ import reporteService from "../services/reporte.service";
 
 const initialState = {
     reportes: [],
+    reportesAdmin: [],
+    reportesDocenteTitular: [],
+    reportesDocente: [],
     reportesEBR: [],
     reportePagos: [],
     reporteVentasPorFechas: [],
@@ -25,6 +28,60 @@ export const getAllReports = createAsyncThunk(
         try {
             const token = thunkAPI.getState().auth.user.token;
             return await reporteService.getAllReports(token, query);
+        } catch (error){
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+export const getAllReportesAdminBySede = createAsyncThunk(
+    "reportes/getAllReportesAdminBySede",
+    async (idSede, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await reporteService.getAllReportesAdminBySede(token, idSede);
+        } catch (error){
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+export const getAllReportesDocenteTitularBySede = createAsyncThunk(
+    "reportes/getAllReportesDocenteTitularBySede",
+    async (idSede, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await reporteService.getAllReportesDocenteTitularBySede(token, idSede);
+        } catch (error){
+            const message = 
+            (error.response && 
+                error.response.data && 
+                error.response.data.msg) || 
+                error.message || 
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+export const getAllReportesDocenteBySede = createAsyncThunk(
+    "reportes/getAllReportesDocenteBySede",
+    async (idSede, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            return await reporteService.getAllReportesDocenteBySede(token, idSede);
         } catch (error){
             const message = 
             (error.response && 
@@ -149,6 +206,45 @@ export const reportesSlice = createSlice({
             state.reportes = action.payload;
         });
         builder.addCase(getAllReports.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        });
+        builder.addCase(getAllReportesAdminBySede.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getAllReportesAdminBySede.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.reportesAdmin = action.payload;
+        });
+        builder.addCase(getAllReportesAdminBySede.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        });
+        builder.addCase(getAllReportesDocenteTitularBySede.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getAllReportesDocenteTitularBySede.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.reportesDocenteTitular = action.payload;
+        });
+        builder.addCase(getAllReportesDocenteTitularBySede.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+        });
+        builder.addCase(getAllReportesDocenteBySede.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getAllReportesDocenteBySede.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.reportesDocente = action.payload;
+        });
+        builder.addCase(getAllReportesDocenteBySede.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload;

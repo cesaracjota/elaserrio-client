@@ -48,8 +48,7 @@ export const AlertEliminar = ({ row, configuracion }) => {
           variant="solid"
           _dark={{ color: 'white', bg: 'red.600', _hover: { bg: 'red.700' } }}
           isDisabled={
-            configuracion?.permitirEliminarMatriculas === false || // si hay configuración y no permite ver
-            configuracion !== null
+            configuracion?.permitirEliminarMatriculas === false
           }
         />
       </Tooltip>

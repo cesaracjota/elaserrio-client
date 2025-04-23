@@ -39,14 +39,13 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search2Icon } from '@chakra-ui/icons';
-import { getEstudianteSearch } from '../../features/estudianteSlice';
+import { getEstudianteSearch, reset } from '../../features/estudianteSlice';
 import { CustomToast } from '../../helpers/toast';
 import { useNavigate } from 'react-router-dom';
 import { createMatricula } from '../../features/matriculaSlice';
 import { FiPlus } from 'react-icons/fi';
-import { getGradosBySede, reset } from '../../features/gradoSlice';
 
-const ModalRegistrarMatricula = ({ configuracion }) => {
+const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -54,15 +53,14 @@ const ModalRegistrarMatricula = ({ configuracion }) => {
   const { sedeSeleccionada } = useSelector(state => state.auth);
   const { isError, message } = useSelector(state => state.matriculas);
   const { estudiantes } = useSelector(state => state.estudiantes);
-  const { grados } = useSelector(state => state.grados);
+  const { user } = useSelector(state => state.auth);
 
   useEffect(() => {
     dispatch(getEstudianteSearch(''));
-    dispatch(getGradosBySede(sedeSeleccionada._id));
     return () => {
       dispatch(reset());
     };
-  }, [navigate, dispatch, sedeSeleccionada._id]);
+  }, [navigate, dispatch]);
 
   if (isError) {
     CustomToast({
@@ -134,8 +132,7 @@ const ModalRegistrarMatricula = ({ configuracion }) => {
         size="lg"
         fontSize={'sm'}
         isDisabled={
-          configuracion?.permitirDescargarObservadores === false || // si hay configuración y no permite ver
-          configuracion !== null
+          configuracion?.permitirRegistrarMatriculas === false
         }
         onClick={handleModalOpen}
       >
@@ -226,21 +223,39 @@ const ModalRegistrarMatricula = ({ configuracion }) => {
                     direction="row"
                     justifyContent="space-between"
                   >
-                    <FormControl>
-                      <FormLabel>GRADO A MATRICULAR</FormLabel>
-                      <SelectChakra
-                        onChange={e =>
-                          setIndice({ ...indice, grado: e.target.value })
-                        }
-                      >
-                        <option>SELECCIONE GRADO A MATRICULAR</option>
-                        {grados?.map(data => (
-                          <option key={data?._id} value={data?._id}>
-                            {data.nombre} - {data.nivel}
-                          </option>
-                        ))}
-                      </SelectChakra>
-                    </FormControl>
+                    {user?.usuario?.rol === 'ADMIN_ROLE' ? (
+                      <FormControl>
+                        <FormLabel>GRADO A MATRICULAR</FormLabel>
+                        <SelectChakra
+                          onChange={e =>
+                            setIndice({ ...indice, grado: e.target.value })
+                          }
+                        >
+                          <option>SELECCIONE GRADO A MATRICULAR</option>
+                          {grados?.map(data => (
+                            <option key={data?._id} value={data?._id}>
+                              {data.nombre} - {data.nivel}
+                            </option>
+                          ))}
+                        </SelectChakra>
+                      </FormControl>
+                    ) : (
+                      <FormControl>
+                        <FormLabel>GRADO A MATRICULAR</FormLabel>
+                        <SelectChakra
+                          onChange={e =>
+                            setIndice({ ...indice, grado: e.target.value })
+                          }
+                        >
+                          <option>SELECCIONE GRADO A MATRICULAR</option>
+                          {mis_grados?.map(data => (
+                            <option key={data?._id} value={data?._id}>
+                              {data.nombre} - {data.nivel}
+                            </option>
+                          ))}
+                        </SelectChakra>
+                      </FormControl>
+                    )}
                   </Stack>
                   <FormControl>
                     <FormLabel fontWeight="semibold">OBSERVACIONES</FormLabel>

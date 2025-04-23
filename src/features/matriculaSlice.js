@@ -31,6 +31,7 @@ export const getAllMatriculas = createAsyncThunk(
         }
     }
 )
+
 export const getAllMatriculasByGrado = createAsyncThunk(
     "matricula/getAllByGrado",
     async (gradoId, thunkAPI) => {

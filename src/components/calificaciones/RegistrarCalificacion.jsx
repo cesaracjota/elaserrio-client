@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -25,14 +25,10 @@ import {
   useNumberInput,
   VStack,
   Center,
-  Container,
   Stat,
   StatLabel,
   StatNumber,
   StatHelpText,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -53,17 +49,17 @@ import {
   MdComment,
   MdDashboard,
   MdSchool,
-  MdTrendingUp,
   MdHistory,
   MdTimeline,
   MdDeleteSweep,
   MdHome,
-  MdError,
 } from 'react-icons/md';
 import { Loading } from '../../helpers/Loading';
 import { getMateria } from '../../features/materiaSlice';
 import { getMatricula } from '../../features/matriculaSlice';
 import { VscError } from 'react-icons/vsc';
+import { getActiveAcademicYear } from '../../features/academicYearSlice';
+import CustomBackRoute from '../../helpers/CustomBackRoute';
 
 // Componente personalizado para la entrada de calificaciones
 const GradeInput = ({
@@ -179,6 +175,7 @@ const RegistrarCalificacionPage = () => {
   const { nota } = useSelector(state => state.calificaciones);
   const { materia } = useSelector(state => state.materias);
   const { matricula } = useSelector(state => state.matriculas);
+  const { active_academic_year } = useSelector(state => state.academic_year);
 
   // Colores para el tema
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -247,6 +244,8 @@ const RegistrarCalificacionPage = () => {
       ).finally(() => {
         setIsLoading(false);
       });
+
+      dispatch(getActiveAcademicYear());
 
       // Initialize formData with new IDs
       setFormData(prev => ({
@@ -472,26 +471,7 @@ const RegistrarCalificacionPage = () => {
     <Box w="full" py={6}>
       {/* Breadcrumb y Encabezado */}
       <Box mb={6}>
-        <Breadcrumb mb={4}>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/">
-              <Icon as={MdHome} mr={1} />
-              Inicio
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/mis-materias">
-              <Icon as={MdSchool} mr={1} />
-              Mis Materias
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink>
-              <Icon as={MdGrade} mr={1} />
-              Calificaciones
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
+        <CustomBackRoute />
 
         <Flex
           justify="space-between"
@@ -505,22 +485,22 @@ const RegistrarCalificacionPage = () => {
             <Icon as={MdSchool} boxSize={8} mr={3} color="primary.500" />
             <VStack align="start" spacing={0}>
               <Text fontSize="2xl" fontWeight="bold">
-                Registro de Calificaciones
+                REGISTRO DE CALIFICACIONES
               </Text>
               <Text fontSize="sm" opacity={0.8}>
-                Alumno: {studentData?.alumno?.nombre || 'Estudiante'}
+                ESTUDIANTE: {studentData?.estudiante?.nombres + ' ' + studentData?.estudiante?.apellidos}
               </Text>
             </VStack>
           </Flex>
           <HStack>
             <Badge
               colorScheme="primary"
-              color={'white'}
+              variant={'solid'}
               fontSize="lg"
               px={4}
               py={2}
-              borderRadius="lg"
-              boxShadow="md"
+              borderRadius="md"
+              boxShadow="base"
             >
               {courseData?.nombre || 'Materia'}
             </Badge>
@@ -536,35 +516,40 @@ const RegistrarCalificacionPage = () => {
               <CardHeader py={4} _dark={{ bg: 'primary.900' }}>
                 <Flex align="center">
                   <Icon as={MdGrade} boxSize={6} mr={2} color="primary.500" />
-                  <Heading size="md">Calificaciones por Bimestre</Heading>
+                  <Heading size="md">Calificaciones por Periodo</Heading>
                 </Flex>
               </CardHeader>
               <CardBody _dark={{ bg: 'primary.900' }} p={6}>
-                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                  <GradeInput
-                    value={bim1}
-                    onChange={valueString => setBim1(valueString)}
-                    label="Bimestre 1"
-                    testId="periodo-1-input"
-                  />
-                  <GradeInput
-                    value={bim2}
-                    onChange={valueString => setBim2(valueString)}
-                    label="Bimestre 2"
-                    testId="periodo-2-input"
-                  />
-                  <GradeInput
-                    value={bim3}
-                    onChange={valueString => setBim3(valueString)}
-                    label="Bimestre 3"
-                    testId="periodo-3-input"
-                  />
-                  <GradeInput
-                    value={bim4}
-                    onChange={valueString => setBim4(valueString)}
-                    label="Bimestre 4"
-                    testId="periodo-4-input"
-                  />
+                <SimpleGrid columns={{ base: 1, md: 1 }} spacing={6}>
+                  {active_academic_year?.periodo === "1" ? (
+                    <GradeInput
+                      value={bim1}
+                      onChange={valueString => setBim1(valueString)}
+                      label="PERIODO 1"
+                      testId="periodo-1-input"
+                    />
+                  ) : active_academic_year?.periodo === "2" ? (
+                    <GradeInput
+                      value={bim2}
+                      onChange={valueString => setBim2(valueString)}
+                      label="PERIODO 2"
+                      testId="periodo-2-input"
+                    />
+                  ) : active_academic_year?.periodo === "3" ? (
+                    <GradeInput
+                      value={bim3}
+                      onChange={valueString => setBim3(valueString)}
+                      label="PERIODO 3"
+                      testId="periodo-3-input"
+                    />
+                  ) : active_academic_year?.periodo === "4" ? (
+                    <GradeInput
+                      value={bim4}
+                      onChange={valueString => setBim4(valueString)}
+                      label="PERIODO 4"
+                      testId="periodo-4-input"
+                    />
+                  ) : null}
                 </SimpleGrid>
               </CardBody>
             </Card>
@@ -574,12 +559,7 @@ const RegistrarCalificacionPage = () => {
               <Card borderRadius="xl" boxShadow={'base'} overflow="hidden">
                 <CardHeader py={3} _dark={{ bg: 'primary.900' }}>
                   <Flex align="center">
-                    <Icon
-                      as={VscError}
-                      boxSize={5}
-                      mr={2}
-                      color="yellow.500"
-                    />
+                    <Icon as={VscError} boxSize={5} mr={2} color="yellow.500" />
                     <Heading size="sm">Registro Fallas</Heading>
                   </Flex>
                 </CardHeader>
@@ -721,13 +701,14 @@ const RegistrarCalificacionPage = () => {
                     boxShadow="md"
                     position="relative"
                     _hover={{ boxShadow: 'lg' }}
+                    display={periodo?.periodo === parseInt(active_academic_year?.periodo) ? "block" : "none"}
                     transition="all 0.3s"
                   >
                     <Flex justify="space-between" align="center" mb={3}>
                       <Heading size="sm">
                         <Flex align="center">
                           <Icon as={MdTimeline} mr={2} />
-                          Periodo {periodoIndex + 1}
+                          Periodo {periodo?.periodo}
                         </Flex>
                       </Heading>
                       {periodo.indicador.length < 4 && (

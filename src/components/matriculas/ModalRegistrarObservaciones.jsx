@@ -168,8 +168,7 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
           onClick={handleModalOpen}
           icon={<MdOutlineAddTask />}
           isDisabled={
-            configuracion?.permitirRegistrarObservadores === false || // si hay configuración y no permite ver
-            configuracion !== null
+            configuracion?.permitirRegistrarObservadores === false
           }
           mr={2}
           aria-label="Registrar observaciones"

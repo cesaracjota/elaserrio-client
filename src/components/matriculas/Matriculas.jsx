@@ -38,7 +38,7 @@ import {
 } from '../../features/matriculaSlice';
 import { AlertEliminar } from './AlertEliminar';
 import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
-import { getGradosBySede } from '../../features/gradoSlice';
+import { getGradosByDocente, getGradosBySede } from '../../features/gradoSlice';
 import { MdRefresh } from 'react-icons/md';
 import { getActiveAcademicYear } from '../../features/academicYearSlice';
 import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
@@ -61,15 +61,23 @@ const Matriculas = () => {
 
   const { configuracion } = useSelector(state => state.configuraciones);
 
-  const { grados } = useSelector(state => state.grados);
+  const { grados, mis_grados } = useSelector(state => state.grados);
 
   const [perPage, setPerPage] = useState(10);
 
   const [page, setPage] = useState(1);
 
+  const misGradoIds = mis_grados.map(g => g._id.toString());
+
+  const matriculaFiltro = matriculas.filter(m =>
+    misGradoIds.includes(m.grado?._id?.toString())
+  );
+
   useEffect(() => {
     dispatch(getActiveAcademicYear());
-    dispatch(getGradosBySede(sedeSeleccionada?._id));
+    if (user?.usuario?.rol === 'ADMIN_ROLE') {
+      dispatch(getGradosBySede(sedeSeleccionada?._id));
+    }
     dispatch(
       getAllMatriculas({
         page: currentPage,
@@ -78,15 +86,18 @@ const Matriculas = () => {
       })
     );
     dispatch(getAllConfiguraciones());
+    if (user?.usuario?.rol === 'DOCENTE_TITULAR_ROLE') {
+      dispatch(getGradosByDocente(user?.usuario?.id));
+    }
 
     return () => {
       dispatch(reset());
     };
-  }, [navigate, dispatch, currentPage, perPage, sedeSeleccionada?._id]);
+  }, [navigate, dispatch, currentPage, perPage, sedeSeleccionada?._id, user?.usuario?.id, user?.usuario?.rol]); 
 
   const columns = [
     {
-      name: 'CM',
+      name: 'CODIGO',
       selector: row => row.codigo,
       sortable: true,
       cellExport: row => row.codigo,
@@ -185,6 +196,8 @@ const Matriculas = () => {
             configuracion={
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }
+            grados={grados}
+            mis_grados={mis_grados}
           />
           <ReporteFichaMatricula
             data={row}
@@ -242,7 +255,7 @@ const Matriculas = () => {
 
   const tableData = {
     columns: columns,
-    data: matriculas,
+    data: user?.usuario?.rol === 'ADMIN_ROLE' ? matriculas : matriculaFiltro,
   };
 
   // if (isLoading) {
@@ -258,17 +271,30 @@ const Matriculas = () => {
       >
         <StatCard
           title="Total Matrículas"
-          value={matriculas.length}
+          value={
+            user?.usuario?.rol === 'ADMIN_ROLE'
+              ? matriculas.length || '0'
+              : matriculaFiltro.length || '0'
+          }
           colorScheme="blue"
         />
         <StatCard
           title="Activas"
-          value={matriculas.filter(m => m.estado === 'Activa').length}
+          value={
+            user?.usuario?.rol === 'ADMIN_ROLE'
+              ? matriculas?.filter(m => m.estado === 'Activa')?.length || '0'
+              : matriculaFiltro?.filter(m => m.estado === 'Activa')?.length || '0'
+          }
           colorScheme="green"
         />
         <StatCard
           title="Finalizadas"
-          value={matriculas.filter(m => m.estado === 'Finalizada').length}
+          value={
+            user?.usuario?.rol === 'ADMIN_ROLE'
+              ? matriculas?.filter(m => m.estado === 'Finalizada')?.length || '0'
+              : matriculaFiltro?.filter(m => m.estado === 'Finalizada')?.length ||
+                '0'
+          }
           colorScheme="red"
         />
       </Grid>
@@ -280,10 +306,22 @@ const Matriculas = () => {
           justifyContent={'space-between'}
         >
           <Heading size="md">LISTA DE ESTUDIANTES MATRICULADOS</Heading>
-          <ModalRegistrarMatricula configuracion={user?.usuario?.rol === "ADMIN_ROLE" ? null : configuracion} />
+          <ModalRegistrarMatricula
+            configuracion={
+              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+            }
+            grados={grados}
+            mis_grados={mis_grados}
+          />
         </HStack>
       </Stack>
-      <Stack mt={2} spacing={4} direction="row" justifyContent="space-between">
+      <Stack
+        mt={2}
+        spacing={4}
+        display={user?.usuario?.rol === 'ADMIN_ROLE' ? 'block' : 'none'}
+        direction="row"
+        justifyContent="space-between"
+      >
         <HStack
           spacing={4}
           direction="row"

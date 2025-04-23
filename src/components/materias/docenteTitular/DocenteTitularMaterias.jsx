@@ -56,7 +56,7 @@ const DocenteTitularMaterias = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, sedeSeleccionada._id]);
+  }, [user, navigate, dispatch, sedeSeleccionada._id, id]);
 
   const columns = [
     {

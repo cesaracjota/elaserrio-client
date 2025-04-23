@@ -68,6 +68,9 @@ importers:
       chakra-react-select:
         specifier: ^4.4.3
         version: 4.10.1(@chakra-ui/react@2.10.7(@emotion/react@11.14.0(@types/react@19.0.12)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.0.12)(react@18.3.1))(@types/react@19.0.12)(react@18.3.1))(@types/react@19.0.12)(framer-motion@6.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@emotion/react@11.14.0(@types/react@19.0.12)(react@18.3.1))(@types/react@19.0.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      chroma-js:
+        specifier: ^3.1.2
+        version: 3.1.2
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -2808,6 +2811,9 @@ packages:
 
   chroma-js@1.4.1:
     resolution: {integrity: sha512-jTwQiT859RTFN/vIf7s+Vl/Z2LcMrvMv3WUFmd/4u76AdlFC0NTNgqEEFPcRiHmAswPsMiQEDZLM8vX8qXpZNQ==}
+
+  chroma-js@3.1.2:
+    resolution: {integrity: sha512-IJnETTalXbsLx1eKEgx19d5L6SRM7cH4vINw/99p/M11HCuXGRWL+6YmCm7FWFGIo6dtWuQoQi1dc5yQ7ESIHg==}
 
   chrome-trace-event@1.0.4:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
@@ -12415,6 +12421,8 @@ snapshots:
       fsevents: 2.3.3
 
   chroma-js@1.4.1: {}
+
+  chroma-js@3.1.2: {}
 
   chrome-trace-event@1.0.4: {}
 

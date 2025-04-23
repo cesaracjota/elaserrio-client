@@ -14,16 +14,15 @@ import {
   Button,
   Grid,
   GridItem,
+  Tag,
+  TagLeftIcon,
+  TagLabel,
 } from '@chakra-ui/react';
-import {
-  Book,
-  ClipboardList,
-  Calendar,
-  ChevronRight,
-} from 'lucide-react';
+import { Book, Calendar, GraduationCap, Users } from 'lucide-react';
 
-const DashboardDocente = () => {
+const DashboardDocente = ({ reportes }) => {
   const [greeting, setGreeting] = useState('');
+  const cardBg = useColorModeValue('white', 'primary.900');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'gray.100');
   const secondaryTextColor = useColorModeValue('gray.500', 'gray.400');
@@ -36,83 +35,160 @@ const DashboardDocente = () => {
     else setGreeting('Buenas noches');
   }, []);
 
-  const materiasAsignadas = [
-    { nombre: 'Matemática 7°B', icon: Book, tareasPendientes: 5 },
-    { nombre: 'Ciencias Naturales 6°A', icon: Book, tareasPendientes: 2 },
-    { nombre: 'Geometría 7°A', icon: Book, tareasPendientes: 0 },
-  ];
-
   return (
-    <Box minH="100vh">
-      <VStack spacing={5} align="stretch">
-        {/* Encabezado */}
-        <Card borderRadius="lg" boxShadow="sm" borderWidth="1px" _dark={{ bg: 'primary.900'}} borderColor={borderColor}>
-          <CardBody>
-            <Grid templateColumns={{ base: '1fr', md: '1fr auto' }} gap={4}>
-              <GridItem>
-                <VStack align="start" spacing={2}>
-                  <Text fontSize="md" fontWeight="medium" color={secondaryTextColor}>
-                    {greeting},
-                    <Text as="span" fontWeight="semibold" color={accentColor} ml={1}>
-                      Docente
-                    </Text>
-                  </Text>
-                  <Heading size="lg" color={textColor}>
-                    Panel Docente
-                  </Heading>
-                  <Text fontSize="md" color={secondaryTextColor}>
-                    Consulta tus materias asignadas y gestiona tus tareas.
-                  </Text>
-                </VStack>
-              </GridItem>
-
-              <GridItem display="flex" alignItems="center" justifyContent="flex-end">
-                <Button
-                  leftIcon={<Calendar size={16} />}
-                  colorScheme="teal"
-                  variant="outline"
+    <VStack spacing={5} align="stretch">
+      {/* Encabezado */}
+      <Card
+        borderRadius="lg"
+        boxShadow="sm"
+        borderWidth="1px"
+        _dark={{ bg: 'primary.900' }}
+        borderColor={borderColor}
+      >
+        <CardBody>
+          <Grid templateColumns={{ base: '1fr', md: '1fr auto' }} gap={4}>
+            <GridItem>
+              <VStack align="start" spacing={2}>
+                <Text
+                  fontSize="md"
+                  fontWeight="medium"
+                  color={secondaryTextColor}
                 >
-                  Ver horario
-                </Button>
-              </GridItem>
-            </Grid>
+                  {greeting},
+                  <Text
+                    as="span"
+                    fontWeight="semibold"
+                    color={accentColor}
+                    ml={1}
+                  >
+                    Docente
+                  </Text>
+                </Text>
+                <Heading size="lg" color={textColor}>
+                  Panel Docente
+                </Heading>
+                <Text fontSize="md" color={secondaryTextColor}>
+                  Consulta tus materias asignadas y gestiona tus tareas.
+                </Text>
+              </VStack>
+            </GridItem>
+
+            <GridItem
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              <Button
+                leftIcon={<Calendar size={16} />}
+                colorScheme="teal"
+                variant="outline"
+              >
+                Ver horario
+              </Button>
+            </GridItem>
+          </Grid>
+        </CardBody>
+      </Card>
+
+      {/* Materias Asignadas */}
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} spacing={4}>
+        <Card
+          borderRadius="lg"
+          boxShadow="sm"
+          borderWidth="1px"
+          _dark={{ bg: 'primary.900' }}
+          borderColor={borderColor}
+          transition="transform 0.2s"
+          _hover={{ transform: 'translateY(-2px)', boxShadow: 'md' }}
+        >
+          <CardBody>
+            <Flex justify="space-between" align="center" mb={2}>
+              <Icon as={Book} boxSize={6} color={accentColor} />
+              <Badge colorScheme="green" variant="subtle">
+                {reportes?.resumen?.totalMateriasAsignadas || 0}
+              </Badge>
+            </Flex>
+            <Text fontSize="lg" fontWeight="semibold" color={textColor}>
+              Total Materias Asignadas:{' '}
+              {reportes?.resumen?.totalMateriasAsignadas || 0}
+            </Text>
           </CardBody>
         </Card>
-
-        {/* Materias Asignadas */}
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-          {materiasAsignadas.map((materia, i) => (
-            <Card
-              key={i}
-              borderRadius="lg"
-              boxShadow="sm"
-              borderWidth="1px"
-              _dark={{ bg: 'primary.900'}}
-              borderColor={borderColor}
-              transition="transform 0.2s"
-              _hover={{ transform: 'translateY(-2px)', boxShadow: 'md' }}
-            >
-              <CardBody>
-                <Flex justify="space-between" align="center" mb={2}>
-                  <Icon as={materia.icon} boxSize={6} color={accentColor} />
-                  <Badge
-                    colorScheme={materia.tareasPendientes > 0 ? 'orange' : 'green'}
-                    variant="subtle"
+        <Card
+          borderRadius="lg"
+          boxShadow="sm"
+          borderWidth="1px"
+          _dark={{ bg: 'primary.900' }}
+          borderColor={borderColor}
+          transition="transform 0.2s"
+          _hover={{ transform: 'translateY(-2px)', boxShadow: 'md' }}
+        >
+          <CardBody>
+            <Flex justify="space-between" align="center" mb={2}>
+              <Icon as={Users} boxSize={6} color={accentColor} />
+              <Badge colorScheme="green" variant="subtle">
+                {reportes?.resumen?.totalEstudiantesMatriculados || 0}
+              </Badge>
+            </Flex>
+            <Text fontSize="lg" fontWeight="semibold" color={textColor}>
+              Total Estudiantes Matriculados:{' '}
+              {reportes?.resumen?.totalEstudiantesMatriculados || 0}
+            </Text>
+          </CardBody>
+        </Card>
+      </SimpleGrid>
+      <SimpleGrid columns={1} spacing={4}>
+        <Card
+          bg={cardBg}
+          borderRadius="lg"
+          boxShadow="sm"
+          borderWidth="1px"
+          borderColor={borderColor}
+        >
+          <CardBody>
+            <Flex justify="space-between" align="center" mb={4}>
+              <Heading size="md" color={textColor}>
+                Materias Asignadas
+              </Heading>
+            </Flex>
+            <VStack spacing={3} align="stretch">
+              {reportes?.materias?.map((data, i) => (
+                <Flex
+                  key={i}
+                  p={4}
+                  borderWidth="1px"
+                  borderRadius="xl"
+                  borderLeftWidth="8px"
+                  borderLeftColor={data?.brand_color || '#000000'}
+                  align="center"
+                  justify="space-between"
+                >
+                  <Box>
+                    <Text fontWeight="medium" color={textColor} fontSize="sm">
+                      {data?.nombre || 'No nombre'}
+                    </Text>
+                    <Text fontSize="xs" color={secondaryTextColor}>
+                      {data?.descripcion || 'No descripción'}
+                    </Text>
+                  </Box>
+                  <Tag
+                    bg={data?.brand_color}
+                    color={'white'}
+                    px={2}
+                    variant={'subtle'}
                   >
-                    {materia.tareasPendientes > 0
-                      ? `${materia.tareasPendientes} tareas`
-                      : 'Sin tareas'}
-                  </Badge>
+                    <TagLeftIcon as={GraduationCap} boxSize={4} />
+                    <TagLabel>
+                      {data?.grado?.nombre} - {data?.grado?.nivel}
+                    </TagLabel>
+                  </Tag>
                 </Flex>
-                <Text fontSize="lg" fontWeight="semibold" color={textColor}>
-                  {materia.nombre}
-                </Text>
-              </CardBody>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </VStack>
-    </Box>
+              ))}
+            </VStack>
+          </CardBody>
+        </Card>
+      </SimpleGrid>
+    </VStack>
   );
 };
 
