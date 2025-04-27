@@ -14,7 +14,6 @@ import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -36,9 +35,7 @@ const MisGrados = () => {
 
   const { user, sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { mis_grados, isLoading, isError, message } = useSelector(
-    state => state.grados
-  );
+  const { mis_grados, isLoading } = useSelector(state => state.grados);
 
   useEffect(() => {
     dispatch(getGradosByDocente(user?.usuario?.id));
@@ -46,18 +43,7 @@ const MisGrados = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, sedeSeleccionada?._id]);
-
-  if (isError) {
-    CustomToast({
-      title: 'Error',
-      message,
-      type: 'error',
-      duration: 1500,
-      position: 'top',
-    });
-    console.log(message);
-  }
+  }, [user, dispatch, sedeSeleccionada?._id]);
 
   const columns = [
     {

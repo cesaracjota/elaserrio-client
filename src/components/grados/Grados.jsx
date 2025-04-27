@@ -16,7 +16,6 @@ import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
 import { AlertEliminar } from './AlertEliminar';
 import {
   FiChevronLeft,
@@ -30,20 +29,17 @@ import ModalAgregarGrado from './ModalAgregarGrado';
 import ModalEditarGrado from './ModalEditarGrado';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import { TiGroup } from "react-icons/ti";
+import { TiGroup } from 'react-icons/ti';
 import { getAllDocentesTitulares } from '../../features/usuarioSlice';
 
 const Grados = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { user, sedeSeleccionada } = useSelector(state => state.auth);
+  const { sedeSeleccionada } = useSelector(state => state.auth);
 
-  const { grados, isLoading, isError, message } = useSelector(
-    state => state.grados
-  );
+  const { grados, isLoading } = useSelector(state => state.grados);
 
   const { docentes_titulares } = useSelector(state => state.usuarios);
 
@@ -54,13 +50,7 @@ const Grados = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, sedeSeleccionada?._id]);
-
-  if (isError) {
-    CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-    console.log(message);
-  }
-
+  }, [dispatch, sedeSeleccionada?._id]);
 
   const columns = [
     {
@@ -134,8 +124,8 @@ const Grados = () => {
         <div>
           <Link
             to={{
-                pathname: `/${sedeSeleccionada?._id}/grados/${row._id}`,
-                state: { grado: row?.nombre },
+              pathname: `/${sedeSeleccionada?._id}/grados/${row._id}`,
+              state: { grado: row?.nombre },
             }}
           >
             <IconButton

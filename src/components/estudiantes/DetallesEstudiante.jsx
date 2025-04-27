@@ -10,41 +10,26 @@ import {
 } from '@chakra-ui/react';
 import Moment from 'moment';
 import { FaArrowLeft } from 'react-icons/fa';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { CustomToast } from '../../helpers/toast';
 import { Loading } from '../../helpers/Loading';
 import { getEstudiante, reset } from '../../features/estudianteSlice';
 
 const DetallesEstudiante = ({ location }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, sedeSeleccionada } = useSelector(state => state.auth);
-  const { estudiante, isLoading, isError, message } = useSelector(
-    state => state.estudiantes
-  );
+  const { sedeSeleccionada } = useSelector(state => state.auth);
+  const { estudiante, isLoading } = useSelector(state => state.estudiantes);
 
   const params = useParams(location);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    } else if (!user.token) {
-      navigate('/login');
-    }
-
     dispatch(getEstudiante(params.id));
 
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, params.id]);
-
-  if (isError) {
-    CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-    console.log(message);
-  }
+  }, [dispatch, params.id]);
 
   const getBithdayTimer = birthday => {
     if (!birthday) return 'No hay fecha de nacimiento';

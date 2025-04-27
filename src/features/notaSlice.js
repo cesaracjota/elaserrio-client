@@ -169,7 +169,7 @@ export const calificacionSlice = createSlice({
             .addCase(getAllCalificaciones.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.notas = action.payload;
+                state.notas = action.payload || [];
             })
             .addCase(getAllCalificaciones.rejected, (state, action) => {
                 state.isLoading = false;
@@ -182,7 +182,7 @@ export const calificacionSlice = createSlice({
             .addCase(getNotasByMatriculaAndMateria.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.nota = action.payload;
+                state.nota = action.payload || {};
             })
             .addCase(getNotasByMatriculaAndMateria.rejected, (state, action) => {
                 state.isLoading = false;
@@ -195,7 +195,7 @@ export const calificacionSlice = createSlice({
             .addCase(getAllNotasByMateria.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.notasByMateria = action.payload;
+                state.notasByMateria = action.payload || [];
             })
             .addCase(getAllNotasByMateria.rejected, (state, action) => {
                 state.isLoading = false;
@@ -208,7 +208,7 @@ export const calificacionSlice = createSlice({
             .addCase(getAllNotasByStudent.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.notasByStudent = action.payload;
+                state.notasByStudent = action.payload || [];
             })
             .addCase(getAllNotasByStudent.rejected, (state, action) => {
                 state.isLoading = false;

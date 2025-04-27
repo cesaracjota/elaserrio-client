@@ -1,6 +1,3 @@
-import axios from "axios";
-import { CustomToast } from "../helpers/toast";
-import authService from "./auth.service";
 import { apiRequest } from "./axiosHelper.service";
 
 const API_URL = process.env.REACT_APP_API_URL;

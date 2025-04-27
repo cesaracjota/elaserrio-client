@@ -51,7 +51,8 @@ export const getMateria = createAsyncThunk(
     "materia/get",
     async (id, thunkAPI) => {
         try {
-            return await materiaService.get(id);
+            const token = thunkAPI.getState().auth.user.token;
+            return await materiaService.get(id, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -166,7 +167,7 @@ export const materiaSlice = createSlice({
             .addCase(getAllMaterias.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.materias = action.payload;
+                state.materias = action.payload || [];
             })
             .addCase(getAllMaterias.rejected, (state, action) => {
                 state.isLoading = false;
@@ -179,7 +180,7 @@ export const materiaSlice = createSlice({
             .addCase(getMateria.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.materia = action.payload;
+                state.materia = action.payload || {};
             })
             .addCase(getMateria.rejected, (state, action) => {
                 state.isLoading = false;
@@ -192,7 +193,7 @@ export const materiaSlice = createSlice({
             .addCase(getMateriasBySede.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.materias = action.payload;
+                state.materias = action.payload || [];
             })
             .addCase(getMateriasBySede.rejected, (state, action) => {
                 state.isLoading = false;
@@ -205,7 +206,7 @@ export const materiaSlice = createSlice({
             .addCase(getMateriasByTeacher.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.materiasByTeacher = action.payload;
+                state.materiasByTeacher = action.payload || [];
             })
             .addCase(getMateriasByTeacher.rejected, (state, action) => {
                 state.isLoading = false;
@@ -218,7 +219,7 @@ export const materiaSlice = createSlice({
             .addCase(getMateriasByGrado.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.materias = action.payload;
+                state.materias = action.payload || [];
             })
             .addCase(getMateriasByGrado.rejected, (state, action) => {
                 state.isLoading = false;

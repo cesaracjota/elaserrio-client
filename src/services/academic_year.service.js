@@ -28,7 +28,7 @@ const getAllAcademicYear = async token => {
       setTimeout(() => {
         authService.logout();
         window.location.reload();
-      }, 2000);
+      }, 3000);
     }
 
     throw error;

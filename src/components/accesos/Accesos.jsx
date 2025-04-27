@@ -25,6 +25,7 @@ import { customStyles } from '../../helpers/customStyles';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
 import { getAllAccesos, resetAccesos } from '../../features/accesoSlice';
+import moment from 'moment';
 
 const Accesos = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,36 @@ const Accesos = () => {
       dispatch(resetAccesos());
     };
   }, [dispatch]);
+
+  // {
+  //   "_id": {
+  //     "$oid": "680e504bcb0abc8abe2ed29a"
+  //   },
+  //   "usuario": {
+  //     "$oid": "6808e8ca1dbdd6f168a6b932"
+  //   },
+  //   "ruta": "/api/login",
+  //   "metodo": "POST",
+  //   "fechaHora": {
+  //     "$date": "2025-04-27T15:42:03.378Z"
+  //   },
+  //   "ip": "IP no disponible",
+  //   "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+  //   "estadoRespuesta": 200,
+  //   "referer": "http://localhost:3000/",
+  //   "dispositivo": "{\"tipo\":\"desktop\",\"navegador\":\"Chrome\"}",
+  //   "sesionId": null,
+  //   "query": "{}",
+  //   "tipoContenido": "application/json",
+  //   "estado": true,
+  //   "createdAt": {
+  //     "$date": "2025-04-27T15:42:03.388Z"
+  //   },
+  //   "updatedAt": {
+  //     "$date": "2025-04-27T15:42:03.388Z"
+  //   },
+  //   "__v": 0
+  // }
 
   const columns = [
     {
@@ -76,16 +107,24 @@ const Accesos = () => {
       cellExport: row => row.usuario?.rol,
     },
     {
-      name: 'USER AGENT',
-      selector: row => row.userAgent,
+      name: 'DISPOSITIVO',
+      selector: row => row.dispositivo,
       sortable: true,
-      cellExport: row => row.userAgent,
     },
     {
       name: 'IP',
       selector: row => row.ip,
       sortable: true,
       cellExport: row => row.ip,
+    },
+    {
+      name: 'FECHA HORA',
+      selector: row => row.fechaHora,
+      sortable: true,
+      cellExport: row => row.fechaHora,
+      Cell: row => (
+        <Text>{moment(row.fechaHora).format('DD-MM-YYYY - hh:mm:ss A')}</Text>
+      ),
     },
     {
       name: 'ESTADO',

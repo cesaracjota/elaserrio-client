@@ -15,8 +15,7 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
+import { useParams } from 'react-router-dom';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -40,7 +39,6 @@ import ModalEditarMatricula from '../matriculas/ModalEditarMatricula';
 import CustomBackRoute from '../../helpers/CustomBackRoute';
 
 const EstudiantesPorGrado = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
@@ -49,7 +47,7 @@ const EstudiantesPorGrado = () => {
 
   const grado = useParams();
 
-  const { matriculas, isLoading, isError, message } = useSelector(
+  const { matriculas, isLoading } = useSelector(
     state => state.matriculas
   );
   const { configuracion } = useSelector(state => state.configuraciones);
@@ -61,18 +59,7 @@ const EstudiantesPorGrado = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, grado.id, grado?._id]);
-
-  if (isError) {
-    CustomToast({
-      title: 'Error',
-      message,
-      type: 'error',
-      duration: 1500,
-      position: 'top',
-    });
-    console.log(message);
-  }
+  }, [dispatch, grado.id]);
 
   const calcularTotalEstudiantesPorGrado = (gradoId) => {
     return matriculas.filter(m => m.grado._id === gradoId).length;

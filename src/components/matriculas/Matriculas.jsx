@@ -49,7 +49,6 @@ import ReporteFichaMatricula from './ReporteFichaMatricula';
 import { Loading } from '../../helpers/Loading';
 
 const Matriculas = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
@@ -98,7 +97,7 @@ const Matriculas = () => {
     return () => {
       dispatch(reset());
     };
-  }, [navigate, dispatch, currentPage, perPage, sedeSeleccionada?._id, user?.usuario?.id, user?.usuario?.rol]); 
+  }, [dispatch, currentPage, perPage, sedeSeleccionada?._id, user?.usuario?.id, user?.usuario?.rol]); 
 
   const columns = [
     {

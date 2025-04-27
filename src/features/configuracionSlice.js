@@ -73,7 +73,7 @@ export const configuracionSlice = createSlice({
       .addCase(getAllConfiguraciones.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.configuracion = action.payload;
+        state.configuracion = action.payload || [];
       })
       .addCase(getAllConfiguraciones.rejected, (state, action) => {
         state.isLoading = false;
@@ -88,7 +88,7 @@ export const configuracionSlice = createSlice({
       .addCase(createOrUpdateConfiguracion.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.configuracion = action.payload;
+        state.configuracion = action.payload || {};
       })
       .addCase(createOrUpdateConfiguracion.rejected, (state, action) => {
         state.isLoading = false;

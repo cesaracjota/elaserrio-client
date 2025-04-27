@@ -204,7 +204,7 @@ export const reportesSlice = createSlice({
         builder.addCase(getAllReports.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.reportes = action.payload;
+            state.reportes = action.payload || [];
         });
         builder.addCase(getAllReports.rejected, (state, action) => {
             state.isLoading = false;
@@ -217,7 +217,7 @@ export const reportesSlice = createSlice({
         builder.addCase(getAllReportesAdminBySede.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.reportesAdmin = action.payload;
+            state.reportesAdmin = action.payload || [];
         });
         builder.addCase(getAllReportesAdminBySede.rejected, (state, action) => {
             state.isLoading = false;
@@ -230,7 +230,7 @@ export const reportesSlice = createSlice({
         builder.addCase(getAllReportesDocenteTitularBySede.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.reportesDocenteTitular = action.payload;
+            state.reportesDocenteTitular = action.payload || [];
         });
         builder.addCase(getAllReportesDocenteTitularBySede.rejected, (state, action) => {
             state.isLoading = false;
@@ -243,7 +243,7 @@ export const reportesSlice = createSlice({
         builder.addCase(getAllReportesDocenteBySede.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.reportesDocente = action.payload;
+            state.reportesDocente = action.payload || [];
         });
         builder.addCase(getAllReportesDocenteBySede.rejected, (state, action) => {
             state.isLoading = false;

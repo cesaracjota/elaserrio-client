@@ -168,7 +168,7 @@ export const usuarioSlice = createSlice({
         builder.addCase(getAllDocentes.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.docentes = action.payload;
+            state.docentes = action.payload || [];
         });
         builder.addCase(getAllDocentes.rejected, (state, action) => {
             state.isLoading = false;
@@ -181,7 +181,7 @@ export const usuarioSlice = createSlice({
         builder.addCase(getAllDocentesTitulares.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.docentes_titulares = action.payload;
+            state.docentes_titulares = action.payload || [];
         });
         builder.addCase(getAllDocentesTitulares.rejected, (state, action) => {
             state.isLoading = false;
@@ -194,7 +194,7 @@ export const usuarioSlice = createSlice({
         builder.addCase(getUsuario.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.usuario = action.payload;
+            state.usuario = action.payload || {};
         });
         builder.addCase(getUsuario.rejected, (state, action) => {
             state.isLoading = false;

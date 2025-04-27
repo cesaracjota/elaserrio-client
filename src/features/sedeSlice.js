@@ -94,7 +94,7 @@ export const sedeSlice = createSlice({
             .addCase(getAllSedes.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.sedes = action.payload;
+                state.sedes = action.payload || [];
             })
             .addCase(getAllSedes.rejected, (state, action) => {
                 state.isLoading = false;

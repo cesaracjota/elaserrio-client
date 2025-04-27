@@ -40,38 +40,24 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Search2Icon } from '@chakra-ui/icons';
 import { getEstudianteSearch, reset } from '../../features/estudianteSlice';
-import { CustomToast } from '../../helpers/toast';
 import { useNavigate } from 'react-router-dom';
 import { createMatricula } from '../../features/matriculaSlice';
 import { FiPlus } from 'react-icons/fi';
 
 const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { sedeSeleccionada } = useSelector(state => state.auth);
-  const { isError, message } = useSelector(state => state.matriculas);
   const { estudiantes } = useSelector(state => state.estudiantes);
   const { user } = useSelector(state => state.auth);
 
   useEffect(() => {
-    dispatch(getEstudianteSearch(''));
+    dispatch(getEstudianteSearch('', sedeSeleccionada?._id));
     return () => {
       dispatch(reset());
     };
-  }, [navigate, dispatch]);
-
-  if (isError) {
-    CustomToast({
-      title: 'Error',
-      message,
-      type: 'error',
-      duration: 1500,
-      position: 'top',
-    });
-    console.log(message);
-  }
+  }, [dispatch]);
 
   const initialValues = {
     estudiante: null,

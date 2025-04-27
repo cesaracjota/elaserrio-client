@@ -45,7 +45,7 @@ const RegisterPage = () => {
         }
 
         if (isSuccess || user) {
-            navigate('/inicio');
+            navigate('/');
             CustomToast('Bienvenido', message, 'success', 1500, 'top-right');
         }
 

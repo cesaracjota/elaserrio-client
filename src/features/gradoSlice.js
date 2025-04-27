@@ -32,7 +32,8 @@ export const getGrados = createAsyncThunk(
     "grados/getGrados",
     async (_, thunkAPI) => {
         try {
-            return await gradoService.getAllGrados();
+            const token = thunkAPI.getState().auth.user.token;
+            return await gradoService.getAllGrados(token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -49,7 +50,8 @@ export const getGradosBySede = createAsyncThunk(
     "grados/getGradosBySede",
     async (id, thunkAPI) => {
         try {
-            return await gradoService.getGradosBySede(id);
+            const token = thunkAPI.getState().auth.user.token;
+            return await gradoService.getGradosBySede(id, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -130,7 +132,7 @@ export const gradoSlice = createSlice({
             .addCase(getGrados.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.grados = action.payload;
+                state.grados = action.payload || [];
             })
             .addCase(getGrados.rejected, (state, action) => {
                 state.isLoading = false;
@@ -143,7 +145,7 @@ export const gradoSlice = createSlice({
             .addCase(getGradosBySede.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.grados = action.payload;
+                state.grados = action.payload || [];
             })
             .addCase(getGradosBySede.rejected, (state, action) => {
                 state.isLoading = false;
@@ -156,7 +158,7 @@ export const gradoSlice = createSlice({
             .addCase(getGradosByDocente.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.mis_grados = action.payload;
+                state.mis_grados = action.payload || [];
             })
             .addCase(getGradosByDocente.rejected, (state, action) => {
                 state.isLoading = false;

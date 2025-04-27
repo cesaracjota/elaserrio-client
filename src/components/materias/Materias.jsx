@@ -43,7 +43,7 @@ const Materias = () => {
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { user, sedeSeleccionada } = useSelector(state => state.auth);
+  const { sedeSeleccionada } = useSelector(state => state.auth);
 
   const { materias, isLoading } = useSelector(state => state.materias);
 
@@ -58,7 +58,7 @@ const Materias = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch, sedeSeleccionada._id]);
+  }, [dispatch, sedeSeleccionada._id]);
 
   const columns = [
     {

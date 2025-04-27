@@ -170,7 +170,7 @@ export const estudianteSlice = createSlice({
             .addCase(getEstudiantes.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.estudiantes = action.payload;
+                state.estudiantes = action.payload || [];
             })
             .addCase(getEstudiantes.rejected, (state, action) => {
                 state.isLoading = false;
@@ -183,7 +183,7 @@ export const estudianteSlice = createSlice({
             .addCase(getEstudiante.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.estudiante = action.payload;
+                state.estudiante = action.payload || {};
             })
             .addCase(getEstudiante.rejected, (state, action) => {
                 state.isLoading = false;
@@ -196,7 +196,7 @@ export const estudianteSlice = createSlice({
             .addCase(getStudentsByGrade.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.estudiantes = action.payload;
+                state.estudiantes = action.payload || [];
             })
             .addCase(getStudentsByGrade.rejected, (state, action) => {
                 state.isLoading = false;
@@ -209,7 +209,7 @@ export const estudianteSlice = createSlice({
             .addCase(getEstudianteSearch.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.estudiantes = action.payload;
+                state.estudiantes = action.payload || [];
             })
             .addCase(getEstudianteSearch.rejected, (state, action) => {
                 state.isLoading = false;

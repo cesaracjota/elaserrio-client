@@ -65,7 +65,7 @@ const EditarEstudiante = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { user, sedeSeleccionada } = useSelector(state => state.auth);
+  const { sedeSeleccionada } = useSelector(state => state.auth);
   const { isLoading } = useSelector(
     state => state.estudiantes
   );

@@ -166,8 +166,8 @@ export const matriculaSlice = createSlice({
       .addCase(getAllMatriculas.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.matriculas = action.payload.matriculas;
-        state.totalRows = action.payload.total;
+        state.matriculas = action.payload.matriculas || [];
+        state.totalRows = action.payload.total || 0;
       })
       .addCase(getAllMatriculas.rejected, (state, action) => {
         state.isLoading = false;
@@ -180,8 +180,8 @@ export const matriculaSlice = createSlice({
       .addCase(getAllMatriculasByGrado.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.matriculas = action.payload.matriculas;
-        state.totalRows = action.payload.total;
+        state.matriculas = action.payload.matriculas || [];
+        state.totalRows = action.payload.total || 0;
       })
       .addCase(getAllMatriculasByGrado.rejected, (state, action) => {
         state.isLoading = false;
@@ -194,8 +194,8 @@ export const matriculaSlice = createSlice({
       .addCase(getAllMatriculasByCurso.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.matriculas = action.payload;
-        state.totalRows = action.payload.total;
+        state.matriculas = action.payload || [];
+        state.totalRows = action.payload.total || 0;
       })
       .addCase(getAllMatriculasByCurso.rejected, (state, action) => {
         state.isLoading = false;
@@ -208,7 +208,7 @@ export const matriculaSlice = createSlice({
       .addCase(getMatricula.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.matricula = action.payload;
+        state.matricula = action.payload || {};
       })
       .addCase(getMatricula.rejected, (state, action) => {
         state.isLoading = false;

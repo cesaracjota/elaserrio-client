@@ -13,16 +13,13 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
+import { useParams } from 'react-router-dom';
 import { AlertEliminar } from './AlertEliminar';
 import { getAllPagos, reset } from '../../features/pagos/pagoSlice';
 import '../../theme/solarizedTheme';
 import { customStyles } from '../../helpers/customStyles';
 import { Loading } from '../../helpers/Loading';
-import {
-  getAllMatriculasByGrado,
-} from '../../features/matriculaSlice';
+import { getAllMatriculasByGrado } from '../../features/matriculaSlice';
 import { getGrados } from '../../features/gradoSlice';
 import {
   FiChevronsLeft,
@@ -32,14 +29,11 @@ import {
 } from 'react-icons/fi';
 
 const TablaEstudiantesMatriculados = ({ location }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { user } = useSelector(state => state.auth);
-
-  const { matriculas, isLoading, isError, message, currentPage, totalRows } =
+  const { matriculas, isLoading, currentPage, totalRows } =
     useSelector(state => state.matriculas);
   const params = useParams(location);
 
@@ -47,10 +41,6 @@ const TablaEstudiantesMatriculados = ({ location }) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    }
-
     dispatch(getGrados());
 
     dispatch(
@@ -61,24 +51,10 @@ const TablaEstudiantesMatriculados = ({ location }) => {
       })
     );
 
-    if (isError) {
-      CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-      console.log(message);
-    }
-
     return () => {
       dispatch(reset());
     };
-  }, [
-    user,
-    navigate,
-    dispatch,
-    currentPage,
-    perPage,
-    isError,
-    message,
-    params.id,
-  ]);
+  }, [dispatch, currentPage, perPage, params.id]);
 
   const columns = [
     {
@@ -185,12 +161,12 @@ const TablaEstudiantesMatriculados = ({ location }) => {
           ESTUDIANTES MATRICULADOS POR GRADOS
         </Heading>
       </Stack>
-      <Box 
+      <Box
         borderRadius="2xl"
         overflow="hidden"
         boxShadow={'base'}
         bg="white"
-        _dark={{ bg: "primary.1000" }}
+        _dark={{ bg: 'primary.1000' }}
         mt={2}
         pt={2}
       >

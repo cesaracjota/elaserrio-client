@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { CustomToast } from '../helpers/toast';
+import authService from './auth.service';
 
 const baseURL = process.env.REACT_APP_API_URL;
 
@@ -26,6 +27,13 @@ const getAllUsuarios = async (token, desde, hasta) => {
       duration: 1500,
       position: 'top',
     });
+    if (error.response?.status === 401) {
+      setTimeout(() => {
+        authService.logout();
+        window.location.reload();
+      }, 2000);
+    }
+    throw error;
   }
 };
 
@@ -53,6 +61,13 @@ const getAllDocentes = async (token, id) => {
       duration: 1500,
       position: 'top',
     });
+    if (error.response?.status === 401) {
+      setTimeout(() => {
+        authService.logout();
+        window.location.reload();
+      }, 2000);
+    }
+    throw error;
   }
 };
 
@@ -80,6 +95,13 @@ const getAllDocenteTitular = async (token, id) => {
       duration: 1500,
       position: 'top',
     });
+    if (error.response?.status === 401) {
+      setTimeout(() => {
+        authService.logout();
+        window.location.reload();
+      }, 2000);
+    }
+    throw error;
   }
 };
 
@@ -104,6 +126,13 @@ const getUser = async (id, token) => {
       duration: 1500,
       position: 'top',
     });
+    if (error.response?.status === 401) {
+      setTimeout(() => {
+        authService.logout();
+        window.location.reload();
+      }, 2000);
+    }
+    throw error;
   }
 };
 
@@ -137,6 +166,7 @@ const createUser = async (data, token) => {
       duration: 1500,
       position: 'top',
     });
+    throw error;
   }
 };
 
@@ -174,6 +204,7 @@ const updateUser = async (data, token) => {
       duration: 1500,
       position: 'top',
     });
+    throw error;
   }
 };
 
@@ -207,6 +238,7 @@ const deleteUser = async (id, token) => {
       duration: 1500,
       position: 'top',
     });
+    throw error;
   }
 };
 
