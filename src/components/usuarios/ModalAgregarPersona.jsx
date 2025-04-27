@@ -235,7 +235,8 @@ export const ModalAgregarPersona = ({ sedes }) => {
                 indice.nombre === '' ||
                 indice.correo === '' ||
                 indice.password === '' ||
-                indice.rol === ''
+                indice.rol === '' ||
+                indice.sedes.length === 0
               }
             >
               GUARDAR

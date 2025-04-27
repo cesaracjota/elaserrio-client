@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardBody,
-  CardHeader,
   Flex,
   FormControl,
   FormLabel,
-  HStack,
-  Icon,
   IconButton,
   Modal,
   ModalBody,
@@ -20,13 +15,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Table,
-  Tbody,
-  Td,
   Text,
   Textarea,
-  Th,
-  Thead,
   Tooltip,
   Tr,
   Tabs,
@@ -34,21 +24,14 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
 } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateMatricula, getMatricula } from '../../features/matriculaSlice';
+import { useDispatch } from 'react-redux';
+import { updateMatricula } from '../../features/matriculaSlice';
 import { MdOutlineAddTask } from 'react-icons/md';
-import { getAllNotasByStudent, reset } from '../../features/notaSlice';
 
 const ModalRegistrarObservaciones = ({ row, configuracion }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { matricula } = useSelector(state => state.matriculas);
-  const { notasByStudent } = useSelector(state => state.calificaciones);
   const [currentTab, setCurrentTab] = useState(0);
 
   // Simplified form structure with period-specific fields
@@ -64,12 +47,16 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
   });
 
   // Handle modal open
-  const handleModalOpen = () => {
-    // Fetch student data when opening the modal
-    dispatch(getMatricula(row._id));
-    dispatch(getAllNotasByStudent(row._id));
-    setIsModalOpen(true);
-  };
+  const handleModalOpen = data => {
+    setIsModalOpen(true);    
+    setFormData(
+      data.observacionesPeriodo.reduce((acc, periodo) => {
+        acc[`periodo${periodo.periodo}Academica`] = periodo.academica || '';
+        acc[`periodo${periodo.periodo}Comportamental`] = periodo.comportamental || '';
+        return acc;
+      }, {})
+    );
+  }
 
   // Handle modal close
   const handleModalClose = () => {
@@ -85,30 +72,7 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
       periodo4Comportamental: '',
     });
     setCurrentTab(0);
-    dispatch(reset()); // Cleanup
   };
-
-  // Load existing data when matricula data is available
-  useEffect(() => {
-    if (isModalOpen && matricula && matricula._id === row._id) {
-      if (
-        matricula.observacionesPeriodo &&
-        matricula.observacionesPeriodo.length > 0
-      ) {
-        // Map the array structure to our flattened form structure
-        const newFormData = { ...formData };
-
-        matricula.observacionesPeriodo.forEach(obs => {
-          const periodoNum = obs.periodo;
-          newFormData[`periodo${periodoNum}Academica`] = obs.academica || '';
-          newFormData[`periodo${periodoNum}Comportamental`] =
-            obs.comportamental || '';
-        });
-
-        setFormData(newFormData);
-      }
-    }
-  }, [isModalOpen, matricula, row._id, formData]);
 
   // Simple handler for form inputs
   const handleInputChange = e => {
@@ -165,7 +129,7 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
           colorScheme="purple"
           _dark={{ bg: 'purple.500', color: 'white', _hover: { bg: 'purple.600' } }}
           isRound
-          onClick={handleModalOpen}
+          onClick={() => handleModalOpen(row)}
           icon={<MdOutlineAddTask />}
           isDisabled={
             configuracion?.permitirRegistrarObservadores === false
@@ -209,72 +173,6 @@ const ModalRegistrarObservaciones = ({ row, configuracion }) => {
                 </Box>
               </Flex>
             </Stack>
-            {notasByStudent && notasByStudent.length > 0 ? (
-              <Card mt={4} borderRadius="xl" variant="outline" size="sm">
-                <CardHeader>
-                  <HStack spacing={4}>
-                    <Icon
-                      as={MdOutlineAddTask}
-                      boxSize={6}
-                      color="primary.500"
-                    />
-                    <Text fontSize="lg" fontWeight="bold">
-                      Materias y Notas
-                    </Text>
-                  </HStack>
-                </CardHeader>
-                <CardBody>
-                  <Table variant="simple" size="sm">
-                    <Thead>
-                      <Tr>
-                        <Th>Materia</Th>
-                        <Th>Indicadores</Th>
-                        <Th isNumeric>Promedio</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {notasByStudent.map(nota => (
-                        <Tr key={nota._id}>
-                          <Td>{nota.materia.nombre}</Td>
-                          <Td>
-                            {nota.indicadores &&
-                              nota.indicadores.map(item => (
-                                <div key={item._id}>
-                                  {item.indicador && item.indicador.length > 0
-                                    ? item.indicador.map((subItem, index) => (
-                                        <p key={index}>
-                                          {' '}
-                                          - {subItem.indicador}
-                                        </p> // Muestra cada indicador
-                                      ))
-                                    : null}
-                                </div>
-                              ))}
-                          </Td>
-                          <Td isNumeric>{nota.promedio}</Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            ) : (
-              <Alert
-                status="warning"
-                variant={'top-accent'}
-                borderRadius={'md'}
-                mt={4}
-              >
-                <AlertIcon />
-                <AlertTitle mr={2}>
-                  No hay registro de observaciones indicadas por el docente.
-                </AlertTitle>
-                <AlertDescription>
-                  Puede Registrar observaciones generales segun corresponda a su
-                  criterio.
-                </AlertDescription>
-              </Alert>
-            )}
             <Tabs
               isFitted
               variant="enclosed"

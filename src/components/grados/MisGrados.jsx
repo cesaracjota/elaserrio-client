@@ -104,7 +104,7 @@ const MisGrados = () => {
         <div>
           <Link
             to={{
-              pathname: `/${sedeSeleccionada?._id}/grados/${row._id}`,
+              pathname: `/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}`,
               state: { grado: row?.nombre },
             }}
           >
@@ -124,7 +124,7 @@ const MisGrados = () => {
           </Link>
           <Link
             to={{
-              pathname: `/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}`,
+              pathname: `/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}/asignaturas/listView`,
               state: { grado: row?.nombre },
             }}
           >
@@ -143,7 +143,7 @@ const MisGrados = () => {
             />
           </Link>
           <Link
-            to={`/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}/asignaturas`}
+            to={`/mis-grados/${sedeSeleccionada?._id}/grados/${row._id}/asignaturas/gridView`}
           >
             <IconButton
               colorScheme="pink"

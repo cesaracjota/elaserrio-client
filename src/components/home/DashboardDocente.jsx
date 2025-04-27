@@ -19,6 +19,7 @@ import {
   TagLabel,
 } from '@chakra-ui/react';
 import { Book, Calendar, GraduationCap, Users } from 'lucide-react';
+import ModalVerHorarioMateria from '../materias/ModalVerHorarioMateria';
 
 const DashboardDocente = ({ reportes }) => {
   const [greeting, setGreeting] = useState('');
@@ -71,20 +72,6 @@ const DashboardDocente = ({ reportes }) => {
                   Consulta tus materias asignadas y gestiona tus tareas.
                 </Text>
               </VStack>
-            </GridItem>
-
-            <GridItem
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
-              <Button
-                leftIcon={<Calendar size={16} />}
-                colorScheme="teal"
-                variant="outline"
-              >
-                Ver horario
-              </Button>
             </GridItem>
           </Grid>
         </CardBody>

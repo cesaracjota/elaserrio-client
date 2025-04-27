@@ -182,7 +182,7 @@ const TablaEstudiantesMatriculados = ({ location }) => {
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
         <Heading size="lg" fontWeight="bold">
-          Estudiantes Matriculados por Grados
+          ESTUDIANTES MATRICULADOS POR GRADOS
         </Heading>
       </Stack>
       <Box 

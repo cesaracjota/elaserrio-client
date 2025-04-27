@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 20,
     alignItems: 'center',
-    borderBottom: '2pt solid #1A5276',
+    borderBottom: '2pt solid #2fa33a',
     paddingBottom: 10,
   },
   headerText: {
@@ -41,12 +41,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: 'bold',
     marginBottom: 3,
-    color: '#1A5276',
+    color: '#000000',
   },
   headerSubtitle: {
     fontSize: 8,
     marginBottom: 1,
-    color: '#34495E',
+    color: '#2C3E50',
   },
   logo: {
     width: 50,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
-    color: '#1A5276',
+    color: '#2C3E50',
     backgroundColor: '#F8F9F9',
     padding: 8,
     borderRadius: 4,
@@ -67,19 +67,19 @@ const styles = StyleSheet.create({
 
   // Datos del estudiante con diseño mejorado
   studentInfoBox: {
-    border: '1pt solid #AED6F1',
+    border: '1pt solid #2C3E50',
     padding: 12,
     marginBottom: 15,
     borderRadius: 4,
-    backgroundColor: '#EBF5FB',
+    backgroundColor: '#FFFFFF',
   },
   studentInfoTitle: {
     fontSize: 11,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#2C3E50',
     marginBottom: 10,
-    color: '#1A5276',
-    borderBottom: '1pt solid #AED6F1',
+    borderBottom: '1pt solid #2C3E50',
     paddingBottom: 5,
   },
   studentInfoRow: {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight: 5,
     width: 160,
-    color: '#34495E',
+    color: '#000000',
   },
   studentInfoValue: {
     flex: 1,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
     marginTop: 5,
-    color: '#1A5276',
+    color: '#2fa33a',
     backgroundColor: '#F8F9F9',
     padding: 5,
     borderRadius: 4,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: '#AED6F1',
+    borderColor: '#a0f8a9',
     marginBottom: 10,
     borderRadius: 4,
     overflow: 'hidden',
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
   tableHeaderRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#1A5276',
-    backgroundColor: '#2E86C1',
+    borderBottomColor: '#2fa33a',
+    backgroundColor: '#2fa33a',
   },
   tableHeaderCell: {
     padding: 8,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     borderRightWidth: 1,
-    borderRightColor: '#AED6F1',
+    borderRightColor: '#a0f8a9',
     color: '#FFFFFF',
   },
   tableCell: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     borderRightWidth: 1,
-    borderRightColor: '#AED6F1',
+    borderRightColor: '#a0f8a9',
     color: '#FFFFFF',
   },
 
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     marginBottom: 6,
-    color: '#1A5276',
+    color: '#2fa33a',
   },
   notesText: {
     fontSize: 9,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   periodHeader: {
-    backgroundColor: '#2E86C1',
+    backgroundColor: '#2fa33a',
     padding: 8,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   },
   observationTypeLabel: {
     fontWeight: 'bold',
-    color: '#1A5276',
+    color: '#2fa33a',
     fontSize: 9,
     marginBottom: 3,
   },
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   behaviorTitle: {
     fontSize: 10,
     fontWeight: 'bold',
-    color: '#2874A6',
+    color: '#2fa33a',
     marginBottom: 5,
   },
 
@@ -498,27 +498,6 @@ const StudentObserverPDF = ({ studentData }) => {
             <View style={styles.signatureLine}></View>
             <Text style={styles.signatureText}>ACUDIENTE</Text>
           </View>
-        </View>
-
-        {/* Pie de página */}
-        <View style={styles.footer}>
-          <Text>
-            {globalInformation.institucion_educativa} • Documento generado el{' '}
-            {new Date().toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-            })}{' '}
-            a las{' '}
-            {new Date().toLocaleTimeString('es-ES', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </Text>
-          <Text style={{ marginTop: 3 }}>
-            Este documento tiene carácter informativo y de seguimiento
-            académico.
-          </Text>
         </View>
       </Page>
     </Document>

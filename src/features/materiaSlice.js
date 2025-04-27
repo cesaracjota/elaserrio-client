@@ -68,7 +68,8 @@ export const getMateriasBySede = createAsyncThunk(
     "materia/getMateriasBySede",
     async (id, thunkAPI) => {
         try {
-            return await materiaService.getMateriasBySede(id);
+            const token = thunkAPI.getState().auth.user.token;
+            return await materiaService.getMateriasBySede(id, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -85,7 +86,8 @@ export const getMateriasByTeacher = createAsyncThunk(
     "materia/getMateriasByTeacher",
     async (id, thunkAPI) => {
         try {
-            return await materiaService.getMateriasByTeacher(id);
+            const token = thunkAPI.getState().auth.user.token;
+            return await materiaService.getMateriasByTeacher(id, token);
         } catch (error) {
             const message = 
             (error.response && 

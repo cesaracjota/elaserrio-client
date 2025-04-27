@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 import {
+    Avatar,
+  AvatarBadge,
   Badge,
   Box,
-  HStack,
+  Heading,
   Icon,
   Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import Moment from 'moment';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { AlertEliminar } from './AlertEliminar';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -22,84 +24,86 @@ import {
 import { customStyles } from '../../helpers/customStyles';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
-import { getAllAcademicYear, reset } from '../../features/academicYearSlice';
-import ModalAgregarApertura from './ModalAgregarApertura';
-import { AlertEliminar } from './AlertEliminar';
-import ModalEditarApertura from './ModalEditarApertura';
+import { getAllAccesos, resetAccesos } from '../../features/accesoSlice';
 
-const PeriodoEscolar = () => {
+const Accesos = () => {
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { academic_year, isLoading, isError, message } = useSelector(
-    state => state.academic_year
-  );
+  const { accesos, isLoading } = useSelector(state => state.accesos);
 
   useEffect(() => {
-    dispatch(getAllAcademicYear());
+    dispatch(getAllAccesos());
 
     return () => {
-      dispatch(reset());
+      dispatch(resetAccesos());
     };
   }, [dispatch]);
 
   const columns = [
     {
-      name: 'AÑO ACADÉMICO',
-      selector: row => row.year,
+      name: 'USUARIO',
+      selector: row => row?.usuario?.nombre || 'SIN INFORMACIÓN',
       sortable: true,
-      cellExport: row => row.year,
-      resizable: true,
+      cellExport: row => row?.usuario?.nombre || 'SIN INFORMACIÓN',
+      cell: row => (
+        <Stack direction="row" alignItems="center" alignSelf={'center'}>
+          <Avatar
+            name={row?.usuario?.nombre || 'SIN INFORMACIÓN'}
+            src={row?.usuario?.foto}
+            size="sm"
+            color={'white'}
+          >
+            <AvatarBadge boxSize="1.25em" bg="primary.500" />
+          </Avatar>
+          <Box alignSelf={'center'}>
+            <Text fontSize="sm" fontWeight="bold">
+              {row?.usuario?.nombre || 'SIN INFORMACIÓN'}
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+              {row?.usuario?.correo}
+            </Text>
+          </Box>
+        </Stack>
+      ),
+      width: '250px',
     },
     {
-      name: 'PERIODO ACTUAL',
-      selector: row => row.periodo,
+      name: 'ROL',
+      selector: row => row.usuario?.rol,
       sortable: true,
-      cellExport: row => row.periodo,
-      resizable: true,
+      cellExport: row => row.usuario?.rol,
     },
     {
-      name: 'FECHA INICIO',
-      selector: row =>
-        row?.startDate
-          ? Moment(row.startDate).format('DD-MM-YYYY')
-          : 'sin fecha',
+      name: 'USER AGENT',
+      selector: row => row.userAgent,
       sortable: true,
-      cellExport: row =>
-        row?.startDate
-          ? Moment(row.startDate).format('DD-MM-YYYY')
-          : 'sin fecha',
-      resizable: true,
+      cellExport: row => row.userAgent,
     },
     {
-      name: 'FECHA FIN',
-      selector: row =>
-        row?.startDate ? Moment(row.endDate).format('DD-MM-YYYY') : 'sin fecha',
+      name: 'IP',
+      selector: row => row.ip,
       sortable: true,
-      cellExport: row =>
-        row?.startDate ? Moment(row.endDate).format('DD-MM-YYYY') : 'sin fecha',
-      resizable: true,
+      cellExport: row => row.ip,
     },
     {
       name: 'ESTADO',
-      selector: row => {
-        return row.isActive === true ? 'ACTIVO' : 'INACTIVO';
-      },
+      selector: row => row.estado,
       sortable: true,
-      cellExport: row => (row.isActive === true ? 'ACTIVO' : 'INACTIVO'),
+      cellExport: row => row.estado,
       center: true,
       cell: row => (
         <div>
           <Badge
-            colorScheme={row.isActive === true ? 'green' : 'red'}
+            colorScheme={row.estado === true ? 'green' : 'red'}
             variant="solid"
             w={24}
             textAlign="center"
             py={2}
             rounded="full"
           >
-            {row.isActive === true ? 'ACTIVO' : 'INACTIVO'}
+            {row?.estado === true ? 'ACTIVO' : 'INACTIVO'}
           </Badge>
         </div>
       ),
@@ -111,17 +115,16 @@ const PeriodoEscolar = () => {
       center: true,
       cell: row => (
         <div>
-          <ModalEditarApertura row={row} />
           <AlertEliminar row={row} />
         </div>
       ),
-      width: '180px',
+      width: '140px',
     },
   ];
 
   const tableData = {
     columns: columns,
-    data: academic_year,
+    data: accesos,
   };
 
   if (isLoading) {
@@ -131,10 +134,7 @@ const PeriodoEscolar = () => {
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
-        <Text fontSize="lg" fontWeight={'bold'}>
-          GESTION DE AÑO ACADÉMICO
-        </Text>
-        <ModalAgregarApertura />
+        <Heading size="lg">REGISTRO DE ACCESOS</Heading>
       </Stack>
       <Box
         borderRadius="2xl"
@@ -149,11 +149,11 @@ const PeriodoEscolar = () => {
       >
         <DataTableExtensions
           {...tableData}
-          print={false}
+          print={true}
           exportHeaders={true}
           filterPlaceholder="BUSCAR"
           numberOfColumns={7}
-          fileName={'CATEGORIAS_EQUIPOS'}
+          fileName={'ACCESOS'}
         >
           <DataTable
             defaultSortField="createdAt"
@@ -203,7 +203,7 @@ const PeriodoEscolar = () => {
             responsive={true}
             noDataComponent={
               <Text mb={4} fontSize="lg">
-                NO DATA FOUND
+                NO HAY INFORMACIÓN PARA MOSTRAR
               </Text>
             }
           />
@@ -213,4 +213,4 @@ const PeriodoEscolar = () => {
   );
 };
 
-export default PeriodoEscolar;
+export default Accesos;

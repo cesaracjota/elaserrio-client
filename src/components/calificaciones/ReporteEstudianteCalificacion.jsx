@@ -64,33 +64,32 @@ const styles = StyleSheet.create({
   studentContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
-    padding: 10,
+    padding: 5,
     backgroundColor: '#F8F9FA',
     borderRadius: 5,
     borderLeftWidth: 4,
-    borderLeftColor: '#3498DB',
+    borderLeftColor: '#2fa33a',
   },
   studentInfoColumn: {
     width: '33%',
   },
   studentInfoLabel: {
-    fontSize: 8,
+    fontSize: 7,
     fontWeight: 700,
-    color: '#2C3E50',
+    color: '#000000',
     marginBottom: 2,
   },
   studentInfoValue: {
-    fontSize: 10,
+    fontSize: 6,
     fontWeight: 600,
     color: '#34495E',
-    marginBottom: 8,
+    marginBottom: 2,
   },
 
   // Tabla de calificaciones - Estilo moderno
   tableContainer: {
-    marginTop: 10,
-    marginBottom: 15,
+    marginTop: 5,
+    marginBottom: 5,
   },
   table: {
     display: 'table',
@@ -104,30 +103,30 @@ const styles = StyleSheet.create({
   tableHeaderRow: {
     flexDirection: 'row',
     borderBottomWidth: 2,
-    borderBottomColor: '#3498DB',
+    borderBottomColor: '#2fa33a',
     backgroundColor: '#ECF0F1',
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#EAECEE',
-    minHeight: 24,
+    minHeight: 10,
   },
   tableRowAlternate: {
     backgroundColor: '#F8FAFC',
   },
   tableHeaderCell: {
     padding: 6,
-    fontSize: 6,
+    fontSize: 7,
     fontWeight: 700,
     textAlign: 'center',
-    color: '#2C3E50',
+    color: '#000000',
     borderRightWidth: 1,
     borderRightColor: '#BDC3C7',
   },
   tableCell: {
     padding: 6,
-    fontSize: 7,
+    fontSize: 6,
     textAlign: 'center',
     color: '#2C3E50',
     borderRightWidth: 1,
@@ -197,12 +196,12 @@ const styles = StyleSheet.create({
   summaryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 15,
-    marginBottom: 15,
+    marginTop: 5,
+    marginBottom: 5,
   },
   summaryBox: {
     width: '48%',
-    padding: 10,
+    padding: 5,
     backgroundColor: '#F8F9FA',
     borderRadius: 5,
     borderWidth: 1,
@@ -210,11 +209,11 @@ const styles = StyleSheet.create({
   },
   summaryTitle: {
     fontWeight: 700,
-    fontSize: 9,
+    fontSize: 8,
     color: '#2C3E50',
     marginBottom: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#3498DB',
+    borderBottomColor: '#2fa33a',
     paddingBottom: 3,
   },
   summaryItem: {
@@ -223,42 +222,42 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   summaryLabel: {
-    fontSize: 8,
+    fontSize: 7,
     color: '#34495E',
   },
   summaryValue: {
-    fontSize: 8,
+    fontSize: 7,
     fontWeight: 600,
     color: '#2C3E50',
   },
   averageValue: {
-    fontSize: 12,
+    fontSize: 8,
     fontWeight: 700,
     textAlign: 'center',
     marginTop: 5,
     padding: 5,
-    backgroundColor: '#3498DB',
+    backgroundColor: '#2fa33a',
     color: 'white',
     borderRadius: 3,
   },
 
   // Leyenda de valoración
   legendContainer: {
-    marginTop: 15,
-    padding: 10,
+    marginTop: 5,
+    padding: 5,
     backgroundColor: '#F8F9FA',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#E5E7E9',
   },
   legendTitle: {
-    fontSize: 9,
+    fontSize: 8,
     fontWeight: 700,
     color: '#2C3E50',
     marginBottom: 5,
   },
   legendText: {
-    fontSize: 8,
+    fontSize: 7,
     lineHeight: 1.3,
     color: '#34495E',
   },
@@ -274,7 +273,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   legendItemText: {
-    fontSize: 7,
+    fontSize: 6,
     textAlign: 'center',
     color: 'white',
     fontWeight: 600,
@@ -284,7 +283,7 @@ const styles = StyleSheet.create({
   signatureSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 50,
+    marginTop: 10,
   },
   signature: {
     width: 200,
@@ -303,23 +302,8 @@ const styles = StyleSheet.create({
   signatureImage: {
     width: 120,
     height: 60,
-    marginBottom: 5,
+    marginBottom: 2,
     alignSelf: 'center',
-  },
-
-  // Pie de página
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 30,
-    right: 30,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7E9',
-    paddingTop: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    fontSize: 7,
-    color: '#7F8C8D',
   },
 
   // Badge para desempeño
@@ -364,7 +348,6 @@ const AcademicReportPDF = ({
 
   // Determinar posición ranking
   const position = studentData?.ranking || '0';
-  const totalStudents = grade?.totalEstudiantes || '0';
 
   return (
     <Document>
@@ -478,7 +461,7 @@ const AcademicReportPDF = ({
               const isEvenRow = index % 2 === 0;
               const indicadoresPeriodo =
                 subject?.indicadores?.find(
-                  i => i.periodo === academicYear?.periodo
+                  i => i.periodo === parseInt(academicYear?.periodo)
                 )?.indicador || [];
 
               return (
@@ -565,7 +548,7 @@ const AcademicReportPDF = ({
             <View style={styles.summaryItem}>
               <Text style={styles.summaryLabel}>Puesto del grado:</Text>
               <Text style={styles.summaryValue}>
-                {position} de {totalStudents}
+                {position} de {totalEstudiantesPorGrado}
               </Text>
             </View>
             <Text style={styles.averageValue}>
@@ -613,24 +596,6 @@ const AcademicReportPDF = ({
               {grade?.docente_titular?.nombre || 'NOMBRE DEL DOCENTE TITULAR'}
             </Text>
           </View>
-        </View>
-
-        {/* Pie de página */}
-        <View style={styles.footer}>
-          <Text>
-            {globalInformation?.direccionColegio ||
-              'Dirección de la Institución'}
-          </Text>
-          <Text>
-            Generado:{' '}
-            {new Date().toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </Text>
         </View>
       </Page>
     </Document>

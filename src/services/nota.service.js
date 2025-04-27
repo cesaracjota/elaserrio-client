@@ -16,13 +16,25 @@ const getAll= async (token) => {
     return response.data;
 }
 
-const get = async (id) => {
-    const response = await axios.get(`${API_URL}/notas/${id}`);
+const get = async (id, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+    const response = await axios.get(`${API_URL}/notas/${id}`, config);
     return response.data;
 }
 
-const getAllNotasByMateria = async (materiaId) => {
-    const response = await axios.get(`${API_URL}/notas/materia/${materiaId}`);
+const getAllNotasByMateria = async (materiaId, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+    const response = await axios.get(`${API_URL}/notas/materia/${materiaId}`, config);
     return response.data;
 }
 
@@ -40,8 +52,15 @@ const getAllNotasByStudent = async (matriculaId, token) => {
 // Get all notas by estudiante id
 
 
-const obtenerNotasPorMatriculaAndMateria = async (matriculaId, materiaId) => {
-    const response = await axios.get(`${API_URL}/notas/${matriculaId}/${materiaId}`);
+const obtenerNotasPorMatriculaAndMateria = async (matriculaId, materiaId, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+
+    const response = await axios.get(`${API_URL}/notas/${matriculaId}/${materiaId}`, config);
     return response.data;
 }
 

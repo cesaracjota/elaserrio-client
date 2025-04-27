@@ -25,10 +25,10 @@ import {
 import { customStyles } from '../../../helpers/customStyles';
 import '../../../theme/solarizedTheme';
 import { Loading } from '../../../helpers/Loading';
-import ModalAgregarCurso from '../ModalAgregarMateria';
+import ModalAgregarMateria from '../ModalAgregarMateria';
 import ModalEditarCurso from '../ModalEditarMateria';
 import { getMateriasByGrado, reset } from '../../../features/materiaSlice';
-import { getGradosBySede } from '../../../features/gradoSlice';
+import { getGradosByDocente, getGradosBySede } from '../../../features/gradoSlice';
 import { getAllDocentes } from '../../../features/usuarioSlice';
 import ModalGestionarHorario from '../ModalGestionarHorario';
 import ModalVerHorarioMateria from '../ModalVerHorarioMateria';
@@ -44,13 +44,13 @@ const DocenteTitularMaterias = () => {
   const { materias, isLoading } = useSelector(state => state.materias);
 
   const { docentes } = useSelector(state => state.usuarios);
-  const { grados } = useSelector(state => state.grados);
+  const { mis_grados } = useSelector(state => state.grados);
 
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(getMateriasByGrado(id));
-    dispatch(getGradosBySede(sedeSeleccionada?._id));
+    dispatch(getGradosByDocente(user?.usuario?.id));
     dispatch(getAllDocentes(sedeSeleccionada._id));
 
     return () => {
@@ -149,7 +149,7 @@ const DocenteTitularMaterias = () => {
           <ModalGestionarHorario row={row} />
           <ModalEditarCurso
             row={row}
-            grados={grados}
+            grados={mis_grados}
             docentes={docentes}
             sede={sedeSeleccionada?._id}
           />
@@ -173,8 +173,8 @@ const DocenteTitularMaterias = () => {
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
         <Heading size="lg">ASIGNATURAS</Heading>
-        <ModalAgregarCurso
-          grados={grados}
+        <ModalAgregarMateria
+          grados={mis_grados}
           docentes={docentes}
           sede={sedeSeleccionada?._id}
         />

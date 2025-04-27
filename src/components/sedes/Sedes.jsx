@@ -12,8 +12,6 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
 import { AlertEliminar } from './AlertEliminar';
 import {
   FiChevronLeft,
@@ -29,12 +27,11 @@ import ModalAgregarSede from './ModalAgregarSede';
 import ModalEditarSede from './ModalEditarSede';
 
 const Sedes = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { sedes, isLoading, isError, message } = useSelector(
+  const { sedes, isLoading } = useSelector(
     state => state.sedes
   );
 
@@ -44,12 +41,7 @@ const Sedes = () => {
     return () => {
       dispatch(reset());
     };
-  }, [navigate, dispatch]);
-
-  if (isError) {
-    CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-    console.log(message);
-  }
+  }, [dispatch]);
 
   const columns = [
     {
@@ -144,7 +136,7 @@ const Sedes = () => {
           exportHeaders={true}
           filterPlaceholder="BUSCAR"
           numberOfColumns={7}
-          fileName={'GRADOS'}
+          fileName={'SEDES'}
         >
           <DataTable
             defaultSortField="createdAt"

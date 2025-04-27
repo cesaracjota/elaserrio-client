@@ -16,23 +16,47 @@ const getAll= async (token) => {
     return response.data;
 }
 
-const get = async (id) => {
-    const response = await axios.get(`${API_URL}/materias/${id}`);
+const get = async (id, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+    const response = await axios.get(`${API_URL}/materias/${id}`, config);
     return response.data;
 }
 
-const getMateriasBySede = async (id) => {
-    const response = await axios.get(`${API_URL}/materias/sede/${id}`);
+const getMateriasBySede = async (id, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+    const response = await axios.get(`${API_URL}/materias/sede/${id}`, config);
     return response.data;
 }
 
-const getMateriasByTeacher = async (id) => {
-    const response = await axios.get(`${API_URL}/materias/docente/${id}`);
+const getMateriasByTeacher = async (id, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+    const response = await axios.get(`${API_URL}/materias/docente/${id}`, config);
     return response.data;
 }
 
-const getMateriasByGrado = async (id) => {
-    const response = await axios.get(`${API_URL}/materias/grado/${id}`);
+const getMateriasByGrado = async (id, token) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+        },
+    };
+    const response = await axios.get(`${API_URL}/materias/grado/${id}`, config);
     return response.data;
 }
 

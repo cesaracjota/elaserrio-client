@@ -144,7 +144,7 @@ const ModalGestionarHorario = ({ row }) => {
         <IconButton
           aria-label="Agregar horario"
           icon={<FiCalendar />}
-          colorScheme="pink"
+          colorScheme="teal"
           variant="solid"
           onClick={handleOpen}
           isRound

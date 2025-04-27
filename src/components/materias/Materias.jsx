@@ -167,10 +167,6 @@ const Materias = () => {
     data: materias,
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const handleChangeGrado = e => {
     dispatch(getMateriasByGrado(e.target.value));
   };
@@ -239,6 +235,8 @@ const Materias = () => {
           <DataTable
             defaultSortField="createdAt"
             defaultSortAsc={false}
+            progressPending={isLoading}
+            progressComponent={<Loading />}
             defaultSortOrder="desc"
             pagination={true}
             sortServer={true}

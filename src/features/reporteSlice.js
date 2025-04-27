@@ -120,8 +120,9 @@ export const getAllVentasBetweenDates = createAsyncThunk(
 
             const desde = data?.desde;
             const hasta = data?.hasta;
+            const token = thunkAPI.getState().auth.user.token;
 
-            return await reporteService.getDataBetweenDates(desde, hasta);
+            return await reporteService.getDataBetweenDates(desde, hasta, token);
 
         } catch (error){
             const message = 

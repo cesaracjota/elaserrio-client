@@ -19,7 +19,6 @@ import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { CustomToast } from '../../helpers/toast';
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
 import { AlertEliminar } from './AlertEliminar';
@@ -37,7 +36,7 @@ const Estudiantes = () => {
 
     const { sedeSeleccionada } = useSelector((state) => state.auth);
 
-    const { estudiantes, isLoading, isError, message, currentPage, totalRows } = useSelector((state) => state.estudiantes);
+    const { estudiantes, isLoading, currentPage, totalRows } = useSelector((state) => state.estudiantes);
     
     const [perPage, setPerPage] = useState(10);
 
@@ -51,16 +50,11 @@ const Estudiantes = () => {
             dispatch(reset())
         }
 
-    }, [navigate, dispatch, currentPage, perPage, sedeSeleccionada?._id]);
-
-    if (isError) {
-        CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-        console.log(message);
-    }
+    }, [dispatch, currentPage, perPage, sedeSeleccionada?._id]);
 
     const columns = [
         {
-            name: 'NOMBRES',
+            name: 'NOMBRES Y APELLIDOS',
             selector: row => row.nombres + ' ' + row.apellidos,
             sortable: true,
             cellExport: row => row.nombres + ' ' + row.apellidos,
@@ -83,7 +77,7 @@ const Estudiantes = () => {
             )
         },
         {
-            name: 'DNI',
+            name: 'Nº DE IDENTIDAD',
             selector: row => row.dni,
             sortable: true,
             cellExport: row => row.dni,

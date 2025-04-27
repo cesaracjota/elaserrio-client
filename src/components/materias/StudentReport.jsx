@@ -575,20 +575,6 @@ const StudentReport = ({ students, schoolInfo, courseInfo }) => {
             <Text style={styles.signatureText}>Docente</Text>
           </View>
         </View>
-        
-        {/* Enhanced Footer */}
-        <View style={styles.footer}>
-          <Text>
-            Documento generado el {new Date().toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-            })} a las {new Date().toLocaleTimeString('es-ES', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })} | {schoolInfo.name} • {schoolInfo.address} • {schoolInfo.phone}
-          </Text>
-        </View>
       </Page>
     </Document>
   );

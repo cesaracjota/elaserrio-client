@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMateriasByTeacher, reset } from '../../features/materiaSlice';
 import { Loading } from '../../helpers/Loading';
+import ModalVerHorarioMateria from './ModalVerHorarioMateria';
 
 const MisMaterias = () => {
   const navigate = useNavigate();
@@ -104,6 +105,7 @@ const MisMaterias = () => {
                         <Icon as={FiUsers} />
                         <Text>{course.totalEstudiantes}</Text>
                       </HStack>
+
                     </Badge>
                   </HStack>
                 </Box>
@@ -111,7 +113,7 @@ const MisMaterias = () => {
             </CardBody>
 
             <CardFooter borderTopWidth="1px">
-              <Flex justifyContent="space-between" w="full">
+              <Stack justifyContent="space-between" direction={['column', 'row']} w="full">
                 <Button
                   variant="outline"
                   w={'full'}
@@ -123,7 +125,10 @@ const MisMaterias = () => {
                 >
                   VER ASIGNATURA
                 </Button>
-              </Flex>
+                <ModalVerHorarioMateria
+                  materia={course}
+                />
+              </Stack>
             </CardFooter>
           </Card>
         ))}

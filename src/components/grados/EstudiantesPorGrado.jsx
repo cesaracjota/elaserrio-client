@@ -74,6 +74,14 @@ const EstudiantesPorGrado = () => {
     console.log(message);
   }
 
+  const calcularTotalEstudiantesPorGrado = (gradoId) => {
+    return matriculas.filter(m => m.grado._id === gradoId).length;
+  }; 
+
+  const handleUpdatePromedioRanking = () => {
+    dispatch(updatedPromedioRankingPorGrado(grado?.id));
+  };
+
   const columns = [
     {
       name: 'ESTUDIANTE',
@@ -161,6 +169,7 @@ const EstudiantesPorGrado = () => {
             configuracion={
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }
+            getTotalEstudiantesPorGrado={() => calcularTotalEstudiantesPorGrado(row.grado._id)}
           />
           <ModalEditarMatricula
             data={row}
@@ -185,10 +194,6 @@ const EstudiantesPorGrado = () => {
     data: matriculas,
   };
 
-  const handleUpdatePromedioRanking = () => {
-    dispatch(updatedPromedioRankingPorGrado(grado?.id));
-  };
-
   return (
     <>
       <Stack spacing={4} direction="row" justifyContent="space-between" py={4}>
@@ -199,17 +204,17 @@ const EstudiantesPorGrado = () => {
           alignSelf={'center'}
         >
           <CustomBackRoute />
-          <Heading size="md" alignSelf={'center'}>Estudiantes Matriculados por Grado</Heading>
+          <Heading size="md" alignSelf={'center'}>ESTUDIANTES MATRICULADOS POR GRADO</Heading>
         </HStack>
         <Button
           onClick={handleUpdatePromedioRanking}
           colorScheme="primary"
           variant="outline"
-          size="sm"
+          size="md"
           isLoading={isLoading}
           leftIcon={<MdSystemUpdate />}
         >
-          Actualizar Promedios y Ranking de Este Grado
+          Actualizar Promedios y Ranking
         </Button>
       </Stack>
       <Box

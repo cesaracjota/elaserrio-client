@@ -79,11 +79,12 @@ const getReportesEBR = async (token) => {
 
 }
 
-const getDataBetweenDates = (desde, hasta) => {
+const getDataBetweenDates = (desde, hasta, token) => {
     return new Promise((resolve) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': token
             },
             params: {
                 desde,

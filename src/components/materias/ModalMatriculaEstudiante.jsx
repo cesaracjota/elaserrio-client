@@ -55,7 +55,7 @@ const ModalMatricularEstudiante = ({ curso }) => {
 
   useEffect(() => {
     if (isOpen) {
-      dispatch(getEstudianteSearch(''));
+      dispatch(getEstudianteSearch('', sedeSeleccionada?._id));
     }
   }, [isOpen, dispatch]);
 
@@ -133,7 +133,6 @@ const ModalMatricularEstudiante = ({ curso }) => {
 
           <ModalBody p={6}>
             <Flex h="full" gap={6}>
-              {/* Panel izquierdo - Estudiantes disponibles */}
               <Box
                 flex="1"
                 borderWidth={1}
@@ -157,7 +156,7 @@ const ModalMatricularEstudiante = ({ curso }) => {
                         <FiSearch size={14} />
                       </InputLeftElement>
                       <Input
-                        placeholder="Buscar por nombre, apellidos o dni"
+                        placeholder="Buscar por nombre, apellidos o numero de identidad"
                         borderRadius="md"
                         w={'full'}
                         // color
@@ -181,7 +180,7 @@ const ModalMatricularEstudiante = ({ curso }) => {
                     >
                       <Tr>
                         <Th>Estudiante</Th>
-                        <Th>DNI</Th>
+                        <Th>Nº DE IDENTIDAD</Th>
                         <Th width="10%" textAlign="center">
                           Acción
                         </Th>
@@ -327,7 +326,7 @@ const ModalMatricularEstudiante = ({ curso }) => {
                       <Tr>
                         <Th width="5%">Nº</Th>
                         <Th width="55%">Estudiante</Th>
-                        <Th width="25%">DNI</Th>
+                        <Th width="25%">Nº DE IDENTIDAD</Th>
                         <Th width="15%" textAlign="center">
                           Acción
                         </Th>

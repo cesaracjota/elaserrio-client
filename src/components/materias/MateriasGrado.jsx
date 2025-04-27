@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getMateriasByGrado, reset } from '../../features/materiaSlice';
 import { Loading } from '../../helpers/Loading';
+import ModalVerHorarioMateria from './ModalVerHorarioMateria';
 
 const MateriasPorGrado = () => {
   const navigate = useNavigate();
@@ -29,9 +30,7 @@ const MateriasPorGrado = () => {
 
   const { materias, isLoading } = useSelector(state => state.materias);
 
-
   useEffect(() => {
-
     dispatch(getMateriasByGrado(id));
 
     return () => {
@@ -68,14 +67,13 @@ const MateriasPorGrado = () => {
             overflow="hidden"
           >
             <CardHeader>
-              <Stack direction={['column', 'row']} justifyContent="space-between" alignItems="center">
+              <Stack
+                direction={['column', 'row']}
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 <Heading size="md">{course.nombre}</Heading>
-                <Tag
-                  colorScheme={'primary'}
-                  px={2}
-                  py={1}
-                  color={'white'}
-                >
+                <Tag colorScheme={'primary'} px={2} py={1} color={'white'}>
                   GRADO: {course.grado.nombre}
                 </Tag>
               </Stack>
@@ -94,13 +92,18 @@ const MateriasPorGrado = () => {
                   </Text>
                 </Box>
                 <Box>
-                  <HStack
-                    spacing={4}
-                    w="full"
-                    justifyContent="flex-end"
-                  >
-                    <Text fontSize="sm" color="gray.500">TOTAL DE ESTUDIANTES</Text>
-                    <Badge colorScheme="primary" color={'white'} px={3} py={1} borderRadius="full" flexShrink={0}>
+                  <HStack spacing={4} w="full" justifyContent="flex-end">
+                    <Text fontSize="sm" color="gray.500">
+                      TOTAL DE ESTUDIANTES
+                    </Text>
+                    <Badge
+                      colorScheme="primary"
+                      color={'white'}
+                      px={3}
+                      py={1}
+                      borderRadius="full"
+                      flexShrink={0}
+                    >
                       <HStack spacing={1} w={'full'}>
                         <Icon as={FiUsers} />
                         <Text>{course.totalEstudiantes}</Text>
@@ -112,19 +115,22 @@ const MateriasPorGrado = () => {
             </CardBody>
 
             <CardFooter borderTopWidth="1px">
-              <Flex justifyContent="space-between" w="full">
+              <Stack justifyContent="space-between" direction={['column', 'row']} w="full">
                 <Button
                   variant="outline"
                   w={'full'}
                   colorScheme="primary"
                   rightIcon={<FiSearch color="primary.500" />}
                   onClick={() => {
-                    navigate(`/mis-grados/${id}/grados/${course._id}/mis-materias/${course._id}`);
+                    navigate(
+                      `/mis-grados/${id}/grados/${course._id}/mis-materias/${course._id}`
+                    );
                   }}
                 >
                   VER ASIGNATURA
                 </Button>
-              </Flex>
+                <ModalVerHorarioMateria materia={course} />
+              </Stack>
             </CardFooter>
           </Card>
         ))}

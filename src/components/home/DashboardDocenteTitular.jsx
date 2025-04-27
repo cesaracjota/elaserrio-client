@@ -78,20 +78,6 @@ const DashboardDocenteTitular = ({ reportes}) => {
                   </Text>
                 </VStack>
               </GridItem>
-
-              <GridItem
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Button
-                  leftIcon={<BarChart2 size={16} />}
-                  colorScheme="blue"
-                  variant="outline"
-                >
-                  Ver resumen académico
-                </Button>
-              </GridItem>
             </Grid>
           </CardBody>
         </Card>

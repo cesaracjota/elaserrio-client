@@ -22,6 +22,7 @@ import sedeReducer from "../features/sedeSlice";
 import materiaReducer from "../features/materiaSlice";
 import calificacionReducer from "../features/notaSlice";
 import configuracionReducer from "../features/configuracionSlice";
+import accesoReducer from "../features/accesoSlice";
 
 export const store = configureStore({
     reducer: {
@@ -48,5 +49,6 @@ export const store = configureStore({
         materias: materiaReducer,
         calificaciones: calificacionReducer,
         configuraciones: configuracionReducer,
+        accesos: accesoReducer,
     },
 })

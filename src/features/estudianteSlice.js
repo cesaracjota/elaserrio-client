@@ -33,8 +33,9 @@ export const createEstudiante = createAsyncThunk(
 export const getEstudiantes = createAsyncThunk(
     "estudiantes/get",
     async ({ page, perPage, id }, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
         try {
-            return await estudianteService.getAllEstudiantes(page, perPage, id);
+            return await estudianteService.getAllEstudiantes(page, perPage, id, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -50,8 +51,9 @@ export const getEstudiantes = createAsyncThunk(
 export const getEstudiante = createAsyncThunk(
     "estudiante/get",
     async (id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
         try {
-            return await estudianteService.getEstudiante(id);
+            return await estudianteService.getEstudiante(id, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -68,7 +70,8 @@ export const getEstudianteByDni = createAsyncThunk(
     "estudiante/dni/get",
     async (dni, thunkAPI) => {
         try {
-            return await estudianteService.getEstudianteByDni(dni);
+            const token = thunkAPI.getState().auth.user.token;
+            return await estudianteService.getEstudianteByDni(dni, token);
         } catch (error) {
             const message = 
             (error.response && 
@@ -85,7 +88,10 @@ export const getEstudianteSearch = createAsyncThunk(
     "estudiante_ebr/search/get",
     async ({search, idSede}, thunkAPI) => {
         try {
-            return await estudianteService.getEstudianteSearch(search, idSede);
+            const token = thunkAPI.getState().auth.user.token;
+            if (search && idSede) {
+                return await estudianteService.getEstudianteSearch(search, idSede, token);
+            }
         } catch (error) {
             const message =
             (error.response &&
@@ -102,7 +108,8 @@ export const getStudentsByGrade = createAsyncThunk(
     "estudiantes/get/grade",
     async (grade, thunkAPI) => {
         try {
-            return await estudianteService.getStudentsByGrade(grade);
+            const token = thunkAPI.getState().auth.user.token;
+            return await estudianteService.getStudentsByGrade(grade, token);
         } catch (error) {
             const message = (error.response &&
                 error.response.data &&

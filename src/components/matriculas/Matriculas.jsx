@@ -46,6 +46,7 @@ import ModalRegistrarObservaciones from './ModalRegistrarObservaciones';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import ModalEditarMatricula from './ModalEditarMatricula';
 import ReporteFichaMatricula from './ReporteFichaMatricula';
+import { Loading } from '../../helpers/Loading';
 
 const Matriculas = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Matriculas = () => {
 
   const { sedeSeleccionada, user } = useSelector(state => state.auth);
 
-  const { matriculas, currentPage, totalRows } = useSelector(
+  const { matriculas, isLoading, currentPage, totalRows } = useSelector(
     state => state.matriculas
   );
 
@@ -383,6 +384,8 @@ const Matriculas = () => {
         >
           <DataTable
             defaultSortField="nombre"
+            progressPending={isLoading}
+            progressComponent={<Loading />}
             defaultSortAsc={false}
             defaultSortOrder="asc"
             pagination

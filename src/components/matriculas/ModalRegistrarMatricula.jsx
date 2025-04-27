@@ -169,7 +169,7 @@ const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
                       </InputLeftElement>
                       <Input
                         type={'text'}
-                        placeholder="Buscar por dni, nombres y apellidos del estudiante"
+                        placeholder="Buscar por documento de identidad, nombres y apellidos del estudiante"
                         onChange={e => handleSearchStudent(e.target.value)}
                       />
                     </InputGroup>
@@ -205,7 +205,7 @@ const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
                                   estudianteSeleccionado.apellidos}
                               </Text>
                               <Text fontSize="xs" color="gray.500">
-                                DNI: {estudianteSeleccionado.dni}
+                                DOCUMENTO DE IDENTIDAD: {estudianteSeleccionado.dni}
                               </Text>
                             </Box>
                           </Flex>
@@ -300,7 +300,7 @@ const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
                     <Thead position="sticky" top={0} zIndex={1}>
                       <Tr>
                         <Th>Estudiante</Th>
-                        <Th>DNI</Th>
+                        <Th>DOCUMENTO DE IDENTIDAD</Th>
                         <Th width="10%" textAlign="center">
                           Acción
                         </Th>

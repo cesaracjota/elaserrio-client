@@ -410,16 +410,10 @@ const EnrollmentFormPDF = ({ studentData }) => {
           <View style={styles.table}>
             {/* Fila 1 - Información básica apoderado */}
             <View style={[styles.tableRow, styles.evenRow]}>
-              <View style={[styles.tableCell, styles.column50]}>
-                <Text style={styles.label}>APELLIDOS:</Text>
-                <Text style={styles.value}>
-                  {studentData?.apoderado?.apellidos || 'No registrado'}
-                </Text>
-              </View>
-              <View style={[styles.tableCellNoBorder, styles.column50]}>
+              <View style={[styles.tableCellNoBorder, styles.column100]}>
                 <Text style={styles.label}>NOMBRES:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.nombres || 'No registrado'}
+                  {studentData?.estudiante?.acudiente?.nombre || 'No registrado'}
                 </Text>
               </View>
             </View>
@@ -429,13 +423,13 @@ const EnrollmentFormPDF = ({ studentData }) => {
               <View style={[styles.tableCell, styles.column30]}>
                 <Text style={styles.label}>N° DOCUMENTO:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.dni || 'No registrado'}
+                  {studentData?.estudiante?.acudiente?.dni || 'No registrado'}
                 </Text>
               </View>
               <View style={[styles.tableCellNoBorder, styles.column40]}>
                 <Text style={styles.label}>PARENTESCO:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.parentesco || 'No registrado'}
+                  {studentData?.estudiante?.acudiente?.parentesco || 'No registrado'}
                 </Text>
               </View>
             </View>
@@ -445,14 +439,14 @@ const EnrollmentFormPDF = ({ studentData }) => {
               <View style={[styles.tableCell, styles.column50]}>
                 <Text style={styles.label}>DIRECCION:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.direccion ||
+                  {studentData?.estudiante?.acudiente?.direccion ||
                     'Misma dirección del estudiante'}
                 </Text>
               </View>
               <View style={[styles.tableCellNoBorder, styles.column50]}>
                 <Text style={styles.label}>OCUPACIÓN:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.ocupacion || 'No registrada'}
+                  {studentData?.estudiante?.acudiente?.ocupacion || 'No registrada'}
                 </Text>
               </View>
             </View>
@@ -462,19 +456,19 @@ const EnrollmentFormPDF = ({ studentData }) => {
               <View style={[styles.tableCell, styles.column33]}>
                 <Text style={styles.label}>TELEFONO:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.telefono || 'No registrado'}
+                  {studentData?.estudiante?.acudiente?.telefono || 'No registrado'}
                 </Text>
               </View>
               <View style={[styles.tableCell, styles.column33]}>
                 <Text style={styles.label}>CELULAR:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.celular || 'No registrado'}
+                  {studentData?.estudiante?.acudiente?.celular || 'No registrado'}
                 </Text>
               </View>
               <View style={[styles.tableCellNoBorder, styles.column33]}>
                 <Text style={styles.label}>CORREO ELECTRONICO:</Text>
                 <Text style={styles.value}>
-                  {studentData?.apoderado?.correo || 'No registrado'}
+                  {studentData?.estudiante?.acudiente?.correo || 'No registrado'}
                 </Text>
               </View>
             </View>
@@ -497,14 +491,9 @@ const EnrollmentFormPDF = ({ studentData }) => {
           <View style={styles.signature}>
             <View style={styles.signatureImage} />
             <View style={styles.signatureLine}></View>
-            <Text style={styles.signatureText}>FIRMA DEL APODERADO</Text>
+            <Text style={styles.signatureText}>FIRMA DEL ACUDIENTE</Text>
             <Text style={styles.signatureSubtext}>
-              {studentData?.apoderado?.nombres}{' '}
-              {studentData?.apoderado?.apellidos}
-            </Text>
-            <Text style={styles.signatureSubtext}>
-              {studentData?.apoderado?.tipoDocumento || 'DNI'}:{' '}
-              {studentData?.apoderado?.dni || ''}
+              {studentData?.estudiante?.acudiente?.nombre}
             </Text>
           </View>
 
@@ -516,23 +505,6 @@ const EnrollmentFormPDF = ({ studentData }) => {
               {globalInformation.rector || 'AUGUSTO GÓMEZ GARCÍA'}
             </Text>
           </View>
-        </View>
-
-        {/* Pie de página */}
-        <View style={styles.footer}>
-          <Text>
-            {globalInformation.institucion_educativa} • DOCUMENTO GENERADO EL{' '}
-            {new Date().toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-            })}{' '}
-            • Válido para el año académico {academicYear}
-          </Text>
-          <Text style={{ marginTop: 2 }}>
-            {globalInformation.direccion} • Tel: {globalInformation.telefono} •{' '}
-            {globalInformation.email}
-          </Text>
         </View>
       </Page>
     </Document>

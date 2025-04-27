@@ -154,8 +154,8 @@ export const usuarioSlice = createSlice({
         builder.addCase(getAllUsuarios.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.usuarios = action.payload.usuarios;
-            state.totalRows = action.payload.total
+            state.usuarios = action?.payload?.usuarios || [];
+            state.totalRows = action?.payload?.total || 0;
         });
         builder.addCase(getAllUsuarios.rejected, (state, action) => {
             state.isLoading = false;
@@ -207,7 +207,7 @@ export const usuarioSlice = createSlice({
         builder.addCase(createUsuario.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.usuarios.push(action.payload);
+            state.usuarios?.push(action.payload);
         })
         builder.addCase(createUsuario.rejected, (state, action) => {
             state.isLoading = false;
@@ -220,8 +220,8 @@ export const usuarioSlice = createSlice({
         builder.addCase(updateUsuario.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.usuarios = state.usuarios.map((data) =>
-                data._id === action.payload._id ? action.payload : data);
+            state.usuarios = state.usuarios?.map((data) =>
+                data?._id === action.payload?._id ? action.payload : data);
         })
         builder.addCase(updateUsuario.rejected, (state, action) => {
             state.isLoading = false;
@@ -234,8 +234,8 @@ export const usuarioSlice = createSlice({
         builder.addCase(deleteUsuario.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.usuarios = state.usuarios.filter((usuario) =>
-                usuario._id !== action.payload._id);
+            state.usuarios = state.usuarios?.filter((usuario) =>
+                usuario?._id !== action.payload?._id);
         })
         builder.addCase(deleteUsuario.rejected, (state, action) => {
             state.isLoading = false;

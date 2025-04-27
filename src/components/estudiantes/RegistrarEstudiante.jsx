@@ -319,7 +319,7 @@ const RegistrarEstudiante = () => {
                       </FormControl>
 
                       <FormControl isRequired isInvalid={errors.dni}>
-                        <FormLabel>Número de Identificación</FormLabel>
+                        <FormLabel>Número de Identidad</FormLabel>
                         <Input
                           type="text"
                           value={estudiante.dni}

@@ -242,16 +242,7 @@ const ModalVerHorarioMateria = ({ materia }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   // Ejemplo de horario estático (para el caso en que no se proporcione materia)
-  const horarioEjemplo = [
-    {
-      title: 'Ejemplo de horario',
-      day: 'lunes',
-      start: '08:00',
-      end: '11:00',
-      aula: 'A-101',
-      description: 'Clase teórica',
-    },
-  ];
+  const horarioEjemplo = [];
 
   // Convertir horario a eventos
   const eventos = convertirHorarioAEventos(
@@ -374,7 +365,7 @@ const ModalVerHorarioMateria = ({ materia }) => {
     <>
       <IconButton
         icon={<CalendarIcon />}
-        colorScheme="yellow"
+        colorScheme="primary"
         variant="outline"
         isRound
         onClick={onOpen}

@@ -14,7 +14,6 @@ import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsuarios, reset } from '../../features/usuarioSlice';
-import { CustomToast } from '../../helpers/toast';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -36,8 +35,9 @@ const Personas = () => {
 
   const themeTable = useColorModeValue('default', 'solarized');
 
-  const { usuarios, isError, isLoading, message, currentPage, totalRows } =
-    useSelector(state => state.usuarios);
+  const { usuarios, isLoading, currentPage, totalRows } = useSelector(
+    state => state.usuarios
+  );
 
   const { roles } = useSelector(state => state.roles);
   const { sedes } = useSelector(state => state.sedes);
@@ -47,7 +47,6 @@ const Personas = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-
     dispatch(getAllUsuarios({ page: currentPage, perPage }));
     dispatch(getRoles());
     dispatch(getAllSedes());
@@ -55,12 +54,7 @@ const Personas = () => {
     return () => {
       dispatch(reset());
     };
-  }, [ dispatch, currentPage, perPage]);
-
-  if (isError) {
-    CustomToast({ title: 'Error', message, type: 'error', duration: 1500, position: 'top' });
-    console.log(message);
-  }
+  }, [dispatch, currentPage, perPage]);
 
   const columns = [
     {
@@ -122,28 +116,28 @@ const Personas = () => {
       ),
     },
     {
-        name: 'SEDE ASIGNADO',
-        selector: row => row.sedes.length,
-        sortable: true,
-        cellExport: row => row.sedes.length,
-        cell: row => (
-            <div>
-                <Badge
-                    bg={'yellow.600'}
-                    variant="solid"
-                    textAlign="center"
-                    fontSize={'10px'}
-                    py={2}
-                    px={3}
-                    rounded="full"
-                    color="white"
-                    alignSelf={'center'}
-                >
-                    {row?.sedes?.length}
-                </Badge>
-            </div>
-        ),
-        center: true,
+      name: 'SEDE ASIGNADO',
+      selector: row => row.sedes.length,
+      sortable: true,
+      cellExport: row => row.sedes.length,
+      cell: row => (
+        <div>
+          <Badge
+            bg={'yellow.600'}
+            variant="solid"
+            textAlign="center"
+            fontSize={'10px'}
+            py={2}
+            px={3}
+            rounded="full"
+            color="white"
+            alignSelf={'center'}
+          >
+            {row?.sedes?.length}
+          </Badge>
+        </div>
+      ),
+      center: true,
     },
     {
       name: 'ESTADO',
