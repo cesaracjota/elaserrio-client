@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import {
-    Avatar,
+  Avatar,
   AvatarBadge,
   Badge,
   Box,
+  Flex,
   Heading,
   Icon,
   Stack,
   Text,
+  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
 import DataTable from 'react-data-table-component';
@@ -20,12 +22,31 @@ import {
   FiChevronRight,
   FiChevronsLeft,
   FiChevronsRight,
+  FiMonitor,
+  FiSmartphone,
+  FiTablet,
+  FiGlobe,
+  FiMapPin,
+  FiClock,
 } from 'react-icons/fi';
+import { 
+  FaWindows, 
+  FaApple, 
+  FaLinux, 
+  FaAndroid, 
+  FaChrome, 
+  FaFirefox, 
+  FaSafari, 
+  FaEdge, 
+  FaInternetExplorer, 
+  FaOpera 
+} from 'react-icons/fa';
 import { customStyles } from '../../helpers/customStyles';
 import '../../theme/solarizedTheme';
 import { Loading } from '../../helpers/Loading';
 import { getAllAccesos, resetAccesos } from '../../features/accesoSlice';
 import moment from 'moment';
+import 'moment/locale/es';
 
 const Accesos = () => {
   const dispatch = useDispatch();
@@ -35,6 +56,7 @@ const Accesos = () => {
   const { accesos, isLoading } = useSelector(state => state.accesos);
 
   useEffect(() => {
+    moment.locale('es');
     dispatch(getAllAccesos());
 
     return () => {
@@ -42,35 +64,60 @@ const Accesos = () => {
     };
   }, [dispatch]);
 
-  // {
-  //   "_id": {
-  //     "$oid": "680e504bcb0abc8abe2ed29a"
-  //   },
-  //   "usuario": {
-  //     "$oid": "6808e8ca1dbdd6f168a6b932"
-  //   },
-  //   "ruta": "/api/login",
-  //   "metodo": "POST",
-  //   "fechaHora": {
-  //     "$date": "2025-04-27T15:42:03.378Z"
-  //   },
-  //   "ip": "IP no disponible",
-  //   "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-  //   "estadoRespuesta": 200,
-  //   "referer": "http://localhost:3000/",
-  //   "dispositivo": "{\"tipo\":\"desktop\",\"navegador\":\"Chrome\"}",
-  //   "sesionId": null,
-  //   "query": "{}",
-  //   "tipoContenido": "application/json",
-  //   "estado": true,
-  //   "createdAt": {
-  //     "$date": "2025-04-27T15:42:03.388Z"
-  //   },
-  //   "updatedAt": {
-  //     "$date": "2025-04-27T15:42:03.388Z"
-  //   },
-  //   "__v": 0
-  // }
+  // Función para mostrar el tiempo transcurrido
+  const getTimeAgo = (date) => {
+    return moment(date).fromNow();
+  };
+
+  // Función para obtener el icono del dispositivo
+  const getDeviceIcon = (tipo) => {
+    switch (tipo) {
+      case 'mobile':
+        return <Icon as={FiSmartphone} boxSize={5} color="blue.500" />;
+      case 'tablet':
+        return <Icon as={FiTablet} boxSize={5} color="purple.500" />;
+      default:
+        return <Icon as={FiMonitor} boxSize={5} color="green.500" />;
+    }
+  };
+
+  // Función para obtener el icono del sistema operativo
+  const getOSIcon = (sistema) => {
+    switch (sistema) {
+      case 'windows':
+        return <Icon as={FaWindows} boxSize={4} color="blue.500" />;
+      case 'mac':
+        return <Icon as={FaApple} boxSize={4} color="gray.500" />;
+      case 'linux':
+        return <Icon as={FaLinux} boxSize={4} color="orange.500" />;
+      case 'android':
+        return <Icon as={FaAndroid} boxSize={4} color="green.500" />;
+      case 'ios':
+        return <Icon as={FaApple} boxSize={4} color="gray.500" />;
+      default:
+        return <Icon as={FiGlobe} boxSize={4} color="gray.500" />;
+    }
+  };
+
+  // Función para obtener el icono del navegador
+  const getBrowserIcon = (navegador) => {
+    switch (navegador) {
+      case 'chrome':
+        return <Icon as={FaChrome} boxSize={4} color="green.500" />;
+      case 'firefox':
+        return <Icon as={FaFirefox} boxSize={4} color="orange.500" />;
+      case 'safari':
+        return <Icon as={FaSafari} boxSize={4} color="blue.500" />;
+      case 'edge':
+        return <Icon as={FaEdge} boxSize={4} color="blue.500" />;
+      case 'ie':
+        return <Icon as={FaInternetExplorer} boxSize={4} color="blue.500" />;
+      case 'opera':
+        return <Icon as={FaOpera} boxSize={4} color="red.500" />;
+      default:
+        return <Icon as={FiGlobe} boxSize={4} color="gray.500" />;
+    }
+  };
 
   const columns = [
     {
@@ -98,54 +145,74 @@ const Accesos = () => {
           </Box>
         </Stack>
       ),
-      width: '250px',
-    },
-    {
-      name: 'ROL',
-      selector: row => row.usuario?.rol,
-      sortable: true,
-      cellExport: row => row.usuario?.rol,
+      width: '300px',
     },
     {
       name: 'DISPOSITIVO',
-      selector: row => row.dispositivo,
       sortable: true,
+      cellExport: row => `${row.dispositivo?.tipo || 'desconocido'} - ${row.dispositivo?.navegador || 'desconocido'} - ${row.dispositivo?.sistema || 'desconocido'}`,
+      cell: row => {
+        const deviceInfo = row.dispositivo || {};
+        const tipo = deviceInfo.tipo || 'desconocido';
+        const navegador = deviceInfo.navegador || 'desconocido';
+        const sistema = deviceInfo.sistema || 'desconocido';
+        
+        return (
+          <Flex direction="row" alignItems="center" gap={2}>
+            <Tooltip label={`Dispositivo: ${tipo}`} placement="auto">
+              {getDeviceIcon(tipo)}
+            </Tooltip>
+            <Tooltip label={`Navegador: ${navegador}`} placement="auto">
+              {getBrowserIcon(navegador)}
+            </Tooltip>
+            <Tooltip label={`Sistema: ${sistema}`} placement="auto">
+              {getOSIcon(sistema)}
+            </Tooltip>
+          </Flex>
+        );
+      },
+      width: '150px',
     },
     {
-      name: 'IP',
-      selector: row => row.ip,
+      name: 'UBICACIÓN',
       sortable: true,
-      cellExport: row => row.ip,
+      cellExport: row => `${row.ubicacion?.pais || 'Desconocido'}, ${row.ubicacion?.ciudad || 'Desconocido'}`,
+      cell: row => {
+        const ubicacion = row.ubicacion || {};
+        return (
+          <Flex direction="column">
+            <Flex alignItems="center" gap={1}>
+              <Icon as={FiMapPin} color="red.500" />
+              <Text fontSize="sm">
+                {ubicacion.ciudad || 'Desconocido'}, {ubicacion.pais || 'Desconocido'}
+              </Text>
+            </Flex>
+            <Text fontSize="xs" color="gray.500">
+              IP: {row.ip || 'No disponible'}
+            </Text>
+          </Flex>
+        );
+      },
+      width: '200px',
     },
     {
       name: 'FECHA HORA',
-      selector: row => row.fechaHora,
       sortable: true,
-      cellExport: row => row.fechaHora,
-      Cell: row => (
-        <Text>{moment(row.fechaHora).format('DD-MM-YYYY - hh:mm:ss A')}</Text>
-      ),
-    },
-    {
-      name: 'ESTADO',
-      selector: row => row.estado,
-      sortable: true,
-      cellExport: row => row.estado,
-      center: true,
+      cellExport: row => moment(row.fechaHora).format('DD-MM-YYYY - HH:mm:ss'),
       cell: row => (
-        <div>
-          <Badge
-            colorScheme={row.estado === true ? 'green' : 'red'}
-            variant="solid"
-            w={24}
-            textAlign="center"
-            py={2}
-            rounded="full"
-          >
-            {row?.estado === true ? 'ACTIVO' : 'INACTIVO'}
-          </Badge>
-        </div>
+        <Flex direction="column">
+          <Text fontSize="sm">
+            {moment(row.fechaHora).format('DD-MM-YYYY - HH:mm:ss')}
+          </Text>
+          <Flex alignItems="center" gap={1}>
+            <Icon as={FiClock} color="blue.500" />
+            <Text fontSize="xs" color="gray.500">
+              {getTimeAgo(row.fechaHora)}
+            </Text>
+          </Flex>
+        </Flex>
       ),
+      width: '200px',
     },
     {
       name: 'ACCIONES',
@@ -157,7 +224,6 @@ const Accesos = () => {
           <AlertEliminar row={row} />
         </div>
       ),
-      width: '140px',
     },
   ];
 
@@ -195,7 +261,7 @@ const Accesos = () => {
           fileName={'ACCESOS'}
         >
           <DataTable
-            defaultSortField="createdAt"
+            defaultSortField="fechaHora"
             defaultSortAsc={false}
             defaultSortOrder="desc"
             pagination={true}
@@ -230,7 +296,7 @@ const Accesos = () => {
             paginationRowsPerPageOptions={[5, 10, 25, 50]}
             paginationPerPage={10}
             paginationComponentOptions={{
-              rowsPerPageText: 'Filas por pagina:',
+              rowsPerPageText: 'Filas por página:',
               rangeSeparatorText: 'de',
               noRowsPerPage: false,
               selectAllRowsItem: true,
