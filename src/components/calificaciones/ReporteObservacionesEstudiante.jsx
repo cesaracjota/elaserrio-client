@@ -322,7 +322,10 @@ const StudentObserverPDF = ({ studentData }) => {
               {globalInformation.decretos[0].fecha}
             </Text>
             <Text style={styles.headerSubtitle}>
-              DANE: {globalInformation.codigo_dane}
+              SEDE: {studentData?.sede?.nombre}
+            </Text>
+            <Text style={styles.headerSubtitle}>
+              CODIGO DANE: {studentData?.sede?.codigoDane}  
             </Text>
           </View>
           <Image src={LogoColegio} style={styles.logo} />

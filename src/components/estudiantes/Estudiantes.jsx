@@ -65,7 +65,6 @@ const Estudiantes = () => {
                         <Avatar
                             size="sm"
                             name={row?.nombres + ' ' + row?.apellidos}
-                            src={row?.img}
                             fontWeight="bold"
                             fontSize="sm"
                             color="white"

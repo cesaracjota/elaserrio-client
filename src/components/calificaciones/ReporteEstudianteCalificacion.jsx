@@ -110,13 +110,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#EAECEE',
-    minHeight: 10,
-  },
-  tableRowAlternate: {
-    backgroundColor: '#F8FAFC',
   },
   tableHeaderCell: {
-    padding: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     fontSize: 7,
     fontWeight: 700,
     textAlign: 'center',
@@ -125,7 +122,8 @@ const styles = StyleSheet.create({
     borderRightColor: '#BDC3C7',
   },
   tableCell: {
-    padding: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     fontSize: 6,
     textAlign: 'center',
     color: '#2C3E50',
@@ -134,7 +132,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tableCellLeft: {
-    padding: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     fontSize: 7,
     textAlign: 'left',
     justifyContent: 'center',
@@ -145,7 +144,8 @@ const styles = StyleSheet.create({
 
   // Celdas de notas
   gradeCell: {
-    padding: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     fontSize: 7,
     fontWeight: 600,
     textAlign: 'center',
@@ -156,10 +156,11 @@ const styles = StyleSheet.create({
 
   // Observaciones en tabla
   observationRow: {
-    backgroundColor: '#F8F9FA',
     paddingHorizontal: 6,
     fontSize: 6,
     paddingVertical: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EAECEE',
   },
   observationText: {
     fontSize: 6,
@@ -235,7 +236,8 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     textAlign: 'center',
     marginTop: 5,
-    padding: 5,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
     backgroundColor: '#2fa33a',
     color: 'white',
     borderRadius: 3,
@@ -467,12 +469,7 @@ const AcademicReportPDF = ({
               return (
                 <React.Fragment key={index}>
                   {/* Fila principal con notas */}
-                  <View
-                    style={[
-                      styles.tableRow,
-                      isEvenRow && styles.tableRowAlternate,
-                    ]}
-                  >
+                  <View style={[styles.tableRow]}>
                     <View style={[styles.tableCellLeft, styles.cellSubject]}>
                       <Text style={{ fontWeight: 600 }}>
                         {subject?.materia?.nombre || 'MATERIA'}

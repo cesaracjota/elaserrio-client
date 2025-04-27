@@ -159,15 +159,9 @@ const Accesos = () => {
         
         return (
           <Flex direction="row" alignItems="center" gap={2}>
-            <Tooltip label={`Dispositivo: ${tipo}`} placement="auto">
               {getDeviceIcon(tipo)}
-            </Tooltip>
-            <Tooltip label={`Navegador: ${navegador}`} placement="auto">
               {getBrowserIcon(navegador)}
-            </Tooltip>
-            <Tooltip label={`Sistema: ${sistema}`} placement="auto">
               {getOSIcon(sistema)}
-            </Tooltip>
           </Flex>
         );
       },

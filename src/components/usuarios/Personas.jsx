@@ -67,7 +67,6 @@ const Personas = () => {
           <Avatar
             size="sm"
             name={row?.nombre}
-            src={row?.img}
             fontWeight="bold"
             fontSize="sm"
             color="white"

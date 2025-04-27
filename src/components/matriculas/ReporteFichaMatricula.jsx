@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
 
 // Componente para generar el PDF de ficha de matrícula
 const EnrollmentFormPDF = ({ studentData }) => {
+  console.log(studentData);
   const academicYear =
     studentData?.academic_year?.year || new Date().getFullYear();
 
@@ -261,9 +262,12 @@ const EnrollmentFormPDF = ({ studentData }) => {
               {globalInformation.decretos[0].numero}{' '}
               {globalInformation.decretos[0].fecha}
             </Text>
-            <Text style={styles.headerSubtitle}>
-              DANE: {globalInformation.codigo_dane}
-            </Text>
+              <Text style={styles.headerSubtitle}>
+                SEDE: {studentData?.sede?.nombre}
+              </Text>
+              <Text style={styles.headerSubtitle}>
+                CODIGO DANE: {studentData?.sede?.codigoDane}
+              </Text>
           </View>
           <Image src={globalInformation.logoColegio} style={styles.logo} />
         </View>

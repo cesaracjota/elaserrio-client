@@ -18,7 +18,6 @@ import {
   InputLeftElement,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -40,7 +39,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Search2Icon } from '@chakra-ui/icons';
 import { getEstudianteSearch, reset } from '../../features/estudianteSlice';
-import { useNavigate } from 'react-router-dom';
 import { createMatricula } from '../../features/matriculaSlice';
 import { FiPlus } from 'react-icons/fi';
 
@@ -129,7 +127,6 @@ const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
           <ModalHeader textAlign="center">
             REGISTRAR NUEVA MATRICULA
           </ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
             <Stack
               direction={{ base: 'column', lg: 'row' }}
@@ -271,7 +268,6 @@ const ModalRegistrarMatricula = ({ configuracion, grados, mis_grados }) => {
                 spacing={4}
                 direction={'column'}
                 justifyContent="space-between"
-                mt={4}
                 w={'full'}
               >
                 <Box
