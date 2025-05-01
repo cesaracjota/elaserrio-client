@@ -32,10 +32,7 @@ import { getAllMatriculasByCurso, reset } from '../../features/matriculaSlice';
 import { getAllNotasByMateria } from '../../features/notaSlice';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
-import {
-  FaFileExcel,
-  FaGraduationCap,
-} from 'react-icons/fa';
+import { FaFileExcel, FaGraduationCap } from 'react-icons/fa';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import { CircleCheck } from 'lucide-react';
 import CustomBackRoute from '../../helpers/CustomBackRoute';
@@ -131,19 +128,35 @@ const DetalleMateria = () => {
       center: true,
       cell: row => (
         <Stack direction="row" spacing={2}>
-          <Link
-            to={`/mis-asignaturas/${row._id}/registrar-calificacion/${materia?._id}`}
-          >
-            <IconButton
-              aria-label="Editar materia"
-              icon={<CircleCheck size={32} />}
-              isDisabled={!configuracion?.permitirRegistrarNotas}
-              size="lg"
-              isRound
-              colorScheme="green"
-              variant="solid"
-            />
-          </Link>
+          {row.grado?.nivel === 'INICIAL' ? (
+            <Link
+              to={`/mis-asignaturas/${row._id}/registrar-calificacion-inicial/${materia?._id}`}
+            >
+              <IconButton
+                aria-label="Editar materia"
+                icon={<CircleCheck size={32} />}
+                isDisabled={!configuracion?.permitirRegistrarNotas}
+                size="lg"
+                isRound
+                colorScheme="green"
+                variant="solid"
+              />
+            </Link>
+          ) : (
+            <Link
+              to={`/mis-asignaturas/${row._id}/registrar-calificacion/${materia?._id}`}
+            >
+              <IconButton
+                aria-label="Editar materia"
+                icon={<CircleCheck size={32} />}
+                isDisabled={!configuracion?.permitirRegistrarNotas}
+                size="lg"
+                isRound
+                colorScheme="green"
+                variant="solid"
+              />
+            </Link>
+          )}
         </Stack>
       ),
     },

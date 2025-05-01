@@ -710,7 +710,7 @@ const ReportButton = ({ data, configuracion, getTotalEstudiantesPorGrado }) => {
         isLoading={isGenerating}
         onClick={generateAndDownloadPdf}
         isDisabled={
-          configuracion?.permitirDescargarObservadores === false || // si hay configuración y no permite ver
+          configuracion?.permitirDescargarBoletin === false || // si hay configuración y no permite ver
           configuracion == !null
         }
       />

@@ -7,6 +7,13 @@ import {
   Heading,
   HStack,
   Icon,
+  IconButton,
+  MenuOptionGroup,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Stack,
   Text,
   useColorModeValue,
@@ -21,6 +28,8 @@ import {
   FiChevronRight,
   FiChevronsLeft,
   FiChevronsRight,
+  FiFileText,
+  FiList,
 } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
 import { AlertEliminar } from '../matriculas/AlertEliminar';
@@ -37,6 +46,9 @@ import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import ModalEditarMatricula from '../matriculas/ModalEditarMatricula';
 import CustomBackRoute from '../../helpers/CustomBackRoute';
+import ReporteEstudianteInicialCalificacion from '../calificaciones/ReporteIndividualEstudianteInicialCalificacion';
+import ReporteGeneralEstudianteInicialCalificacion from '../calificaciones/ReporteGeneralEstudianteInicialCalificacion';
+import ReporteIndividualEstudianteInicialCalificacion from '../calificaciones/ReporteIndividualEstudianteInicialCalificacion';
 
 const EstudiantesPorGrado = () => {
   const dispatch = useDispatch();
@@ -47,9 +59,7 @@ const EstudiantesPorGrado = () => {
 
   const grado = useParams();
 
-  const { matriculas, isLoading } = useSelector(
-    state => state.matriculas
-  );
+  const { matriculas, isLoading } = useSelector(state => state.matriculas);
   const { configuracion } = useSelector(state => state.configuraciones);
 
   useEffect(() => {
@@ -61,9 +71,9 @@ const EstudiantesPorGrado = () => {
     };
   }, [dispatch, grado.id]);
 
-  const calcularTotalEstudiantesPorGrado = (gradoId) => {
+  const calcularTotalEstudiantesPorGrado = gradoId => {
     return matriculas.filter(m => m.grado._id === gradoId).length;
-  }; 
+  };
 
   const handleUpdatePromedioRanking = () => {
     dispatch(updatedPromedioRankingPorGrado(grado?.id));
@@ -151,13 +161,57 @@ const EstudiantesPorGrado = () => {
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }
           />
-          <ReportButton
-            data={row}
-            configuracion={
-              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
-            }
-            getTotalEstudiantesPorGrado={() => calcularTotalEstudiantesPorGrado(row.grado._id)}
-          />
+          {row.grado?.nivel === 'INICIAL' ? (
+            <Popover placement="auto" isLazy size={'sm'}>
+              <PopoverTrigger>
+                <IconButton
+                  aria-label="Options List"
+                  icon={<Icon as={FiList} fontSize="xl" />}
+                  size="md"
+                  mr={2}
+                  colorScheme="orange"
+                  isRound
+                  variant="solid"
+                  _dark={{ color: 'white' }}
+                />
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverBody>
+                  <Stack spacing={2} direction="row">
+                    <ReporteGeneralEstudianteInicialCalificacion
+                      data={row}
+                      getTotalEstudiantesPorGrado={() =>
+                        calcularTotalEstudiantesPorGrado(row.grado._id)
+                      }
+                      configuracion={
+                        user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+                      }
+                    />
+                    <ReporteIndividualEstudianteInicialCalificacion
+                      data={row}
+                      getTotalEstudiantesPorGrado={() =>
+                        calcularTotalEstudiantesPorGrado(row.grado._id)
+                      }
+                      configuracion={
+                        user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+                      }
+                    />
+                  </Stack>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <ReportButton
+              data={row}
+              getTotalEstudiantesPorGrado={() =>
+                calcularTotalEstudiantesPorGrado(row.grado._id)
+              }
+              configuracion={
+                user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+              }
+            />
+          )}
           <ModalEditarMatricula
             data={row}
             configuracion={
@@ -191,7 +245,9 @@ const EstudiantesPorGrado = () => {
           alignSelf={'center'}
         >
           <CustomBackRoute />
-          <Heading size="md" alignSelf={'center'}>ESTUDIANTES MATRICULADOS POR GRADO</Heading>
+          <Heading size="md" alignSelf={'center'}>
+            ESTUDIANTES MATRICULADOS POR GRADO
+          </Heading>
         </HStack>
         <Button
           onClick={handleUpdatePromedioRanking}

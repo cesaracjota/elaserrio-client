@@ -160,7 +160,7 @@ const GradeInput = ({
   );
 };
 
-const RegistrarCalificacionPage = () => {
+const RegistrarCalificacion = () => {
   // Get route parameters
   const { id, idMateria } = useParams();
 
@@ -319,7 +319,7 @@ const RegistrarCalificacionPage = () => {
     const estadoFinal =
       notasValidas.length === 0
         ? 'Pendiente'
-        : promedio >= 6
+        : promedio >= 3
         ? 'Aprobado'
         : 'Reprobado';
 
@@ -827,4 +827,4 @@ const RegistrarCalificacionPage = () => {
   );
 };
 
-export default RegistrarCalificacionPage;
+export default RegistrarCalificacion;

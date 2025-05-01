@@ -68,6 +68,9 @@ import ObserverButton from '../calificaciones/ReporteObservacionesEstudiante';
 import ReportButton from '../calificaciones/ReporteEstudianteCalificacion';
 import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import ReporteFichaMatricula from '../matriculas/ReporteFichaMatricula';
+import ReporteGeneralEstudianteInicialCalificacion from '../calificaciones/ReporteGeneralEstudianteInicialCalificacion';
+import ReporteIndividualEstudianteInicialCalificacion from '../calificaciones/ReporteIndividualEstudianteInicialCalificacion';
+import { FiList } from 'react-icons/fi';
 
 // Para exportación
 const exportToCSV = (data, filename) => {
@@ -144,7 +147,7 @@ const Reportes = () => {
   }, [reportes]);
 
   // funcion para saber el total de estudiantes por grado con useMemo
-  const calcularTotalEstudiantesPorGrado = (gradoId) => {
+  const calcularTotalEstudiantesPorGrado = gradoId => {
     return reportData.filter(m => m.grado?._id === gradoId).length || 0;
   };
 
@@ -214,6 +217,51 @@ const Reportes = () => {
         cell: ({ row }) => (
           <HStack spacing={0}>
             <ObserverButton data={row.original} configuracion={null} />
+            {row.original?.grado?.nivel === 'INICIAL' ? (
+              <Popover placement="auto" isLazy size={'sm'}>
+                <PopoverTrigger>
+                  <IconButton
+                    aria-label="Options List"
+                    icon={<Icon as={FiList} fontSize="xl" />}
+                    size="md"
+                    mr={2}
+                    colorScheme="orange"
+                    isRound
+                    variant="solid"
+                    _dark={{ color: 'white' }}
+                  />
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverArrow />
+                  <PopoverBody>
+                    <Stack spacing={2} direction="row">
+                      <ReporteGeneralEstudianteInicialCalificacion
+                        data={row.original}
+                        getTotalEstudiantesPorGrado={() =>
+                          calcularTotalEstudiantesPorGrado(row.grado._id)
+                        }
+                        configuracion={null}
+                      />
+                      <ReporteIndividualEstudianteInicialCalificacion
+                        data={row.original}
+                        getTotalEstudiantesPorGrado={() =>
+                          calcularTotalEstudiantesPorGrado(row.grado._id)
+                        }
+                        configuracion={null}
+                      />
+                    </Stack>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <ReportButton
+              data={row.original}
+                getTotalEstudiantesPorGrado={() =>
+                  calcularTotalEstudiantesPorGrado(row.grado._id)
+                }
+                configuracion={null}
+              />
+            )}
             <ReportButton
               data={row.original}
               configuracion={null}

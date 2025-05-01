@@ -26,7 +26,6 @@ import {
   MateriaPage,
   DetalleMateriaPage,
   MisMateriasPage,
-  RegistrarCalificacionPage,
   DocenteTitularMateriasPage,
 } from '../pages/MateriaPage';
 import { SedePage } from '../pages/SedePage';
@@ -41,6 +40,7 @@ import { AccesoPage } from '../pages/AccesoPage';
 import { NoTienePermisosPage } from '../pages/NoTienePermisosPage';
 import PersonasPage from '../pages/personas';
 import PeriodoEscolarPage from '../pages/academico';
+import { RegistrarCalificacionInicialPage, RegistrarCalificacionPage } from '../pages/CalificacionPage';
 
 export default function AppRouter() {
   const { user } = useSelector(state => state.auth);
@@ -120,6 +120,10 @@ export default function AppRouter() {
         <Route
           path="/mis-asignaturas/:id/registrar-calificacion/:idMateria"
           element={<RegistrarCalificacionPage />}
+        />
+        <Route
+          path="/mis-asignaturas/:id/registrar-calificacion-inicial/:idMateria"
+          element={<RegistrarCalificacionInicialPage />}
         />
       </Route>
 

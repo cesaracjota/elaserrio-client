@@ -14,6 +14,11 @@ import {
   Icon,
   Select,
   IconButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverBody,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import ModalRegistrarMatricula from './ModalRegistrarMatricula';
@@ -26,6 +31,7 @@ import {
   FiChevronsLeft,
   FiChevronsRight,
   FiFilter,
+  FiList,
 } from 'react-icons/fi';
 import { customStyles } from '../../helpers/customStyles';
 import '../../theme/solarizedTheme';
@@ -47,6 +53,9 @@ import { getAllConfiguraciones } from '../../features/configuracionSlice';
 import ModalEditarMatricula from './ModalEditarMatricula';
 import ReporteFichaMatricula from './ReporteFichaMatricula';
 import { Loading } from '../../helpers/Loading';
+import ReporteEstudianteInicialCalificacion from '../calificaciones/ReporteIndividualEstudianteInicialCalificacion';
+import ReporteGeneralEstudianteInicialCalificacion from '../calificaciones/ReporteGeneralEstudianteInicialCalificacion';
+import ReporteIndividualEstudianteInicialCalificacion from '../calificaciones/ReporteIndividualEstudianteInicialCalificacion';
 
 const Matriculas = () => {
   const dispatch = useDispatch();
@@ -69,7 +78,7 @@ const Matriculas = () => {
 
   const misGradoIds = mis_grados.map(g => g._id.toString());
 
-  const calcularTotalEstudiantesPorGrado = (gradoId) => {
+  const calcularTotalEstudiantesPorGrado = gradoId => {
     return matriculas.filter(m => m.grado._id === gradoId).length;
   };
 
@@ -97,7 +106,14 @@ const Matriculas = () => {
     return () => {
       dispatch(reset());
     };
-  }, [dispatch, currentPage, perPage, sedeSeleccionada?._id, user?.usuario?.id, user?.usuario?.rol]); 
+  }, [
+    dispatch,
+    currentPage,
+    perPage,
+    sedeSeleccionada?._id,
+    user?.usuario?.id,
+    user?.usuario?.rol,
+  ]);
 
   const columns = [
     {
@@ -189,13 +205,61 @@ const Matriculas = () => {
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }
           />
-          <ReportButton
-            data={row}
-            getTotalEstudiantesPorGrado={() => calcularTotalEstudiantesPorGrado(row.grado._id)}
-            configuracion={
-              user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
-            }
-          />
+          {row.grado?.nivel === 'INICIAL' ? (
+            <Popover placement="auto" isLazy size={'sm'}>
+              <PopoverTrigger>
+                <IconButton
+                  aria-label="Options List"
+                  icon={<Icon as={FiList} fontSize="xl" />}
+                  size="md"
+                  mr={2}
+                  colorScheme="orange"
+                  isRound
+                  variant="solid"
+                  _dark={{ color: 'white' }}
+                />
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverBody>
+                  <Stack spacing={2} direction="row">
+                    <ReporteGeneralEstudianteInicialCalificacion
+                      data={row}
+                      getTotalEstudiantesPorGrado={() =>
+                        calcularTotalEstudiantesPorGrado(row.grado._id)
+                      }
+                      configuracion={
+                        user?.usuario?.rol === 'ADMIN_ROLE'
+                          ? null
+                          : configuracion
+                      }
+                    />
+                    <ReporteIndividualEstudianteInicialCalificacion
+                      data={row}
+                      getTotalEstudiantesPorGrado={() =>
+                        calcularTotalEstudiantesPorGrado(row.grado._id)
+                      }
+                      configuracion={
+                        user?.usuario?.rol === 'ADMIN_ROLE'
+                          ? null
+                          : configuracion
+                      }
+                    />
+                  </Stack>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <ReportButton
+              data={row}
+              getTotalEstudiantesPorGrado={() =>
+                calcularTotalEstudiantesPorGrado(row.grado._id)
+              }
+              configuracion={
+                user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
+              }
+            />
+          )}
           <ModalEditarMatricula
             data={row}
             configuracion={
@@ -206,7 +270,6 @@ const Matriculas = () => {
           />
           <ReporteFichaMatricula
             data={row}
-
             configuracion={
               user?.usuario?.rol === 'ADMIN_ROLE' ? null : configuracion
             }
@@ -289,7 +352,8 @@ const Matriculas = () => {
           value={
             user?.usuario?.rol === 'ADMIN_ROLE'
               ? matriculas?.filter(m => m.estado === 'Activa')?.length || '0'
-              : matriculaFiltro?.filter(m => m.estado === 'Activa')?.length || '0'
+              : matriculaFiltro?.filter(m => m.estado === 'Activa')?.length ||
+                '0'
           }
           colorScheme="green"
         />
@@ -297,9 +361,10 @@ const Matriculas = () => {
           title="Finalizadas"
           value={
             user?.usuario?.rol === 'ADMIN_ROLE'
-              ? matriculas?.filter(m => m.estado === 'Finalizada')?.length || '0'
-              : matriculaFiltro?.filter(m => m.estado === 'Finalizada')?.length ||
+              ? matriculas?.filter(m => m.estado === 'Finalizada')?.length ||
                 '0'
+              : matriculaFiltro?.filter(m => m.estado === 'Finalizada')
+                  ?.length || '0'
           }
           colorScheme="red"
         />
