@@ -238,14 +238,14 @@ const Reportes = () => {
                       <ReporteGeneralEstudianteInicialCalificacion
                         data={row.original}
                         getTotalEstudiantesPorGrado={() =>
-                          calcularTotalEstudiantesPorGrado(row.grado._id)
+                          calcularTotalEstudiantesPorGrado(row.original?._id)
                         }
                         configuracion={null}
                       />
                       <ReporteIndividualEstudianteInicialCalificacion
                         data={row.original}
                         getTotalEstudiantesPorGrado={() =>
-                          calcularTotalEstudiantesPorGrado(row.grado._id)
+                          calcularTotalEstudiantesPorGrado(row.original?._id)
                         }
                         configuracion={null}
                       />
@@ -257,18 +257,11 @@ const Reportes = () => {
               <ReportButton
               data={row.original}
                 getTotalEstudiantesPorGrado={() =>
-                  calcularTotalEstudiantesPorGrado(row.grado._id)
+                  calcularTotalEstudiantesPorGrado(row.original?._id)
                 }
                 configuracion={null}
               />
             )}
-            <ReportButton
-              data={row.original}
-              configuracion={null}
-              getTotalEstudiantesPorGrado={() =>
-                calcularTotalEstudiantesPorGrado(row.original?._id)
-              }
-            />
             <ReporteFichaMatricula data={row.original} configuracion={null} />
           </HStack>
         ),
