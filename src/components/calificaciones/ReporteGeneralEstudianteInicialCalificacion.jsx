@@ -267,6 +267,12 @@ const AcademicReportPDF = ({ studentData, evaluaciones, schoolInfo, sede }) => {
             <Text style={styles.studentInfoValue}>
               {student?.turno || 'MAÑANA'}
             </Text>
+            <Text style={styles.studentInfoLabel}>
+              PERIODO
+            </Text>
+            <Text style={styles.studentInfoValue}>
+              {academicYear?.periodo}
+            </Text>
           </View>
         </View>
 

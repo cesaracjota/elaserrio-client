@@ -1,18 +1,18 @@
 import { Flex } from "@chakra-ui/react";
 import { ClipLoader } from "react-spinners";
 
-export function Loading() {
+export function Loading({ isHeight }) {
     return (
         <Flex
             w="100%"
-            h="75vh"
+            h={isHeight ? "auto" : "70vh"}
             alignItems="center"
             justifyContent="center"
         >
             <ClipLoader 
-                color="#645CAA"
+                color="#2fa33a"
                 loading={true}
-                size={40}
+                size={50}
             />
         </Flex> 
     );
