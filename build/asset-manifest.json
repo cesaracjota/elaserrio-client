@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3f9ebdbc.css",
+    "main.js": "/static/js/main.90a6ce34.js",
+    "static/js/54.ba4e4ec9.chunk.js": "/static/js/54.ba4e4ec9.chunk.js",
+    "static/js/359.d578b6f6.chunk.js": "/static/js/359.d578b6f6.chunk.js",
+    "static/media/logoColegio.png": "/static/media/logoColegio.eebe0e8e0254a85a94f1.png",
+    "static/media/rubik-all-400-normal.woff": "/static/media/rubik-all-400-normal.61010147d313697844c0.woff",
+    "static/media/public-sans-all-400-normal.woff": "/static/media/public-sans-all-400-normal.74e7e7d8ab558dd108a1.woff",
+    "static/media/question.png": "/static/media/question.ca059857ea454042340c.png",
+    "static/media/rubik-latin-400-normal.woff2": "/static/media/rubik-latin-400-normal.65cfd3d83c8c52c45c77.woff2",
+    "static/media/check.png": "/static/media/check.a8d20cd48e2e0d022083.png",
+    "static/media/warning.png": "/static/media/warning.9b4ca102d35f95618ffb.png",
+    "static/media/firmaRector.png": "/static/media/firmaRector.54792161899742c81749.png",
+    "static/media/public-sans-latin-400-normal.woff2": "/static/media/public-sans-latin-400-normal.4758638f2eeeaf0dd6c4.woff2",
+    "static/media/info.png": "/static/media/info.f98729561693bc03eb84.png",
+    "static/media/rubik-latin-ext-400-normal.woff2": "/static/media/rubik-latin-ext-400-normal.7e30dd8d0acbfec04ab8.woff2",
+    "static/media/public-sans-latin-ext-400-normal.woff2": "/static/media/public-sans-latin-ext-400-normal.cbd34e580c9965bfc3c9.woff2",
+    "static/media/rubik-cyrillic-400-normal.woff2": "/static/media/rubik-cyrillic-400-normal.15565e39b272cbf5d02e.woff2",
+    "static/media/rubik-cyrillic-ext-400-normal.woff2": "/static/media/rubik-cyrillic-ext-400-normal.ae191b14cc3cbf861d08.woff2",
+    "static/media/gradient-bg.svg": "/static/media/gradient-bg.1d07167be11a6d01a106a77c7ff126df.svg",
+    "static/media/rubik-hebrew-400-normal.woff2": "/static/media/rubik-hebrew-400-normal.5e6e7403617677002c27.woff2",
+    "static/media/public-sans-vietnamese-400-normal.woff2": "/static/media/public-sans-vietnamese-400-normal.4490eed5a77c4164de3d.woff2",
+    "index.html": "/index.html",
+    "main.3f9ebdbc.css.map": "/static/css/main.3f9ebdbc.css.map",
+    "main.90a6ce34.js.map": "/static/js/main.90a6ce34.js.map",
+    "54.ba4e4ec9.chunk.js.map": "/static/js/54.ba4e4ec9.chunk.js.map",
+    "359.d578b6f6.chunk.js.map": "/static/js/359.d578b6f6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3f9ebdbc.css",
+    "static/js/main.90a6ce34.js"
+  ]
+}
